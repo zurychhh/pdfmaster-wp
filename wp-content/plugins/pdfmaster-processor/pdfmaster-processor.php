@@ -15,30 +15,18 @@ declare(strict_types=1);
 
 namespace PDFMaster\Processor;
 
+require_once __DIR__ . '/autoload.php';
+
 if (! defined('ABSPATH')) {
     exit;
 }
 
 const PDFM_PROCESSOR_VERSION = '0.1.0';
 const PDFM_PROCESSOR_PATH = __DIR__ . '/';
-const PDFM_PROCESSOR_URL = plugin_dir_url(__FILE__);
 
-spl_autoload_register(static function (string $class): void {
-    $prefix = __NAMESPACE__ . '\\';
-
-    if (str_starts_with($class, $prefix) === false) {
-        return;
-    }
-
-    $relative = substr($class, strlen($prefix));
-    $relative = str_replace('\\', '/', $relative);
-    $relative = strtolower((string) preg_replace('/([a-z])([A-Z])/', '$1-$2', $relative));
-    $file = PDFM_PROCESSOR_PATH . 'includes/class-' . $relative . '.php';
-
-    if (file_exists($file)) {
-        require $file;
-    }
-});
+if (! defined('PDFM_PROCESSOR_URL')) {
+    define('PDFM_PROCESSOR_URL', plugin_dir_url(__FILE__));
+}
 
 /**
  * Load plugin text domain.
