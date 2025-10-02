@@ -1,0 +1,37 @@
+# WordPress Core
+/wp-admin/
+/wp-includes/
+/wp-content/index.php
+/wp-content/plugins/index.php
+/wp-content/themes/index.php
+
+# WordPress Config
+wp-config.php
+.htaccess
+
+# Dependencies
+/node_modules/
+/vendor/
+
+# Uploads (duże pliki)
+/wp-content/uploads/
+
+# Cache & Temp
+/wp-content/cache/
+/wp-content/backup/
+*.log
+
+# OS Files
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Keep our custom code
+!/wp-content/themes/pdfmaster-theme/
+!/wp-content/plugins/pdfmaster-processor/
+!/wp-content/plugins/pdfmaster-payments/
