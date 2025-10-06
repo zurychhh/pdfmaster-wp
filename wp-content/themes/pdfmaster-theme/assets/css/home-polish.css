@@ -1,0 +1,35 @@
+/* Home polish styles (Droid-assisted) */
+:root {
+  --brand-primary: var(--color-primary, #2563EB);
+  --brand-primary-dark: #1E40AF;
+  --brand-secondary: var(--color-accent, #10B981);
+  --brand-text: var(--color-text, #1F2937);
+  --brand-surface: var(--color-surface, #F9FAFB);
+}
+
+/* Minimal helpers; hover effects will be in Elementor Custom CSS */
+.home-hero{
+  background: linear-gradient(180deg, var(--brand-primary) 0%, var(--brand-primary-dark) 100%);
+}
+@media (min-width: 768px){.home-hero{padding:80px 0;}}
+@media (max-width: 767.98px){.home-hero{padding:60px 0;}}
+
+.btn-primary{
+  background: var(--brand-primary);
+  color:#fff;
+  padding:16px 32px;
+  border-radius:8px;
+  font-weight:600;
+  font-size:16px;
+  box-shadow:0 2px 4px rgba(37,99,235,0.2);
+}
+.btn-hero-white{
+  background:#fff;
+  color:var(--brand-primary);
+  padding:16px 32px;
+  border-radius:8px;
+  font-weight:600;
+  font-size:16px;
+}
+
+.section-spacing{ margin-bottom: var(--spacing-2xl, 64px); padding-top: var(--spacing-xl, 48px); padding-bottom: var(--spacing-xl, 48px);} 

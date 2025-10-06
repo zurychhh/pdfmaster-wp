@@ -195,6 +195,14 @@ h2,
 CSS;
 
         wp_add_inline_style('pdfmaster-theme-style', $global_css);
+
+        // Enqueue homepage polish styles (only on front page)
+        if ( is_front_page() ) {
+            $polish = get_stylesheet_directory() . '/assets/css/home-polish.css';
+            if ( file_exists( $polish ) ) {
+                wp_enqueue_style( 'pdfmaster-home-polish', get_stylesheet_directory_uri() . '/assets/css/home-polish.css', [ 'pdfmaster-theme-style' ], (string) wp_get_theme()->get('Version') );
+            }
+        }
     }
 }
 add_action('wp_enqueue_scripts', 'pdfm_enqueue_assets');
