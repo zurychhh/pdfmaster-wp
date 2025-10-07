@@ -48,6 +48,11 @@ function pdfm_bootstrap(): void
 
     $processor = new Processor($file_handler, $stirling_api, $cleanup);
     $processor->register_hooks();
+
+    // Ensure admin settings page is registered in WP Admin
+    if (is_admin()) {
+        require_once __DIR__ . '/includes/class-admin-bootstrap.php';
+    }
 }
 add_action('plugins_loaded', __NAMESPACE__ . '\\pdfm_bootstrap', 20);
 
