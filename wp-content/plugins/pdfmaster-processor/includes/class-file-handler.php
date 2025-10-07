@@ -83,4 +83,34 @@ class FileHandler
     {
         return is_file($path) ? unlink($path) : false;
     }
+
+    /**
+     * Validate and persist using MIME and size limits.
+     */
+    public function validate_and_persist(array $file): string|\WP_Error
+    {
+        if (($file['error'] ?? UPLOAD_ERR_OK) !== UPLOAD_ERR_OK) {
+            return new \WP_Error('upload_error', __('File upload failed', 'pdfmaster-processor'));
+        }
+
+        // MIME validation
+        if (!is_readable($file['tmp_name'] ?? '')) {
+            return new \WP_Error('invalid_upload', __('Missing uploaded file', 'pdfmaster-processor'));
+        }
+        $finfo = finfo_open(FILEINFO_MIME_TYPE);
+        $mime  = $finfo ? finfo_file($finfo, $file['tmp_name']) : '';
+        if ($finfo) finfo_close($finfo);
+        if ($mime !== 'application/pdf') {
+            return new \WP_Error('invalid_type', __('Only PDF files are allowed', 'pdfmaster-processor'));
+        }
+
+        $max = (int) get_option('pdfm_max_file_size', 104857600);
+        if (($file['size'] ?? 0) > $max) {
+            $mb = $max / 1024 / 1024;
+            return new \WP_Error('file_too_large', sprintf(__('File exceeds maximum size of %sMB', 'pdfmaster-processor'), $mb));
+        }
+
+        return $this->persist($file);
+    }
+
 }

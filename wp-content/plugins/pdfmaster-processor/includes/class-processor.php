@@ -63,11 +63,14 @@ class Processor
         wp_enqueue_style('pdfm-processor-styles');
         wp_enqueue_script('pdfm-processor-scripts');
 
-        // TODO: Replace placeholder markup with Elementor-powered UI integration.
         $output  = '<div class="pdfm-processor">';
         $output .= '<form class="pdfm-processor__form" method="post" enctype="multipart/form-data">';
         $output .= wp_nonce_field('pdfm_processor_nonce', '_pdfm_nonce', true, false);
         $output .= '<input type="file" name="pdf_files[]" multiple accept="application/pdf" />';
+        $output .= '<select name="operation" class="pdfm-op">'
+                . '<option value="compress">' . esc_html__('Compress', 'pdfmaster-processor') . '</option>'
+                . '<option value="merge">' . esc_html__('Merge', 'pdfmaster-processor') . '</option>'
+                . '</select>';
         $output .= '<button type="submit">' . esc_html__('Upload', 'pdfmaster-processor') . '</button>';
         $output .= '</form>';
         $output .= $content;
@@ -84,6 +87,8 @@ class Processor
             wp_send_json_error(['message' => __('No files received.', 'pdfmaster-processor')]);
         }
 
+        $operation = sanitize_text_field($_POST['operation'] ?? 'compress');
+
         $stored_files = [];
         foreach ((array) $_FILES['pdf_files']['name'] as $index => $name) {
             $file = [
@@ -94,16 +99,7 @@ class Processor
                 'size'     => $_FILES['pdf_files']['size'][$index] ?? 0,
             ];
 
-            if ($file['error'] !== UPLOAD_ERR_OK) {
-                continue;
-            }
-
-            $validated = $this->file_handler->validate($file);
-            if ($validated instanceof WP_Error) {
-                wp_send_json_error(['message' => $validated->get_error_message()]);
-            }
-
-            $stored = $this->file_handler->persist($file);
+            $stored = $this->file_handler->validate_and_persist($file);
             if ($stored instanceof WP_Error) {
                 wp_send_json_error(['message' => $stored->get_error_message()]);
             }
@@ -115,13 +111,15 @@ class Processor
             wp_send_json_error(['message' => __('No valid files processed.', 'pdfmaster-processor')]);
         }
 
-        $response = $this->stirling_api->process($stored_files, sanitize_text_field($_POST['operation'] ?? 'compress'));
+        $processed_path = $this->stirling_api->process($stored_files, $operation);
 
-        if ($response instanceof WP_Error) {
-            wp_send_json_error(['message' => $response->get_error_message()]);
+        if ($processed_path instanceof WP_Error) {
+            wp_send_json_error(['message' => $processed_path->get_error_message()]);
         }
 
-        wp_send_json_success(['data' => $response]);
+        $upload = wp_upload_dir();
+        $url = str_replace($upload['basedir'], $upload['baseurl'], (string) $processed_path);
+        wp_send_json_success(['url' => $url]);
     }
 
     public function run_cleanup(): void

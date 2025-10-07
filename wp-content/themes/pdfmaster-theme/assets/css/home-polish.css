@@ -1,0 +1,243 @@
+/* Home polish styles (Droid-assisted) */
+:root {
+  --brand-primary: #2563EB; /* Blue 600 */
+  --brand-primary-dark: #1E40AF; /* Blue 800 */
+  --brand-primary-light: #3B82F6; /* Blue 500 */
+  --brand-secondary: #10B981; /* Green 500 */
+  --brand-text: #1F2937; /* Gray 800 */
+  --brand-muted: #6B7280; /* Gray 500 */
+  --brand-surface: #F9FAFB; /* Gray 50 */
+  --brand-border: #E5E7EB; /* Gray 200 */
+}
+
+/* ===== 1) HERO SECTION ===== */
+/* Assign class "home-hero" to the top hero section in Elementor */
+.home-hero {
+  position: relative;
+  isolation: isolate;
+  background: 
+    /* optional subtle dot pattern */
+    radial-gradient(circle at 20% 20%, rgba(255,255,255,0.06) 0 2px, transparent 2px) 0 0/24px 24px,
+    radial-gradient(1000px 600px at 70% -10%, rgba(255,255,255,0.10), transparent 60%),
+    radial-gradient(800px 500px at 10% 120%, rgba(255,255,255,0.08), transparent 60%),
+    linear-gradient(180deg, #1E40AF 0%, #2563EB 50%, #3B82F6 100%);
+  color: #fff;
+}
+@media (min-width: 768px){
+  .home-hero { padding: 100px 0; }
+}
+@media (max-width: 767.98px){
+  .home-hero { padding: 72px 0; }
+}
+
+/* Headings inside hero */
+.home-hero .hero-heading,
+.home-hero .elementor-heading-title {
+  color: #fff;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  font-weight: 700;
+}
+
+/* CTA primary (white) button in hero */
+.btn-hero-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 20px 48px;
+  background: #fff;
+  color: var(--brand-primary);
+  border-radius: 12px;
+  font-size: 18px;
+  font-weight: 700;
+  text-decoration: none;
+  box-shadow: 0 4px 12px rgba(255,255,255,0.3);
+  transform: translateZ(0);
+  transition: transform .25s ease, box-shadow .25s ease;
+}
+.btn-hero-cta::after{
+  content: "\2192"; /* → */
+  font-size: 1em;
+}
+.btn-hero-cta:hover{ transform: scale(1.05); }
+
+/* Trust badges row (assign class "trust-badges" to the container, each badge with class "trust-badge") */
+.trust-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px 24px;
+}
+.trust-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: #fff;
+  font-size: 18px;
+  padding: 10px 14px;
+  background: rgba(255,255,255,0.12);
+  border-radius: 12px;
+}
+.trust-badge .icon{ font-size: 24px; color: #fff; line-height: 1; }
+
+/* ===== 2) TOOL CARDS ===== */
+/* Assign class "tool-card" to each tool card wrapper */
+.tool-card {
+  background: #fff;
+  border: 2px solid var(--brand-border);
+  border-radius: 16px;
+  padding: 40px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+  transition: all .4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.tool-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(37,99,235,0.15);
+  border-color: var(--brand-primary);
+}
+
+/* Icon with background circle */
+.tool-card__icon {
+  position: relative;
+  z-index: 1;
+  font-size: 64px; /* For font icons */
+  width: 64px; height: 64px; /* For image/svg consistency */
+  color: var(--brand-primary);
+}
+.tool-card__icon::before{
+  content: "";
+  position: absolute; inset: -28px;
+  z-index: -1;
+  border-radius: 999px;
+  width: 120px; height: 120px;
+  background: linear-gradient(135deg, rgba(37,99,235,0.10), rgba(37,99,235,0.05));
+  border: 2px solid rgba(37,99,235,0.2);
+}
+.tool-card__title{
+  color: #1F2937;
+  font-size: 24px;
+  font-weight: 700;
+  margin-top: 24px;
+}
+.tool-card__desc{
+  color: var(--brand-muted);
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+/* Container gap for tool cards grid (assign class "tool-cards") */
+.tool-cards{ gap: 48px; }
+
+/* ===== 3) VALUE PROPOSITION ICONS ===== */
+/* Assign class "value-prop-card" to each small KPI/benefit card */
+.value-prop-card{
+  background: var(--brand-surface);
+  border-radius: 16px;
+  padding: 24px;
+  text-align: center;
+}
+.value-prop-card .value-prop-icon{
+  position: relative;
+  z-index: 1;
+  font-size: 48px; color: var(--brand-primary);
+  width: 48px; height: 48px; line-height: 1;
+  margin: 0 auto;
+}
+.value-prop-card .value-prop-icon::before{
+  content: "";
+  position: absolute; inset: -16px;
+  z-index: -1; border-radius: 999px;
+  width: 80px; height: 80px;
+  background: rgba(37,99,235,0.10);
+}
+.value-prop-card .value-prop-title{
+  margin-top: 32px;
+  font-size: 20px; font-weight: 600; color: #1F2937;
+}
+.value-prop-card .value-prop-desc{
+  font-size: 16px; color: var(--brand-muted);
+}
+
+/* ===== 4) PRICING CARD ===== */
+/* Assign class "pricing-card" to the main plan card */
+.pricing-card{
+  position: relative;
+  background: #fff;
+  border: 3px solid var(--brand-primary);
+  border-radius: 20px;
+  padding: 48px;
+  box-shadow: 0 20px 50px rgba(37,99,235,0.2);
+}
+.pricing-card__badge{
+  position: absolute; top: 16px; right: 16px;
+  transform: rotate(-10deg);
+  background: var(--brand-secondary);
+  color: #fff;
+  padding: 8px 20px;
+  font-size: 14px; font-weight: 700;
+  border-radius: 20px;
+  box-shadow: 0 4px 8px rgba(16,185,129,0.3);
+}
+.pricing-price{ display: flex; align-items: flex-end; gap: 6px; line-height: 1; }
+.pricing__currency{ font-size: 32px; opacity: .6; color: var(--brand-text); }
+.pricing__amount{ font-size: 96px; font-weight: 800; color: var(--brand-primary); }
+.pricing__cents{ font-size: 48px; color: var(--brand-text); opacity: .9; }
+
+.pricing-features{ list-style: none; padding: 0; margin: 24px 0; display: grid; gap: 12px; }
+.pricing-features li{ display: flex; align-items: center; gap: 12px; }
+.pricing-feature__icon{
+  position: relative;
+  z-index: 1;
+  width: 24px; height: 24px; font-size: 24px; color: var(--brand-secondary);
+}
+.pricing-feature__icon::before{
+  content: ""; position: absolute; inset: -8px; z-index: -1; border-radius: 999px;
+  background: rgba(16,185,129,0.10);
+}
+
+/* Buy Now button (white bg, primary text) */
+.btn-buy-now{
+  display: inline-flex; align-items: center; justify-content: center; gap: 12px;
+  width: auto;
+  padding: 20px 48px;
+  background: #fff; color: var(--brand-primary);
+  font-size: 18px; font-weight: 700;
+  border-radius: 12px;
+  text-decoration: none;
+  box-shadow: 0 4px 12px rgba(255,255,255,0.3);
+  transition: transform .25s ease, box-shadow .25s ease;
+  animation: btn-pulse 2.5s ease-in-out infinite;
+}
+.btn-buy-now:hover{ transform: scale(1.05); }
+@keyframes btn-pulse{
+  0%,100%{ box-shadow: 0 0 0 0 rgba(37,99,235,0.0), 0 4px 12px rgba(255,255,255,0.3); }
+  50%     { box-shadow: 0 0 0 8px rgba(37,99,235,0.10), 0 4px 12px rgba(255,255,255,0.3); }
+}
+
+/* ===== 5) GLOBAL SPACING (Front page only) ===== */
+/* Increase breathing room on the homepage; add class "no-global-spacing" to sections you do NOT want affected */
+body.home .elementor-section:not(.no-global-spacing){
+  padding-top: 100px !important;
+  padding-bottom: 100px !important;
+}
+/* Larger spacing between major blocks */
+body.home .elementor-widget:not(:last-child){
+  margin-bottom: 48px;
+}
+/* Tool cards gap if using Elementor columns container with class tool-cards */
+body.home .tool-cards .elementor-column{ margin-bottom: 0; }
+
+/* ===== 6) MOBILE RESPONSIVENESS ===== */
+@media (max-width: 767.98px){
+  .tool-card{ padding: 28px; }
+  .tool-card__icon::before{ inset: -22px; width: 100px; height: 100px; }
+  .btn-hero-cta, .btn-buy-now{ width: 100%; }
+  .pricing__amount{ font-size: 68px; }
+  .pricing__cents{ font-size: 36px; }
+  .trust-badges{ gap: 12px 16px; }
+}
+
+/* Utility button variants (optional) */
+.btn-primary{ background: var(--brand-primary); color:#fff; padding:16px 32px; border-radius:10px; font-weight:700; font-size:16px; box-shadow:0 2px 4px rgba(37,99,235,0.2); }
+.btn-hero-white{ background:#fff; color: var(--brand-primary); padding:20px 48px; border-radius:12px; font-weight:700; font-size:18px; box-shadow:0 4px 12px rgba(255,255,255,0.3); }
+
+/* Smooth transitions default */
+.tool-card, .btn-hero-cta, .btn-buy-now, .pricing-card{ will-change: transform, box-shadow; }
