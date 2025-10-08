@@ -52,7 +52,8 @@ class StirlingApi
             return new WP_Error('file_not_found', __('File does not exist', 'pdfmaster-processor'));
         }
 
-        $url = $this->get_endpoint() . '/api/v1/general/compress-pdf';
+        // Correct endpoint per Stirling PDF OpenAPI (/v1/api-docs): /api/v1/misc/compress-pdf
+        $url = $this->get_endpoint() . '/api/v1/misc/compress-pdf';
 
         $boundary = wp_generate_password(24, false);
         $body = $this->build_multipart_body([
@@ -62,7 +63,12 @@ class StirlingApi
                 'mime'     => 'application/pdf',
             ],
         ], [
-            'compressionLevel' => '2',
+            // Align with OptimizePdfRequest schema
+            'optimizeLevel'      => '5',
+            'expectedOutputSize' => '25KB',
+            'linearize'          => 'false',
+            'normalize'          => 'false',
+            'grayscale'          => 'false',
         ], $boundary);
 
         $response = wp_remote_post($url, [
