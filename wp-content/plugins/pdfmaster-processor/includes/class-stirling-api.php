@@ -52,7 +52,7 @@ class StirlingApi
             return new WP_Error('file_not_found', __('File does not exist', 'pdfmaster-processor'));
         }
 
-        $url = $this->get_endpoint() . '/api/v1/general/compress-pdf';
+        $url = $this->get_endpoint() . '/api/v1/misc/compress-pdf';
 
         $boundary = wp_generate_password(24, false);
         $body = $this->build_multipart_body([
