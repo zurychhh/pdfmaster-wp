@@ -62,7 +62,12 @@ class StirlingApi
                 'mime'     => 'application/pdf',
             ],
         ], [
-            'compressionLevel' => '2',
+            // Per Swagger OptimizePdfRequest (required fields)
+            'optimizeLevel'      => '5',
+            'expectedOutputSize' => '25KB',
+            'linearize'          => 'false',
+            'normalize'          => 'false',
+            'grayscale'          => 'false',
         ], $boundary);
 
         $response = wp_remote_post($url, [
