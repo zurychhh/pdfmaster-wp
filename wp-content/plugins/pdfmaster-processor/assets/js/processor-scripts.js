@@ -25,7 +25,7 @@
                     const html = [
                         '<div class="pdfm-result">',
                         '<p>Success! Your file is ready.</p>',
-                        '<a class="button button-primary" href="#" data-pdfm-open-modal>Pay $0.99 to Download</a>',
+                        '<a class="button button-primary" href="#" data-pdfm-open-modal data-file-token="' + (data.token || data.download_token || '') + '">Pay $0.99 to Download</a>',
                         ' <button type="button" class="pdfm-reset button button-secondary">Process Another File</button>',
                         '</div>'
                     ].join('');

@@ -1,3 +1,8 @@
+<div class="pdfm-payment-modal" style="display: none;">
+    <div class="pdfm-payment-modal__dialog">
+        <header>
+            <h2><?php esc_html_e('Pay $0.99 to Download', 'pdfmaster-payments'); ?></h2>
+            <p><?php esc_html_e('Enter your card details to complete the payment.', 'pdfmaster-payments'); ?></p>
         </header>
 
         <form class="pdfm-payment-form">
