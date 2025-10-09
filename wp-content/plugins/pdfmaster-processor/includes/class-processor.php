@@ -27,6 +27,8 @@ class Processor
         add_action('wp_enqueue_scripts', [$this, 'enqueue_assets']);
         add_action('wp_ajax_pdfm_process_pdf', [$this, 'handle_ajax']);
         add_action('wp_ajax_nopriv_pdfm_process_pdf', [$this, 'handle_ajax']);
+        add_action('wp_ajax_pdfm_download', [$this, 'download_file']);
+        add_action('wp_ajax_nopriv_pdfm_download', [$this, 'download_file']);
         add_shortcode('pdfmaster_processor', [$this, 'render_shortcode']);
         add_action('pdfm_processor_cleanup_cron', [$this, 'run_cleanup']);
     }
@@ -117,9 +119,65 @@ class Processor
             wp_send_json_error(['message' => $processed_path->get_error_message()]);
         }
 
-        $upload = wp_upload_dir();
-        $url = str_replace($upload['basedir'], $upload['baseurl'], (string) $processed_path);
-        wp_send_json_success(['url' => $url]);
+        // Create one-time token and store path in transient for gated download
+        $token = wp_generate_password(16, false);
+        set_transient('pdfm_file_' . $token, [
+            'path' => (string) $processed_path,
+            'ts'   => time(),
+        ], HOUR_IN_SECONDS);
+
+        $download_url = add_query_arg([
+            'action' => 'pdfm_download',
+            'token'  => $token,
+        ], admin_url('admin-ajax.php'));
+
+        $credits = 0;
+        if (class_exists('PDFMaster\\Payments\\CreditsManager')) {
+            $credits = (new \PDFMaster\Payments\CreditsManager())->get_user_credits(get_current_user_id());
+        }
+
+        wp_send_json_success([
+            'token'        => $token,
+            'downloadUrl'  => $download_url,
+            'credits'      => $credits,
+            'canDownload'  => $credits > 0,
+            'message'      => $credits > 0 ? __('You have credits. You can download now.', 'pdfmaster-processor') : __('Insufficient credits. Please purchase to download.', 'pdfmaster-processor'),
+        ]);
+    }
+
+    public function download_file(): void
+    {
+        $token = sanitize_text_field($_GET['token'] ?? '');
+        if ($token === '') {
+            wp_die(__('Invalid request', 'pdfmaster-processor'), '', 400);
+        }
+
+        $data = get_transient('pdfm_file_' . $token);
+        if (! is_array($data) || empty($data['path']) || ! file_exists($data['path'])) {
+            wp_die(__('File not available or expired', 'pdfmaster-processor'), '', 404);
+        }
+
+        // Verify credits
+        $user_id = get_current_user_id();
+        if (! class_exists('PDFMaster\\Payments\\CreditsManager')) {
+            wp_die(__('Payments not configured', 'pdfmaster-processor'), '', 403);
+        }
+
+        $credits = new \PDFMaster\Payments\CreditsManager();
+        if (! $credits->deduct_credits($user_id, 1)) {
+            wp_die(__('Not enough credits', 'pdfmaster-processor'), '', 402);
+        }
+
+        // Stream file
+        $path = (string) $data['path'];
+        $filename = basename($path);
+        header('Content-Type: application/pdf');
+        header('Content-Disposition: attachment; filename="' . $filename . '"');
+        header('Content-Length: ' . filesize($path));
+        // Invalidate token after use
+        delete_transient('pdfm_file_' . $token);
+        readfile($path);
+        exit;
     }
 
     public function run_cleanup(): void

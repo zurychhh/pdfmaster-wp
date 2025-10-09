@@ -16,6 +16,10 @@ declare(strict_types=1);
 namespace PDFMaster\Payments;
 
 require_once __DIR__ . '/autoload.php';
+// Composer autoload for third-party libs (Stripe SDK)
+if (file_exists(__DIR__ . '/vendor/autoload.php')) {
+    require_once __DIR__ . '/vendor/autoload.php';
+}
 
 if (! defined('ABSPATH')) {
     exit;
@@ -42,11 +46,16 @@ add_action('plugins_loaded', __NAMESPACE__ . '\\pdfm_load_textdomain');
  */
 function pdfm_bootstrap(): void
 {
+    // Settings and filters (register regardless of admin; UI shows in admin)
+    (new Admin\PaymentsAdmin())->register_hooks();
+
     $stripe = new StripeHandler();
     $credits = new CreditsManager();
     $emails = new EmailHandler();
     $modal = new PaymentModal($stripe, $credits, $emails);
 
     $modal->register_hooks();
+    // Register Stripe AJAX/REST
+    $stripe->register_hooks();
 }
 add_action('plugins_loaded', __NAMESPACE__ . '\\pdfm_bootstrap', 20);

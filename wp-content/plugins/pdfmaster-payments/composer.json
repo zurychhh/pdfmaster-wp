@@ -1,0 +1,13 @@
+{
+    "name": "pdfmaster/payments",
+    "description": "PDFMaster Payments",
+    "type": "wordpress-plugin",
+    "require": {
+        "stripe/stripe-php": "^15"
+    },
+    "authors": [
+        {
+            "name": "PDFMaster"
+        }
+    ]
+}
