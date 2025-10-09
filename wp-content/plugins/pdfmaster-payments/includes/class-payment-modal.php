@@ -31,6 +31,15 @@ class PaymentModal
 
     public function enqueue_assets(): void
     {
+        // Ensure Stripe.js is available (header)
+        wp_enqueue_script(
+            'stripe-js',
+            'https://js.stripe.com/v3/',
+            [],
+            null,
+            false
+        );
+
         wp_register_style(
             'pdfm-payment-modal',
             PDFM_PAYMENTS_URL . 'assets/css/payment-modal.css',
@@ -38,11 +47,15 @@ class PaymentModal
             PDFM_PAYMENTS_VERSION
         );
 
+        $script_path = dirname(__DIR__) . '/assets/js/payment-modal.js';
+        $script_url  = plugins_url('assets/js/payment-modal.js', dirname(__FILE__));
+        $script_ver  = file_exists($script_path) ? filemtime($script_path) : PDFM_PAYMENTS_VERSION;
+
         wp_register_script(
             'pdfm-payment-modal',
-            PDFM_PAYMENTS_URL . 'assets/js/payment-modal.js',
-            ['jquery'],
-            PDFM_PAYMENTS_VERSION,
+            $script_url,
+            ['jquery', 'stripe-js'],
+            $script_ver,
             true
         );
 
