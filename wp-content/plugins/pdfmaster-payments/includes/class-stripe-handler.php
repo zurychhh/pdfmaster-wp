@@ -43,9 +43,9 @@ class StripeHandler
     }
 
     /**
-     * Create a Stripe payment intent.
+     * Create a Stripe payment intent for $0.99 pay-per-action.
      */
-    public function create_payment_intent(int $credits): array|WP_Error
+    public function create_payment_intent(string $file_token): array|WP_Error
     {
         if ($this->secret_key === '') {
             return new WP_Error('pdfm_stripe_keys_missing', __('Stripe keys not configured.', 'pdfmaster-payments'));
@@ -53,14 +53,14 @@ class StripeHandler
 
         \Stripe\Stripe::setApiKey($this->secret_key);
 
-        $amount = 290; // $2.90 for 3 credits
+        $amount = 99; // $0.99 per action
 
         $intent = \Stripe\PaymentIntent::create([
             'amount' => $amount,
             'currency' => 'usd',
             'automatic_payment_methods' => ['enabled' => true],
             'metadata' => [
-                'credits' => (string) $credits,
+                'file_token' => $file_token,
             ],
         ]);
 
@@ -69,7 +69,6 @@ class StripeHandler
             'payment_intent_id' => $intent->id,
             'amount' => $amount,
             'currency' => 'usd',
-            'credits' => $credits,
         ];
     }
 
@@ -81,8 +80,11 @@ class StripeHandler
     public function ajax_create_payment_intent(): void
     {
         check_ajax_referer('pdfm_payments_nonce', 'nonce');
-        $credits = max(1, (int) ($_POST['credits'] ?? 3));
-        $result = $this->create_payment_intent($credits);
+        $file_token = sanitize_text_field((string) ($_POST['file_token'] ?? ''));
+        if ($file_token === '') {
+            wp_send_json_error(['message' => __('Missing file_token', 'pdfmaster-payments')]);
+        }
+        $result = $this->create_payment_intent($file_token);
         if ($result instanceof WP_Error) {
             wp_send_json_error(['message' => $result->get_error_message()]);
         }
@@ -93,7 +95,8 @@ class StripeHandler
     {
         check_ajax_referer('pdfm_payments_nonce', 'nonce');
         $intent_id = sanitize_text_field((string) ($_POST['payment_intent_id'] ?? ''));
-        if ($intent_id === '') {
+        $file_token = sanitize_text_field((string) ($_POST['file_token'] ?? ''));
+        if ($intent_id === '' || $file_token === '') {
             wp_send_json_error(['message' => __('Missing payment_intent_id', 'pdfmaster-payments')]);
         }
 
@@ -107,13 +110,23 @@ class StripeHandler
             wp_send_json_error(['message' => sprintf(__('Payment not successful (status: %s)', 'pdfmaster-payments'), $intent->status)]);
         }
 
-        $credits = (int) ($intent->metadata['credits'] ?? 3);
-        $user_id = get_current_user_id();
-        if ($user_id) {
-            (new CreditsManager())->add_credits($user_id, $credits);
+        // Mark token as paid
+        update_option('pdfm_paid_token_' . $file_token, [
+            'paid' => true,
+            'payment_intent' => $intent_id,
+            'timestamp' => time(),
+        ], false);
+
+        // Send receipt email if available
+        $email = (string) ($intent->receipt_email ?? '');
+        if ($email !== '') {
+            $this->send_receipt_email($email, $file_token);
         }
 
-        wp_send_json_success(['balance' => (new CreditsManager())->get_user_credits($user_id)]);
+        wp_send_json_success([
+            'message' => __('Payment successful! Your file is ready to download.', 'pdfmaster-payments'),
+            'file_token' => $file_token,
+        ]);
     }
 
     public function handle_webhook(\WP_REST_Request $request): \WP_REST_RESPONSE
@@ -131,13 +144,39 @@ class StripeHandler
 
         if ($event->type === 'payment_intent.succeeded') {
             $intent = $event->data['object'];
-            $credits = (int) ($intent['metadata']['credits'] ?? 3);
-            $user_id = get_current_user_id();
-            if ($user_id) {
-                (new CreditsManager())->add_credits($user_id, $credits);
+            $file_token = (string) ($intent['metadata']['file_token'] ?? '');
+            if ($file_token !== '') {
+                update_option('pdfm_paid_token_' . $file_token, [
+                    'paid' => true,
+                    'payment_intent' => $intent['id'] ?? '',
+                    'timestamp' => time(),
+                ], false);
+                $email = (string) ($intent['receipt_email'] ?? '');
+                if ($email !== '') {
+                    $this->send_receipt_email($email, $file_token);
+                }
             }
         }
 
         return new \WP_REST_Response('ok', 200);
+    }
+
+    private function send_receipt_email(string $email, string $file_token): void
+    {
+        if ($email === '') {
+            return;
+        }
+        $download_url = add_query_arg([
+            'action' => 'pdfm_download',
+            'token'  => $file_token,
+        ], admin_url('admin-ajax.php'));
+        $subject = __('Your PDF is ready - receipt', 'pdfmaster-payments');
+        $message = sprintf("%s\n\n%s\n%s: %s\n",
+            __('Thanks for your purchase!', 'pdfmaster-payments'),
+            __('Your file has been processed and is ready to download. Amount paid: $0.99', 'pdfmaster-payments'),
+            __('Download link (valid for a limited time)', 'pdfmaster-payments'),
+            $download_url
+        );
+        wp_mail($email, $subject, $message);
     }
 }

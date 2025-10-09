@@ -21,17 +21,19 @@
                 if (response && response.success && response.data) {
                     $form.hide();
                     const data = response.data;
-                    const canDownload = !!data.canDownload;
+                    // Always gate by payment now (pay-per-action $0.99)
                     const html = [
                         '<div class="pdfm-result">',
                         '<p>Success! Your file is ready.</p>',
-                        canDownload
-                            ? ('<a class="pdfm-download button button-primary" href="' + data.downloadUrl + '" download>Download Your PDF</a>')
-                            : ('<a class="button button-primary" href="#" data-pdfm-open-modal>Purchase credits to unlock download</a>'),
+                        '<a class="button button-primary" href="#" data-pdfm-open-modal>Pay $0.99 to Download</a>',
                         ' <button type="button" class="pdfm-reset button button-secondary">Process Another File</button>',
                         '</div>'
                     ].join('');
                     $container.append(html);
+
+                    // Store file token on modal for payment flow
+                    const $modal = $('.pdfm-payment-modal');
+                    $modal.attr('data-file-token', data.token);
 
                     // After successful payment, enable the download link
                     $(document).one('pdfm:payment:success', function () {

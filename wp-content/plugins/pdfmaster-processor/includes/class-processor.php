@@ -131,18 +131,13 @@ class Processor
             'token'  => $token,
         ], admin_url('admin-ajax.php'));
 
-        $credits = 0;
-        if (class_exists('PDFMaster\\Payments\\CreditsManager')) {
-            $credits = (new \PDFMaster\Payments\CreditsManager())->get_user_credits(get_current_user_id());
-        }
-
+        
         wp_send_json_success([
-            'token'        => $token,
-            'downloadUrl'  => $download_url,
-            'credits'      => $credits,
-            'canDownload'  => $credits > 0,
-            'message'      => $credits > 0 ? __('You have credits. You can download now.', 'pdfmaster-processor') : __('Insufficient credits. Please purchase to download.', 'pdfmaster-processor'),
+            'token'          => $token,
+            'downloadUrl'    => $download_url,
+            'download_token' => $token,
         ]);
+    
     }
 
     public function download_file(): void
@@ -157,18 +152,12 @@ class Processor
             wp_die(__('File not available or expired', 'pdfmaster-processor'), '', 404);
         }
 
-        // Verify credits
-        $user_id = get_current_user_id();
-        if (! class_exists('PDFMaster\\Payments\\CreditsManager')) {
-            wp_die(__('Payments not configured', 'pdfmaster-processor'), '', 403);
+        // Verify payment for token
+        $paid = get_option('pdfm_paid_token_' . $token, false);
+        if (! is_array($paid) || empty($paid['paid'])) {
+            wp_die(__('Payment required', 'pdfmaster-processor'), '', 402);
         }
 
-        $credits = new \PDFMaster\Payments\CreditsManager();
-        if (! $credits->deduct_credits($user_id, 1)) {
-            wp_die(__('Not enough credits', 'pdfmaster-processor'), '', 402);
-        }
-
-        // Stream file
         $path = (string) $data['path'];
         $filename = basename($path);
         header('Content-Type: application/pdf');
