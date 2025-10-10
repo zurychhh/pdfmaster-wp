@@ -32,7 +32,9 @@
             const payload = new URLSearchParams();
             payload.append('action', 'pdfm_create_payment_intent');
             payload.append('nonce', pdfmPayments.nonce);
-            payload.append('credits', '3');
+            const fileToken = $(modalSelector).attr('data-file-token') || '';
+            if (!fileToken) throw new Error('Missing file token');
+            payload.append('file_token', fileToken);
             const res = await fetch(pdfmPayments.ajaxUrl, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' },
@@ -56,6 +58,7 @@
             confirmPayload.append('action', 'pdfm_confirm_payment');
             confirmPayload.append('nonce', pdfmPayments.nonce);
             confirmPayload.append('payment_intent_id', paymentIntent.id);
+            confirmPayload.append('file_token', fileToken);
             const res2 = await fetch(pdfmPayments.ajaxUrl, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' },
@@ -64,9 +67,9 @@
             const json2 = await res2.json();
             if (!json2.success) throw new Error(json2.data && json2.data.message || 'Payment confirm failed');
 
-            alert('Payment successful. Your credits have been added.');
+            alert('Payment successful. Your download is unlocked.');
             closeModal();
-            $(document).trigger('pdfm:payment:success', { balance: json2.data.balance });
+            $(document).trigger('pdfm:payment:success', { file_token: fileToken });
         } catch (err) {
             console.error('Payment error', err);
             alert(err.message || 'Payment failed.');

@@ -50,9 +50,8 @@ function pdfm_bootstrap(): void
     (new Admin\PaymentsAdmin())->register_hooks();
 
     $stripe = new StripeHandler();
-    $credits = new CreditsManager();
     $emails = new EmailHandler();
-    $modal = new PaymentModal($stripe, $credits, $emails);
+    $modal = new PaymentModal($stripe, $emails);
 
     $modal->register_hooks();
     // Register Stripe AJAX/REST

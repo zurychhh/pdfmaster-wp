@@ -17,7 +17,6 @@ class PaymentModal
 {
     public function __construct(
         private readonly StripeHandler $stripe,
-        private readonly CreditsManager $credits,
         private readonly EmailHandler $emails
     ) {
     }
@@ -32,6 +31,15 @@ class PaymentModal
 
     public function enqueue_assets(): void
     {
+        // Ensure Stripe.js is available (header)
+        wp_enqueue_script(
+            'stripe-js',
+            'https://js.stripe.com/v3/',
+            [],
+            null,
+            false
+        );
+
         wp_register_style(
             'pdfm-payment-modal',
             PDFM_PAYMENTS_URL . 'assets/css/payment-modal.css',
@@ -39,11 +47,15 @@ class PaymentModal
             PDFM_PAYMENTS_VERSION
         );
 
+        $script_path = dirname(__DIR__) . '/assets/js/payment-modal.js';
+        $script_url  = plugins_url('assets/js/payment-modal.js', dirname(__FILE__));
+        $script_ver  = file_exists($script_path) ? filemtime($script_path) : PDFM_PAYMENTS_VERSION;
+
         wp_register_script(
             'pdfm-payment-modal',
-            PDFM_PAYMENTS_URL . 'assets/js/payment-modal.js',
-            ['jquery'],
-            PDFM_PAYMENTS_VERSION,
+            $script_url,
+            ['jquery', 'stripe-js'],
+            $script_ver,
             true
         );
 
@@ -69,7 +81,6 @@ class PaymentModal
             return '';
         }
 
-        $credits = $this->credits;
         $publishable_key = $this->stripe->get_publishable_key();
 
         ob_start();
@@ -82,13 +93,12 @@ class PaymentModal
     {
         check_ajax_referer('pdfm_payments_nonce', 'nonce');
 
-        $current_user = wp_get_current_user();
-        if (! $current_user || 0 === $current_user->ID) {
-            wp_send_json_error(['message' => __('Authentication required for purchase.', 'pdfmaster-payments')], 401);
+        $file_token = sanitize_text_field((string) ($_POST['file_token'] ?? ''));
+        if ($file_token === '') {
+            wp_send_json_error(['message' => __('Missing file_token', 'pdfmaster-payments')]);
         }
 
-        $credits = max(1, (int) ($_POST['credits'] ?? 0));
-        $result = $this->stripe->create_payment_intent($credits);
+        $result = $this->stripe->create_payment_intent($file_token);
 
         if ($result instanceof WP_Error) {
             wp_send_json_error(['message' => $result->get_error_message()]);
