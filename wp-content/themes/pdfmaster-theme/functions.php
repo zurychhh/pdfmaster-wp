@@ -203,17 +203,7 @@ CSS;
                 wp_enqueue_style( 'pdfmaster-home-polish', get_stylesheet_directory_uri() . '/assets/css/home-polish.css', [ 'pdfmaster-theme-style' ], (string) wp_get_theme()->get('Version') );
             }
 
-            // Inject hero DOM enhancements without editing Elementor content
-            $hero_js = get_stylesheet_directory() . '/assets/js/hero-inject.js';
-            if ( file_exists( $hero_js ) ) {
-                wp_enqueue_script(
-                    'pdfm-hero-inject',
-                    get_stylesheet_directory_uri() . '/assets/js/hero-inject.js',
-                    [],
-                    (string) wp_get_theme()->get('Version'),
-                    true
-                );
-            }
+            // Note: We no longer enqueue auto-injection JS in hero to keep Editor = Front parity.
         }
     }
 }
@@ -245,6 +235,80 @@ add_action('wp_enqueue_scripts', static function (): void {
             [ 'pdfmaster-theme-style' ],
             (string) wp_get_theme()->get('Version')
         );
+    }
+});
+
+/**
+ * One-time migration: insert Shortcode widgets ([pdfm_trust_badges], [pdfm_hero_tools])
+ * into the Home page Elementor data after the secondary CTA. Ensures Editor = Front parity.
+ */
+add_action('init', static function (): void {
+    // Run once
+    if (get_option('pdfm_migrated_hero_shortcodes') === 'yes') {
+        return;
+    }
+
+    $home_id = (int) get_option('page_on_front');
+    if ($home_id <= 0) {
+        $home_id = 11; // fallback from environment
+    }
+
+    $raw = get_post_meta($home_id, '_elementor_data', true);
+    if (! $raw) {
+        return; // No elementor data
+    }
+
+    $json = is_string($raw) ? wp_unslash($raw) : $raw;
+    $data = json_decode($json, true);
+    if (! is_array($data)) {
+        return;
+    }
+
+    $inserted = false;
+
+    $new_nodes = [
+        [
+            'id' => 'pdfm_trust_badges_' . wp_generate_password(6, false, false),
+            'elType' => 'widget',
+            'isInner' => false,
+            'widgetType' => 'shortcode',
+            'settings' => [ 'shortcode' => '[pdfm_trust_badges]' ],
+            'elements' => [],
+        ],
+        [
+            'id' => 'pdfm_hero_tools_' . wp_generate_password(6, false, false),
+            'elType' => 'widget',
+            'isInner' => false,
+            'widgetType' => 'shortcode',
+            'settings' => [ 'shortcode' => '[pdfm_hero_tools]' ],
+            'elements' => [],
+        ],
+    ];
+
+    $target_id = 'w_zeBvQh4E'; // "See All Tools & Pricing" button widget id observed in markup
+
+    $insert_after = function (&$nodes) use (&$insert_after, $target_id, $new_nodes, &$inserted) {
+        if (! is_array($nodes)) return;
+        foreach ($nodes as $idx => &$node) {
+            if (! is_array($node)) continue;
+            if (isset($node['id']) && $node['id'] === $target_id) {
+                array_splice($nodes, $idx + 1, 0, $new_nodes);
+                $inserted = true;
+                return;
+            }
+            if (isset($node['elements']) && is_array($node['elements'])) {
+                $insert_after($node['elements']);
+                if ($inserted) return;
+            }
+        }
+    };
+
+    $insert_after($data);
+
+    if ($inserted) {
+        update_post_meta($home_id, '_elementor_data', wp_slash(wp_json_encode($data)));
+        update_option('pdfm_migrated_hero_shortcodes', 'yes');
+        // Optionally, regenerate Elementor CSS is left to manual tools for performance.
     }
 });
 
