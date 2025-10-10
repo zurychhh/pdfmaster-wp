@@ -223,6 +223,18 @@ if (! function_exists('pdfm_register_elementor_locations')) {
 }
 add_action('elementor/theme/register_locations', 'pdfm_register_elementor_locations');
 
+// Enqueue hero overrides CSS for front page only
+add_action('wp_enqueue_scripts', static function (): void {
+    if (is_front_page()) {
+        wp_enqueue_style(
+            'pdfm-hero-overrides',
+            get_stylesheet_directory_uri() . '/assets/css/hero-overrides.css',
+            [ 'pdfmaster-theme-style' ],
+            (string) wp_get_theme()->get('Version')
+        );
+    }
+});
+
 /**
  * Ensure Elementor inherits theme colors and typography and set Global (Kit) settings
  * to match the PDFMaster design system.
@@ -432,6 +444,29 @@ add_shortcode('pdfm_trust_section', static function (): string {
     <p class="rating">4.8/5 from 2,300+ users on Trustpilot</p>
     <p class="quote">"Finally, a PDF tool that respects my wallet AND my privacy."</p>
     <p class="author">— Sarah T., Freelance Designer</p>
+  </div>
+</div>
+HTML;
+});
+
+// [pdfm_hero_tools]
+add_shortcode('pdfm_hero_tools', static function (): string {
+    return <<<HTML
+<div class="hero-tools-row">
+  <div class="hero-tool">
+    <div class="hero-tool-icon">🗜️</div>
+    <h3>Compress PDF</h3>
+    <p>Reduce file size without losing quality.</p>
+  </div>
+  <div class="hero-tool">
+    <div class="hero-tool-icon">➕</div>
+    <h3>Merge PDF</h3>
+    <p>Combine multiple PDFs into one.</p>
+  </div>
+  <div class="hero-tool">
+    <div class="hero-tool-icon">🔁</div>
+    <h3>Convert PDF</h3>
+    <p>Change format instantly.</p>
   </div>
 </div>
 HTML;
