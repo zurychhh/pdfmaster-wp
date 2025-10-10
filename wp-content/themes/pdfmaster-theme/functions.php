@@ -202,6 +202,18 @@ CSS;
             if ( file_exists( $polish ) ) {
                 wp_enqueue_style( 'pdfmaster-home-polish', get_stylesheet_directory_uri() . '/assets/css/home-polish.css', [ 'pdfmaster-theme-style' ], (string) wp_get_theme()->get('Version') );
             }
+
+            // Inject hero DOM enhancements without editing Elementor content
+            $hero_js = get_stylesheet_directory() . '/assets/js/hero-inject.js';
+            if ( file_exists( $hero_js ) ) {
+                wp_enqueue_script(
+                    'pdfm-hero-inject',
+                    get_stylesheet_directory_uri() . '/assets/js/hero-inject.js',
+                    [],
+                    (string) wp_get_theme()->get('Version'),
+                    true
+                );
+            }
         }
     }
 }
