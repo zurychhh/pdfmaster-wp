@@ -1,6 +1,6 @@
 # PDFMaster - Project Status & Handoff Documentation
 
-Last updated: 2025-10-09
+Last updated: 2025-10-10
 
 ---
 
@@ -14,6 +14,36 @@ Goal: MVP with compress tool, working payment flow
 Repository: https://github.com/zurychhh/pdfmaster-wp
 Branch: main (active feature branch: feature/pay-per-action-99)
 Last PR: #7 — Pay‑per‑action + payment modal fixes (OPEN)
+
+---
+
+## 📈 Status Update — 2025-10-10
+
+Completed recently
+- Pay-per-action model finalized ($0.99) — merged PRs #7, #8, #9
+- UX Polish Phase 1 — spinner, clearer errors, payment UI cleanup — merged PR #10
+- UX Polish Phase 2 (compression level selector; before/after file size) — PR #11 opened
+- Landing page conversion fixes (hero navbar height, trust badges, hero tools row, secondary button styling) — PR #12 opened
+- Elementor Self‑Service (Phase 1: Audit & Docs) — PR #13 opened
+  - ELEMENTOR_EDITING_GUIDE.md (how to edit everything via Elementor UI)
+  - ELEMENTOR_STRUCTURE_MAP.md (full hierarchy + widget types)
+  - docs/AUDIT_RESULTS.md (inventory + actions)
+
+Editor = Front parity
+- Rolled back JS auto‑injection in hero to avoid editor/front mismatch
+- Inserted hero trust badges/tools into page content (shortcodes) as stop‑gap
+- Next: convert shortcodes/HTML to native Elementor widgets (Icon List/Icon Box/Price Table) for 100% self‑service
+
+Open PRs
+- #11 UX Polish Phase 2 — compression selector + size diff (review/merge)
+- #12 Landing Page Conversion — hero styling and shortcodes (review/merge)
+- #13 Elementor Self‑Service — audit + guides (docs only)
+
+Working style (process)
+- Droid executes end‑to‑end (plan → implement → commit → PR → validate) with minimal back‑and‑forth
+- You provide only privileged inputs (e.g., API keys) or approvals
+- Rule: all visual content must remain 100% editable in Elementor; avoid code‑only content
+- Use .pdfm-* CSS classes; prefer native Elementor widgets over HTML
 
 ---
 
