@@ -7,11 +7,17 @@
 
 # WordPress Config
 wp-config.php
+.env
+wp-config.php.backup_*
 .htaccess
 
 # Dependencies
 /node_modules/
 /vendor/
+
+# Exclude bundled plugins/themes we don't manage in git
+/wp-content/plugins/elementor/
+/wp-content/plugins/elementor-pro/
 
 # Uploads (duże pliki)
 /wp-content/uploads/
@@ -35,3 +41,4 @@ Thumbs.db
 !/wp-content/themes/pdfmaster-theme/
 !/wp-content/plugins/pdfmaster-processor/
 !/wp-content/plugins/pdfmaster-payments/
+/wp-content/plugins/pdfmaster-payments/vendor/
