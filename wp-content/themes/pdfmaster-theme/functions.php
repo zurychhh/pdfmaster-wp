@@ -329,3 +329,110 @@ if (! function_exists('pdfm_body_open_fallback')) {
         }
     }
 }
+
+/* ===== Landing Page Shortcodes (for Elementor HTML/Shortcode widgets) ===== */
+// [pdfm_trust_badges]
+add_shortcode('pdfm_trust_badges', static function (): string {
+    return (
+        '<div class="trust-badges">'
+        . '<div class="trust-badge"><span class="icon">✓</span><span>No signup required</span></div>'
+        . '<div class="trust-badge"><span class="icon">✓</span><span>Bank-level encryption</span></div>'
+        . '<div class="trust-badge"><span class="icon">✓</span><span>Files deleted after 1 hour</span></div>'
+        . '<div class="trust-badge"><span class="icon">✓</span><span>50,000+ documents processed weekly</span></div>'
+        . '</div>'
+    );
+});
+
+// [pdfm_pricing_table]
+add_shortcode('pdfm_pricing_table', static function (): string {
+    return <<<HTML
+<div class="pricing-section">
+  <h2>Simple, Honest Pricing – No Surprises</h2>
+  <table class="pricing-table">
+    <thead>
+      <tr>
+        <th>Tool</th>
+        <th>Price</th>
+        <th>Processing Time</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>PDF to Word</td>
+        <td class="price">$0.99</td>
+        <td>~8 seconds</td>
+      </tr>
+      <tr>
+        <td>Merge PDFs (up to 10 files)</td>
+        <td class="price">$0.99</td>
+        <td>~5 seconds</td>
+      </tr>
+      <tr>
+        <td>Compress PDF</td>
+        <td class="price">$0.79</td>
+        <td>~6 seconds</td>
+      </tr>
+      <tr>
+        <td>PDF to Excel</td>
+        <td class="price">$1.29</td>
+        <td>~12 seconds</td>
+      </tr>
+      <tr class="bulk-row">
+        <td>Bulk Discount (10 actions)</td>
+        <td class="price-green">$7.99</td>
+        <td class="savings">Save 20%</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="comparison-box">
+    <h3>The Subscription Trap vs. The Smart Choice</h3>
+    <div class="comparison-grid">
+      <div class="comparison-bad">
+        <span class="icon">❌</span>
+        <p class="provider">Smallpdf Pro</p>
+        <p class="cost">$108/year (9 uses = $12/month wasted)</p>
+      </div>
+      <div class="comparison-good">
+        <span class="icon">✅</span>
+        <p class="provider">Our Tool</p>
+        <p class="cost">$8.91/year (9 uses at $0.99 each)</p>
+      </div>
+    </div>
+    <p class="savings-text">You save $99.09 annually.</p>
+  </div>
+</div>
+HTML;
+});
+
+// [pdfm_trust_section]
+add_shortcode('pdfm_trust_section', static function (): string {
+    return <<<HTML
+<div class="trust-section">
+  <h2>Your Privacy Is Non-Negotiable</h2>
+  <div class="trust-grid">
+    <div class="trust-item">
+      <div class="trust-icon">💳</div>
+      <h3>Secure Payments</h3>
+      <p>We never see your card details. Payments processed by Stripe (PCI DSS Level 1 certified).</p>
+    </div>
+    <div class="trust-item">
+      <div class="trust-icon">🛡️</div>
+      <h3>Data Protection</h3>
+      <p>256-bit AES encryption during transfer. Files auto-deleted after 60 minutes—no exceptions, no logs.</p>
+    </div>
+    <div class="trust-item">
+      <div class="trust-icon">🔒</div>
+      <h3>No Tracking, No Ads</h3>
+      <p>We don't sell your data. We don't track your usage. You pay, you convert, you leave.</p>
+    </div>
+  </div>
+  <div class="testimonial-card">
+    <div class="stars">⭐⭐⭐⭐⭐</div>
+    <p class="rating">4.8/5 from 2,300+ users on Trustpilot</p>
+    <p class="quote">"Finally, a PDF tool that respects my wallet AND my privacy."</p>
+    <p class="author">— Sarah T., Freelance Designer</p>
+  </div>
+</div>
+HTML;
+});
