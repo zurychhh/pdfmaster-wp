@@ -23,6 +23,12 @@
     linear-gradient(180deg, #1E40AF 0%, #2563EB 50%, #3B82F6 100%);
   color: #fff;
 }
+
+/* Option: target hero section by Elementor section class */
+.elementor-section.hero-section{
+  background: linear-gradient(180deg, #2563EB 0%, #1E40AF 100%) !important;
+  padding: 80px 0 !important;
+}
 @media (min-width: 768px){
   .home-hero { padding: 100px 0; }
 }
@@ -77,6 +83,59 @@
   border-radius: 12px;
 }
 .trust-badge .icon{ font-size: 24px; color: #fff; line-height: 1; }
+
+/* Hero CTA buttons (optional utility classes to apply in Elementor) */
+.pdfm-primary-cta{
+  display:inline-flex; align-items:center; justify-content:center; gap:10px;
+  background:#2563EB; color:#fff; border:2px solid #2563EB; border-radius:12px;
+  padding:16px 36px; font-weight:700; font-size:16px; text-decoration:none;
+}
+.pdfm-secondary-cta{
+  display:inline-flex; align-items:center; justify-content:center; gap:10px;
+  background:#fff; color:#2563EB; border:2px solid #2563EB; border-radius:12px;
+  padding:16px 36px; font-weight:700; font-size:16px; text-decoration:none;
+}
+
+/* ===== 2b) PRICING TABLE (HTML widget or shortcode) ===== */
+.pricing-section{ padding: 20px; }
+.pricing-section h2{ text-align:center; font-size:36px; color:#1F2937; margin:0 0 24px; }
+.pricing-table{ width:100%; max-width:900px; margin:0 auto 40px; border-collapse:collapse; background:#fff; border-radius:12px; overflow:hidden; box-shadow:0 2px 8px rgba(0,0,0,0.1); }
+.pricing-table thead{ background:#F3F4F6; }
+.pricing-table th{ padding:16px; text-align:left; font-weight:600; color:#1F2937; }
+.pricing-table td{ padding:16px; border-top:1px solid #E5E7EB; }
+.pricing-table .price{ color:#2563EB; font-weight:700; font-size:18px; }
+.pricing-table .bulk-row{ background:#ECFDF5; }
+.pricing-table .price-green{ color:#10B981; font-weight:700; font-size:18px; }
+.pricing-table .savings{ color:#10B981; font-weight:600; }
+
+.comparison-box{ max-width:900px; margin:0 auto; padding:32px; background:#EFF6FF; border:2px solid #BFDBFE; border-radius:12px; }
+.comparison-box h3{ text-align:center; margin-bottom:24px; color:#1E40AF; }
+.comparison-grid{ display:grid; grid-template-columns:1fr 1fr; gap:24px; margin-bottom:20px; }
+.comparison-bad, .comparison-good{ text-align:center; }
+.comparison-box .icon{ font-size:32px; display:block; margin-bottom:12px; }
+.comparison-box .provider{ font-weight:600; font-size:18px; color:#1F2937; margin-bottom:4px; }
+.comparison-box .cost{ color:#6B7280; }
+.comparison-box .savings-text{ text-align:center; font-size:20px; font-weight:700; color:#1E40AF; }
+
+@media (max-width: 768px){
+  .comparison-grid{ grid-template-columns:1fr; }
+  .pricing-table{ font-size:14px; }
+}
+
+/* ===== 3) TRUST & SECURITY SECTION (HTML widget or shortcode) ===== */
+.trust-section{ padding:80px 20px; max-width:1200px; margin:0 auto; }
+.trust-section h2{ text-align:center; font-size:40px; margin-bottom:48px; color:#1F2937; }
+.trust-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:40px; margin-bottom:48px; }
+.trust-item{ text-align:center; }
+.trust-icon{ font-size:48px; margin-bottom:16px; }
+.trust-item h3{ font-size:20px; font-weight:600; color:#1F2937; margin-bottom:12px; }
+.trust-item p{ color:#6B7280; line-height:1.6; }
+.testimonial-card{ max-width:800px; margin:0 auto; padding:32px; background:#FEF3C7; border:2px solid #FDE68A; border-radius:12px; text-align:center; }
+.testimonial-card .stars{ font-size:24px; margin-bottom:8px; }
+.testimonial-card .rating{ font-size:18px; font-weight:600; color:#1F2937; margin-bottom:16px; }
+.testimonial-card .quote{ font-size:20px; font-style:italic; color:#78350F; margin-bottom:12px; }
+.testimonial-card .author{ color:#92400E; font-weight:500; }
+@media (max-width: 768px){ .trust-grid{ grid-template-columns:1fr; gap:32px; } }
 
 /* ===== 2) TOOL CARDS ===== */
 /* Assign class "tool-card" to each tool card wrapper */

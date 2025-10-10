@@ -202,6 +202,8 @@ CSS;
             if ( file_exists( $polish ) ) {
                 wp_enqueue_style( 'pdfmaster-home-polish', get_stylesheet_directory_uri() . '/assets/css/home-polish.css', [ 'pdfmaster-theme-style' ], (string) wp_get_theme()->get('Version') );
             }
+
+            // Note: We no longer enqueue auto-injection JS in hero to keep Editor = Front parity.
         }
     }
 }
@@ -222,6 +224,93 @@ if (! function_exists('pdfm_register_elementor_locations')) {
     }
 }
 add_action('elementor/theme/register_locations', 'pdfm_register_elementor_locations');
+
+// Enqueue hero overrides CSS for front page and Elementor preview
+add_action('wp_enqueue_scripts', static function (): void {
+    $is_elementor_preview = isset($_GET['elementor-preview']);
+    if (is_front_page() || $is_elementor_preview) {
+        wp_enqueue_style(
+            'pdfm-hero-overrides',
+            get_stylesheet_directory_uri() . '/assets/css/hero-overrides.css',
+            [ 'pdfmaster-theme-style' ],
+            (string) wp_get_theme()->get('Version')
+        );
+    }
+});
+
+/**
+ * One-time migration: insert Shortcode widgets ([pdfm_trust_badges], [pdfm_hero_tools])
+ * into the Home page Elementor data after the secondary CTA. Ensures Editor = Front parity.
+ */
+add_action('init', static function (): void {
+    // Run once
+    if (get_option('pdfm_migrated_hero_shortcodes') === 'yes') {
+        return;
+    }
+
+    $home_id = (int) get_option('page_on_front');
+    if ($home_id <= 0) {
+        $home_id = 11; // fallback from environment
+    }
+
+    $raw = get_post_meta($home_id, '_elementor_data', true);
+    if (! $raw) {
+        return; // No elementor data
+    }
+
+    $json = is_string($raw) ? wp_unslash($raw) : $raw;
+    $data = json_decode($json, true);
+    if (! is_array($data)) {
+        return;
+    }
+
+    $inserted = false;
+
+    $new_nodes = [
+        [
+            'id' => 'pdfm_trust_badges_' . wp_generate_password(6, false, false),
+            'elType' => 'widget',
+            'isInner' => false,
+            'widgetType' => 'shortcode',
+            'settings' => [ 'shortcode' => '[pdfm_trust_badges]' ],
+            'elements' => [],
+        ],
+        [
+            'id' => 'pdfm_hero_tools_' . wp_generate_password(6, false, false),
+            'elType' => 'widget',
+            'isInner' => false,
+            'widgetType' => 'shortcode',
+            'settings' => [ 'shortcode' => '[pdfm_hero_tools]' ],
+            'elements' => [],
+        ],
+    ];
+
+    $target_id = 'w_zeBvQh4E'; // "See All Tools & Pricing" button widget id observed in markup
+
+    $insert_after = function (&$nodes) use (&$insert_after, $target_id, $new_nodes, &$inserted) {
+        if (! is_array($nodes)) return;
+        foreach ($nodes as $idx => &$node) {
+            if (! is_array($node)) continue;
+            if (isset($node['id']) && $node['id'] === $target_id) {
+                array_splice($nodes, $idx + 1, 0, $new_nodes);
+                $inserted = true;
+                return;
+            }
+            if (isset($node['elements']) && is_array($node['elements'])) {
+                $insert_after($node['elements']);
+                if ($inserted) return;
+            }
+        }
+    };
+
+    $insert_after($data);
+
+    if ($inserted) {
+        update_post_meta($home_id, '_elementor_data', wp_slash(wp_json_encode($data)));
+        update_option('pdfm_migrated_hero_shortcodes', 'yes');
+        // Optionally, regenerate Elementor CSS is left to manual tools for performance.
+    }
+});
 
 /**
  * Ensure Elementor inherits theme colors and typography and set Global (Kit) settings
@@ -329,3 +418,133 @@ if (! function_exists('pdfm_body_open_fallback')) {
         }
     }
 }
+
+/* ===== Landing Page Shortcodes (for Elementor HTML/Shortcode widgets) ===== */
+// [pdfm_trust_badges]
+add_shortcode('pdfm_trust_badges', static function (): string {
+    return (
+        '<div class="trust-badges">'
+        . '<div class="trust-badge"><span class="icon">✓</span><span>No signup required</span></div>'
+        . '<div class="trust-badge"><span class="icon">✓</span><span>Bank-level encryption</span></div>'
+        . '<div class="trust-badge"><span class="icon">✓</span><span>Files deleted after 1 hour</span></div>'
+        . '<div class="trust-badge"><span class="icon">✓</span><span>50,000+ documents processed weekly</span></div>'
+        . '</div>'
+    );
+});
+
+// [pdfm_pricing_table]
+add_shortcode('pdfm_pricing_table', static function (): string {
+    return <<<HTML
+<div class="pricing-section">
+  <h2>Simple, Honest Pricing – No Surprises</h2>
+  <table class="pricing-table">
+    <thead>
+      <tr>
+        <th>Tool</th>
+        <th>Price</th>
+        <th>Processing Time</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>PDF to Word</td>
+        <td class="price">$0.99</td>
+        <td>~8 seconds</td>
+      </tr>
+      <tr>
+        <td>Merge PDFs (up to 10 files)</td>
+        <td class="price">$0.99</td>
+        <td>~5 seconds</td>
+      </tr>
+      <tr>
+        <td>Compress PDF</td>
+        <td class="price">$0.79</td>
+        <td>~6 seconds</td>
+      </tr>
+      <tr>
+        <td>PDF to Excel</td>
+        <td class="price">$1.29</td>
+        <td>~12 seconds</td>
+      </tr>
+      <tr class="bulk-row">
+        <td>Bulk Discount (10 actions)</td>
+        <td class="price-green">$7.99</td>
+        <td class="savings">Save 20%</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="comparison-box">
+    <h3>The Subscription Trap vs. The Smart Choice</h3>
+    <div class="comparison-grid">
+      <div class="comparison-bad">
+        <span class="icon">❌</span>
+        <p class="provider">Smallpdf Pro</p>
+        <p class="cost">$108/year (9 uses = $12/month wasted)</p>
+      </div>
+      <div class="comparison-good">
+        <span class="icon">✅</span>
+        <p class="provider">Our Tool</p>
+        <p class="cost">$8.91/year (9 uses at $0.99 each)</p>
+      </div>
+    </div>
+    <p class="savings-text">You save $99.09 annually.</p>
+  </div>
+</div>
+HTML;
+});
+
+// [pdfm_trust_section]
+add_shortcode('pdfm_trust_section', static function (): string {
+    return <<<HTML
+<div class="trust-section">
+  <h2>Your Privacy Is Non-Negotiable</h2>
+  <div class="trust-grid">
+    <div class="trust-item">
+      <div class="trust-icon">💳</div>
+      <h3>Secure Payments</h3>
+      <p>We never see your card details. Payments processed by Stripe (PCI DSS Level 1 certified).</p>
+    </div>
+    <div class="trust-item">
+      <div class="trust-icon">🛡️</div>
+      <h3>Data Protection</h3>
+      <p>256-bit AES encryption during transfer. Files auto-deleted after 60 minutes—no exceptions, no logs.</p>
+    </div>
+    <div class="trust-item">
+      <div class="trust-icon">🔒</div>
+      <h3>No Tracking, No Ads</h3>
+      <p>We don't sell your data. We don't track your usage. You pay, you convert, you leave.</p>
+    </div>
+  </div>
+  <div class="testimonial-card">
+    <div class="stars">⭐⭐⭐⭐⭐</div>
+    <p class="rating">4.8/5 from 2,300+ users on Trustpilot</p>
+    <p class="quote">"Finally, a PDF tool that respects my wallet AND my privacy."</p>
+    <p class="author">— Sarah T., Freelance Designer</p>
+  </div>
+</div>
+HTML;
+});
+
+// [pdfm_hero_tools]
+add_shortcode('pdfm_hero_tools', static function (): string {
+    return <<<HTML
+<div class="hero-tools-row">
+  <div class="hero-tool">
+    <div class="hero-tool-icon">🗜️</div>
+    <h3>Compress PDF</h3>
+    <p>Reduce file size without losing quality.</p>
+  </div>
+  <div class="hero-tool">
+    <div class="hero-tool-icon">➕</div>
+    <h3>Merge PDF</h3>
+    <p>Combine multiple PDFs into one.</p>
+  </div>
+  <div class="hero-tool">
+    <div class="hero-tool-icon">🔁</div>
+    <h3>Convert PDF</h3>
+    <p>Change format instantly.</p>
+  </div>
+</div>
+HTML;
+});

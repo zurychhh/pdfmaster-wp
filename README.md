@@ -40,3 +40,12 @@ Stirling PDF: http://localhost:8080 (endpoint: `/api/v1/misc/compress-pdf`)
 - WP Admin: http://localhost:10003/wp-admin
 - Stirling Swagger: http://localhost:8080/swagger-ui/index.html
 - Stripe Dashboard (test): https://dashboard.stripe.com/test/payments
+
+## Collaboration Workflow (Working Style)
+
+- Assistant (Droid) executes end‑to‑end tasks proactively: plans, implements, commits on feature branches, opens PRs, and validates (lint/build/tests) without waiting for hand‑offs.
+- You (Rafał) only handle items that require privileged access or cannot be automated (e.g., providing API keys/secrets, approving PRs if desired).
+- Default rules:
+  - Start from a clean git state; work on feature branches; open PRs marked “Droid‑assisted”.
+  - Avoid manual panel edits when possible; prefer code (hooks/templates/scripts). If panel edits are required (e.g., Elementor), Droid simulates via safe injections and documents steps.
+  - Minimal back‑and‑forth: Droid does “everything possible,” asking only for blockers or secrets.

@@ -1,0 +1,118 @@
+/* Hero Section - Critical UX Fixes (front page only) */
+
+/* 1) Navbar height reduction */
+.site-header {
+  height: 60px !important;
+  min-height: 60px !important;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #E5E7EB;
+  background: #fff;
+}
+.site-header .site-header__inner {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+  min-height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.site-header .site-header__branding {
+  font-size: 20px !important;
+  line-height: 60px !important;
+  text-decoration: none;
+  color: #111827;
+}
+
+/* If header is built with Elementor, try common section class */
+.elementor-section-header {
+  height: 60px !important;
+  min-height: 60px !important;
+}
+.elementor-section-header .elementor-container {
+  align-items: center !important;
+  min-height: 60px !important;
+}
+
+/* 2) Trust badges inside hero */
+.hero-trust-badges {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 24px;
+  max-width: 900px;
+  margin: 32px auto 0;
+  padding: 0 20px;
+}
+.hero-trust-badges .trust-badge {
+  display: flex;
+  align-items: center;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 500;
+}
+.hero-trust-badges .trust-badge .check-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  margin-right: 8px;
+  font-size: 14px;
+  font-weight: bold;
+  color: #fff;
+}
+.hero-trust-badges .trust-badge .badge-text { opacity: 0.95; }
+
+@media (max-width: 768px) {
+  .hero-trust-badges { gap: 16px; }
+  .hero-trust-badges .trust-badge { width: calc(50% - 8px); font-size: 13px; }
+}
+
+/* 3) Three tools row inside hero */
+.hero-tools-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+  max-width: 900px;
+  margin: 48px auto 0;
+  padding: 0 20px;
+}
+.hero-tool { text-align: center; color: #fff; }
+.hero-tool-icon {
+  width: 80px; height: 80px;
+  background: rgba(255,255,255,0.15);
+  border-radius: 50%;
+  margin: 0 auto 16px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 36px;
+  transition: background 0.3s;
+}
+.hero-tool-icon:hover { background: rgba(255,255,255,0.25); }
+.hero-tool h3 { color: #fff; font-size: 20px; font-weight: 600; margin-bottom: 8px; }
+.hero-tool p  { color: rgba(255,255,255,0.9); font-size: 14px; line-height: 1.5; }
+
+@media (max-width: 768px) {
+  .hero-tools-row { grid-template-columns: 1fr; gap: 24px; }
+}
+
+/* 4) Secondary button fix (outline style inside hero) */
+.hero-section .elementor-button.elementor-button-secondary,
+.hero-section .wp-block-button.is-style-outline .wp-block-button__link,
+.home-hero .elementor-button.elementor-button-secondary {
+  background: #fff !important;
+  color: #2563EB !important;
+  border: 2px solid #fff !important;
+  box-shadow: none !important;
+}
+.hero-section .elementor-button.elementor-button-secondary:hover,
+.home-hero .elementor-button.elementor-button-secondary:hover {
+  background: rgba(255,255,255,0.9) !important;
+  border-color: rgba(255,255,255,0.9) !important;
+}
+.hero-section .elementor-button-secondary .elementor-button-text,
+.home-hero .elementor-button-secondary .elementor-button-text { color: #2563EB !important; }
