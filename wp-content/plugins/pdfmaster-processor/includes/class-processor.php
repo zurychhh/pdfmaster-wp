@@ -101,9 +101,32 @@ class Processor
                 'size'     => $_FILES['pdf_files']['size'][$index] ?? 0,
             ];
 
+            // Pre-validation for clearer UX messages
+            $max_bytes = 104857600; // 100MB
+            if (($file['size'] ?? 0) > $max_bytes) {
+                $size_h = $this->format_bytes((int) $file['size']);
+                wp_send_json_error(['message' => sprintf(__('File too large. Maximum size: 100MB. Your file: %s', 'pdfmaster-processor'), $size_h)]);
+            }
+            // Check MIME using finfo for reliability
+            if (is_readable($file['tmp_name'] ?? '')) {
+                $f = finfo_open(FILEINFO_MIME_TYPE);
+                $mime = $f ? finfo_file($f, (string) $file['tmp_name']) : '';
+                if ($f) finfo_close($f);
+                if ($mime !== 'application/pdf') {
+                    wp_send_json_error(['message' => __('Only PDF files are supported. Please upload a .pdf file.', 'pdfmaster-processor')]);
+                }
+            }
+
             $stored = $this->file_handler->validate_and_persist($file);
             if ($stored instanceof WP_Error) {
-                wp_send_json_error(['message' => $stored->get_error_message()]);
+                $msg = $stored->get_error_message();
+                // Map generic messages to clearer UX copy
+                if ($stored->get_error_code() === 'invalid_type') {
+                    $msg = __('Only PDF files are supported. Please upload a .pdf file.', 'pdfmaster-processor');
+                } elseif ($stored->get_error_code() === 'file_too_large') {
+                    $msg = sprintf(__('File too large. Maximum size: 100MB. Your file: %s', 'pdfmaster-processor'), $this->format_bytes((int) $file['size']));
+                }
+                wp_send_json_error(['message' => $msg]);
             }
 
             $stored_files[] = $stored;
@@ -116,7 +139,8 @@ class Processor
         $processed_path = $this->stirling_api->process($stored_files, $operation);
 
         if ($processed_path instanceof WP_Error) {
-            wp_send_json_error(['message' => $processed_path->get_error_message()]);
+            $msg = $processed_path->get_error_message() ?: __('Compression failed. This might be due to a corrupted PDF. Please try another file.', 'pdfmaster-processor');
+            wp_send_json_error(['message' => $msg]);
         }
 
         // Create one-time token and store path in transient for gated download
@@ -138,6 +162,18 @@ class Processor
             'download_token' => $token,
         ]);
     
+    }
+
+    private function format_bytes(int $bytes): string
+    {
+        $units = ['B','KB','MB','GB','TB'];
+        $i = 0;
+        $n = max($bytes, 0);
+        while ($n >= 1024 && $i < count($units)-1) {
+            $n /= 1024;
+            $i++;
+        }
+        return sprintf('%.0f%s', $n, $units[$i]);
     }
 
     public function download_file(): void
