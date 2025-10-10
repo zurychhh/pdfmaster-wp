@@ -235,9 +235,10 @@ if (! function_exists('pdfm_register_elementor_locations')) {
 }
 add_action('elementor/theme/register_locations', 'pdfm_register_elementor_locations');
 
-// Enqueue hero overrides CSS for front page only
+// Enqueue hero overrides CSS for front page and Elementor preview
 add_action('wp_enqueue_scripts', static function (): void {
-    if (is_front_page()) {
+    $is_elementor_preview = isset($_GET['elementor-preview']);
+    if (is_front_page() || $is_elementor_preview) {
         wp_enqueue_style(
             'pdfm-hero-overrides',
             get_stylesheet_directory_uri() . '/assets/css/hero-overrides.css',
