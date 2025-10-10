@@ -40,10 +40,33 @@
                 if (response && response.success && response.data) {
                     $form.hide();
                     const data = response.data;
+                    // Build file stats (original -> compressed) with badge
+                    var statsHtml = '';
+                    if (data.original_size && data.compressed_size) {
+                        var badge = '';
+                        if (typeof data.reduction_percent === 'number') {
+                            badge = '<div class="pdfm-stat-badge">' + data.reduction_percent + '% smaller</div>';
+                        }
+                        statsHtml = [
+                            '<div class="pdfm-file-stats" aria-live="polite">',
+                            '  <div class="pdfm-stat">',
+                            '    <span class="pdfm-stat-label">Original:</span>',
+                            '    <span class="pdfm-stat-value">' + data.original_size + '</span>',
+                            '  </div>',
+                            '  <div class="pdfm-stat-arrow">→</div>',
+                            '  <div class="pdfm-stat">',
+                            '    <span class="pdfm-stat-label">Compressed:</span>',
+                            '    <span class="pdfm-stat-value">' + data.compressed_size + '</span>',
+                            '  </div>',
+                            badge,
+                            '</div>'
+                        ].join('');
+                    }
                     // Always gate by payment now (pay-per-action $0.99)
                     const html = [
                         '<div class="pdfm-result">',
                         '  <p>Success! Your file is ready.</p>',
+                        statsHtml,
                         '  <a class="button button-primary" href="#" data-pdfm-open-modal data-file-token="' + (data.token || data.download_token || '') + '">Pay $0.99 to Download</a>',
                         '  <button type="button" class="pdfm-reset button button-secondary">Process Another File</button>',
                         '</div>'

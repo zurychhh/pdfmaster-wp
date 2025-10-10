@@ -29,9 +29,10 @@ class StirlingApi
     /**
      * @param array<int,string> $files
      * @param string $operation compress|merge
+     * @param int $level Optimize level for compression (1-9), only used for compress
      * @return string|WP_Error Absolute path to processed file
      */
-    public function process(array $files, string $operation = 'compress'): string|WP_Error
+    public function process(array $files, string $operation = 'compress', int $level = 5): string|WP_Error
     {
         if ($files === []) {
             return new WP_Error('no_files', __('No files provided for processing', 'pdfmaster-processor'));
@@ -40,13 +41,14 @@ class StirlingApi
         $operation = $operation === 'merge' ? 'merge' : 'compress';
 
         if ($operation === 'compress') {
-            return $this->compress_pdf($files[0]);
+            $level = max(1, min(9, $level));
+            return $this->compress_pdf($files[0], $level);
         }
 
         return $this->merge_pdfs($files);
     }
 
-    private function compress_pdf(string $file_path): string|WP_Error
+    private function compress_pdf(string $file_path, int $level = 5): string|WP_Error
     {
         if (! file_exists($file_path)) {
             return new WP_Error('file_not_found', __('File does not exist', 'pdfmaster-processor'));
@@ -63,7 +65,7 @@ class StirlingApi
             ],
         ], [
             // Per Swagger OptimizePdfRequest (required fields)
-            'optimizeLevel'      => '5',
+            'optimizeLevel'      => (string) $level,
             'expectedOutputSize' => '25KB',
             'linearize'          => 'false',
             'normalize'          => 'false',

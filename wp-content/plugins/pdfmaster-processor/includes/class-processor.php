@@ -73,6 +73,16 @@ class Processor
                 . '<option value="compress">' . esc_html__('Compress', 'pdfmaster-processor') . '</option>'
                 . '<option value="merge">' . esc_html__('Merge', 'pdfmaster-processor') . '</option>'
                 . '</select>';
+        // Compression level selector
+        $output .= '<div class="pdfm-level-group">';
+        $output .= '<label for="pdfm_level" class="pdfm-level-label">' . esc_html__('Compression Level', 'pdfmaster-processor') . '</label>';
+        $output .= '<select id="pdfm_level" name="compression_level" class="pdfm-level">';
+        $output .= '<option value="low">' . esc_html__('Low Quality - Max Compression (Smaller file, lower quality)', 'pdfmaster-processor') . '</option>';
+        $output .= '<option value="medium" selected>' . esc_html__('Medium Quality - Balanced (Recommended)', 'pdfmaster-processor') . '</option>';
+        $output .= '<option value="high">' . esc_html__('High Quality - Min Compression (Larger file, better quality)', 'pdfmaster-processor') . '</option>';
+        $output .= '</select>';
+        $output .= '<p class="pdfm-level-help">' . esc_html__('Lower quality = smaller file size. Medium recommended for most files.', 'pdfmaster-processor') . '</p>';
+        $output .= '</div>';
         $output .= '<button type="submit">' . esc_html__('Upload', 'pdfmaster-processor') . '</button>';
         $output .= '</form>';
         $output .= $content;
@@ -90,6 +100,19 @@ class Processor
         }
 
         $operation = sanitize_text_field($_POST['operation'] ?? 'compress');
+        // Map user-friendly level to Stirling optimizeLevel (1-9)
+        $level_raw = sanitize_text_field($_POST['compression_level'] ?? 'medium');
+        $map = [
+            'low' => 3,
+            'medium' => 5,
+            'high' => 7,
+        ];
+        if (is_numeric($level_raw)) {
+            $level = (int) $level_raw;
+        } else {
+            $level = $map[$level_raw] ?? 5;
+        }
+        $level = max(1, min(9, $level));
 
         $stored_files = [];
         foreach ((array) $_FILES['pdf_files']['name'] as $index => $name) {
@@ -136,7 +159,7 @@ class Processor
             wp_send_json_error(['message' => __('No valid files processed.', 'pdfmaster-processor')]);
         }
 
-        $processed_path = $this->stirling_api->process($stored_files, $operation);
+        $processed_path = $this->stirling_api->process($stored_files, $operation, $level);
 
         if ($processed_path instanceof WP_Error) {
             $msg = $processed_path->get_error_message() ?: __('Compression failed. This might be due to a corrupted PDF. Please try another file.', 'pdfmaster-processor');
@@ -155,25 +178,42 @@ class Processor
             'token'  => $token,
         ], admin_url('admin-ajax.php'));
 
-        
+        // Calculate size stats for value display
+        $original_size = @filesize($stored_files[0]) ?: 0;
+        $compressed_size = @filesize((string) $processed_path) ?: 0;
+        $reduction = 0;
+        if ($original_size > 0 && $compressed_size > 0) {
+            $ratio = 1 - ($compressed_size / $original_size);
+            $reduction = (int) round($ratio * 100);
+            $reduction = max(0, min(99, $reduction));
+        }
+
         wp_send_json_success([
             'token'          => $token,
             'downloadUrl'    => $download_url,
             'download_token' => $token,
+            'original_size'  => $this->format_bytes($original_size),
+            'compressed_size'=> $this->format_bytes($compressed_size),
+            'reduction_percent' => $reduction,
         ]);
     
     }
 
     private function format_bytes(int $bytes): string
     {
-        $units = ['B','KB','MB','GB','TB'];
-        $i = 0;
-        $n = max($bytes, 0);
-        while ($n >= 1024 && $i < count($units)-1) {
-            $n /= 1024;
-            $i++;
+        if ($bytes < 1024) {
+            return $bytes . ' B';
         }
-        return sprintf('%.0f%s', $n, $units[$i]);
+        $kb = $bytes / 1024;
+        if ($kb < 1024) {
+            return sprintf('%.0f KB', $kb);
+        }
+        $mb = $kb / 1024;
+        if ($mb < 1024) {
+            return sprintf('%.1f MB', $mb);
+        }
+        $gb = $mb / 1024;
+        return sprintf('%.1f GB', $gb);
     }
 
     public function download_file(): void
