@@ -275,6 +275,32 @@ Business Validation
 
 ---
 
+## 🎨 Elementor Structure & Editing
+
+Self‑Service Editing
+- ✅ 100% of visual elements intended to be editable via Elementor UI
+- ✅ No code changes needed for content/styling updates
+- ✅ Complete documentation:
+  - ELEMENTOR_EDITING_GUIDE.md (how to edit)
+  - ELEMENTOR_STRUCTURE_MAP.md (structure map)
+  - docs/AUDIT_RESULTS.md (audit + actions)
+
+Common Tasks
+- Change headline: Elementor → Home → Hero Section → Hero Headline
+- Update pricing: Pricing Section → Price Table widget
+- Add tool icon: Hero → Tool Icons Row → Duplicate any Icon Box
+- Edit trust badges: Hero → Trust Badges Row (Icon List)
+
+Custom CSS
+- Prefix: .pdfm-*
+- Theme CSS: wp-content/themes/pdfmaster-theme/assets/css/
+
+Notes
+- If styles don’t update: Elementor → Tools → Regenerate CSS & Data, then hard refresh
+- Keep Elementor Export backups before bigger edits
+
+---
+
 ## 💡 Development Notes
 
 Factory.ai Workflow
