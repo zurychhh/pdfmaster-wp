@@ -11,6 +11,9 @@ if (! defined('ABSPATH')) {
     exit;
 }
 
+// Load Elementor migration class
+require_once get_template_directory() . '/includes/class-elementor-migration.php';
+
 if (! function_exists('pdfm_setup')) {
     /**
      * Register theme defaults and support for WordPress features.
@@ -237,6 +240,384 @@ add_action('wp_enqueue_scripts', static function (): void {
         );
     }
 });
+
+/**
+ * One-time Landing Page (ID: 11) migration for P0 fixes:
+ * - Navbar: logo text to PDFMaster + sticky class
+ * - Hero: add trust badges Icon List, remove extra Compress widget
+ * - Tools: add header section, expand to 4 tools with price/time
+ * - Pricing: remove legacy sections and add new $0.99 pricing + comparison
+ *
+ * Uses Elementor API (Document save) to persist _elementor_data reliably.
+ */
+function pdfm_run_landing_migration_p0(): void {
+    $post_id = (int) get_option('page_on_front');
+    if ($post_id <= 0) { $post_id = 11; }
+
+    $force = (bool) get_option('pdfm_force_migrate', false);
+    $already = get_option('pdfm_migrated_landing_p0');
+    if ($already && ! $force) {
+        return;
+    }
+
+    error_log('PDFMaster: Migration P0 starting for post_id=' . $post_id);
+
+    $existing_raw = get_post_meta($post_id, '_elementor_data', true);
+    $existing_len = is_string($existing_raw) ? strlen($existing_raw) : 0;
+    error_log('PDFMaster: Existing _elementor_data length: ' . $existing_len);
+
+    if (! class_exists('Elementor\\Plugin')) {
+        error_log('PDFMaster: Elementor not loaded, aborting migration');
+        return;
+    }
+    $document = \Elementor\Plugin::$instance->documents->get($post_id);
+    if (! $document) {
+        error_log('PDFMaster: Elementor document not found for post_id=' . $post_id);
+        return;
+    }
+
+    // Fetch current elements (plain array)
+    $data = $document->get_elements_data();
+    if (! is_array($data)) {
+        error_log('PDFMaster: get_elements_data returned non-array');
+        return;
+    }
+
+    $changed = false;
+
+    // ---------- Helpers for content-based matching ----------
+    $node_text_contains = function (array $node, string $needle): bool {
+        $needle = strtolower($needle);
+        $fields = ['title', 'title_text', 'editor', 'html', 'text', 'description', 'description_text'];
+        if (isset($node['settings']) && is_array($node['settings'])) {
+            foreach ($fields as $f) {
+                if (!empty($node['settings'][$f]) && is_string($node['settings'][$f]) && strpos(strtolower((string)$node['settings'][$f]), $needle) !== false) {
+                    return true;
+                }
+            }
+            if (!empty($node['settings']['css_classes']) && is_string($node['settings']['css_classes']) && strpos(strtolower($node['settings']['css_classes']), $needle) !== false) {
+                return true;
+            }
+        }
+        return false;
+    };
+
+    $section_contains_texts = function (array $section, array $needles) use (&$section_contains_texts, $node_text_contains): bool {
+        // BFS through elements
+        $q = [$section];
+        $found = array_fill_keys(array_map('strtolower', $needles), false);
+        while ($q) {
+            $n = array_shift($q);
+            foreach ($needles as $s) {
+                if ($node_text_contains($n, $s)) { $found[strtolower($s)] = true; }
+            }
+            if (!empty($n['elements']) && is_array($n['elements'])) {
+                foreach ($n['elements'] as $child) { $q[] = $child; }
+            }
+        }
+        foreach ($found as $ok) { if (!$ok) return false; }
+        return true;
+    };
+
+    $section_has_iconbox_titles_like = function (array $section, int $minCount = 2): bool {
+        $count = 0;
+        $q = [$section];
+        while ($q) {
+            $n = array_shift($q);
+            if (($n['elType'] ?? '') === 'widget' && ($n['widgetType'] ?? '') === 'icon-box') {
+                $t = strtolower((string)($n['settings']['title_text'] ?? ''));
+                if (strpos($t, 'pdf') !== false || preg_match('/compress|merge|split|convert/i', $t)) {
+                    $count++;
+                }
+            }
+            if (!empty($n['elements']) && is_array($n['elements'])) { foreach ($n['elements'] as $c) { $q[] = $c; } }
+        }
+        return $count >= $minCount;
+    };
+
+    $is_legacy_pricing_section = function (array $section): bool {
+        if (($section['elType'] ?? '') !== 'section') return false;
+        $q = [$section];
+        while ($q) {
+            $n = array_shift($q);
+            if (($n['elType'] ?? '') === 'widget') {
+                $wt = $n['widgetType'] ?? '';
+                if ($wt === 'price-table') return true;
+                $blob = strtolower(wp_json_encode($n['settings'] ?? []));
+                if (strpos($blob, '3 credits') !== false || strpos($blob, 'credits') !== false) return true;
+            }
+            if (!empty($n['elements']) && is_array($n['elements'])) { foreach ($n['elements'] as $c) { $q[] = $c; } }
+        }
+        return false;
+    };
+
+    // ---------- 1) Remove legacy pricing sections (content-based) ----------
+    $new_root = [];
+    foreach ($data as $node) {
+        if (is_array($node) && ($node['elType'] ?? '') === 'section' && $is_legacy_pricing_section($node)) {
+            $changed = true;
+            continue;
+        }
+        $new_root[] = $node;
+    }
+    $data = $new_root;
+
+    // ---------- 2) Navbar: find section by texts and update ----------
+    $navbar_index = -1;
+    foreach ($data as $i => $node) {
+        if (($node['elType'] ?? '') !== 'section') continue;
+        if ($section_contains_texts($node, ['Pricing', 'All Tools'])) { $navbar_index = $i; break; }
+    }
+    if ($navbar_index >= 0) {
+        // Add sticky class
+        if (!isset($data[$navbar_index]['settings'])) $data[$navbar_index]['settings'] = [];
+        $data[$navbar_index]['settings']['css_classes'] = trim(($data[$navbar_index]['settings']['css_classes'] ?? '') . ' navbar-sticky');
+
+        // Replace any heading with "PDFSmart" (old brand) by icon-box "PDFMaster"
+        $replace_pdfsmart = function (&$nodes) use (&$replace_pdfsmart): void {
+            if (!is_array($nodes)) return;
+            foreach ($nodes as $k => &$n) {
+                if (!is_array($n)) continue;
+                if (($n['elType'] ?? '') === 'widget') {
+                    $settings = $n['settings'] ?? [];
+                    $text = strtolower((string)($settings['title'] ?? $settings['title_text'] ?? $settings['editor'] ?? ''));
+                    if (strpos($text, 'pdfsmart') !== false) {
+                        $n = [
+                            'id' => 'pdfm_nav_logo_' . wp_generate_password(6, false, false),
+                            'elType' => 'widget',
+                            'isInner' => false,
+                            'widgetType' => 'icon-box',
+                            'settings' => [
+                                'selected_icon' => [ 'value' => 'fas fa-file-pdf', 'library' => 'fa-solid' ],
+                                'title_text' => 'PDFMaster',
+                                'title_size' => 'span',
+                                'view' => 'inline',
+                                'align' => 'left',
+                            ],
+                            'elements' => [],
+                        ];
+                    }
+                    // Special case: nav brand is icon-list with single item "PDFSmart"
+                    if (($n['widgetType'] ?? '') === 'icon-list' && !empty($settings['icon_list']) && is_array($settings['icon_list'])) {
+                        $one = $settings['icon_list'][0]['text'] ?? '';
+                        if (is_string($one) && stripos($one, 'pdfsmart') !== false) {
+                            $n = [
+                                'id' => 'pdfm_nav_logo_' . wp_generate_password(6, false, false),
+                                'elType' => 'widget',
+                                'isInner' => false,
+                                'widgetType' => 'icon-box',
+                                'settings' => [
+                                    'selected_icon' => [ 'value' => 'fas fa-file-pdf', 'library' => 'fa-solid' ],
+                                    'title_text' => 'PDFMaster',
+                                    'title_size' => 'span',
+                                    'view' => 'inline',
+                                    'align' => 'left',
+                                ],
+                                'elements' => [],
+                            ];
+                        }
+                    }
+                }
+                if (isset($n['elements']) && is_array($n['elements'])) { $replace_pdfsmart($n['elements']); }
+            }
+        };
+        if (isset($data[$navbar_index]['elements'])) { $replace_pdfsmart($data[$navbar_index]['elements']); }
+        $changed = true;
+    }
+
+    // ---------- 3) Hero: find hero by class or headline, add badges ----------
+    $hero_index = -1;
+    foreach ($data as $i => $node) {
+        if (($node['elType'] ?? '') !== 'section') continue;
+        $has_class = !empty($node['settings']['css_classes']) && strpos(strtolower((string)$node['settings']['css_classes']), 'home-hero') !== false;
+        $has_headline = $section_contains_texts($node, ['convert', 'merge']) || $section_contains_texts($node, ['pdf']);
+        if ($has_class || $has_headline) { $hero_index = $i; break; }
+    }
+    if ($hero_index >= 0) {
+        $items = [
+            [ '_id' => wp_generate_password(6, false, false), 'text' => 'No signup required', 'selected_icon' => [ 'value' => 'fas fa-check', 'library' => 'fa-solid' ] ],
+            [ '_id' => wp_generate_password(6, false, false), 'text' => 'Files deleted after 1 hour', 'selected_icon' => [ 'value' => 'fas fa-check', 'library' => 'fa-solid' ] ],
+            [ '_id' => wp_generate_password(6, false, false), 'text' => 'Bank-level encryption', 'selected_icon' => [ 'value' => 'fas fa-check', 'library' => 'fa-solid' ] ],
+            [ '_id' => wp_generate_password(6, false, false), 'text' => '2M+ users monthly', 'selected_icon' => [ 'value' => 'fas fa-check', 'library' => 'fa-solid' ] ],
+        ];
+        $badge_widget = [
+            'id' => 'w_' . wp_generate_password(8, false, false),
+            'elType' => 'widget',
+            'isInner' => false,
+            'widgetType' => 'icon-list',
+            '_element_id' => 'pdfm_hero_badges',
+            'settings' => [ 'icon_list' => $items, 'view' => 'inline', 'align' => 'center', 'css_classes' => 'home-hero', 'pdfm_marker' => 'hero_badges' ],
+            'elements' => [],
+        ];
+        // Inject into first column's elements
+        if (isset($data[$hero_index]['elements'][0]['elements']) && is_array($data[$hero_index]['elements'][0]['elements'])) {
+            $data[$hero_index]['elements'][0]['elements'][] = $badge_widget;
+            $changed = true;
+        }
+    }
+
+    // ---------- 4) Tools: find tools section by multiple icon-boxes ----------
+    $make_tools_header_section = function (): array {
+        return [
+            'id' => 'sec_' . wp_generate_password(8, false, false),
+            'elType' => 'section',
+            'isInner' => false,
+            '_element_id' => 'pdfm_tools_hdr',
+            'settings' => [ 'layout' => 'boxed', 'content_width' => 'boxed', 'pdfm_marker' => 'tools_header' ],
+            'elements' => [
+                [ 'id' => 'col_' . wp_generate_password(8, false, false), 'elType' => 'column', 'isInner' => false, 'settings' => [ '_column_size' => 100 ], 'elements' => [
+                    [ 'id' => 'w_' . wp_generate_password(8, false, false), 'elType' => 'widget', 'isInner' => false, 'widgetType' => 'heading', 'settings' => [ 'title' => 'All Tools, One Simple Price', 'header_size' => 'h2', 'align' => 'center' ], 'elements' => [] ],
+                    [ 'id' => 'w_' . wp_generate_password(8, false, false), 'elType' => 'widget', 'isInner' => false, 'widgetType' => 'text-editor', 'settings' => [ 'editor' => '$0.99 per action. No subscriptions, no packages, no complexity.', 'align' => 'center' ], 'elements' => [] ],
+                ]],
+            ],
+        ];
+    };
+
+    $make_price_block = function (string $price, string $time): array {
+        $html = '<div style="margin-top:16px;'."text-align:center;\">\n"
+              . '<div style="font-size:32px;font-weight:700;color:#2563EB;">' . esc_html($price) . '</div>\n'
+              . '<div style="font-size:14px;color:#6B7280;margin-top:4px;">' . esc_html($time) . '</div>\n'
+              . '</div>';
+        return [ 'id' => 'pdfm_price_' . wp_generate_password(6, false, false), 'elType' => 'widget', 'isInner' => true, 'widgetType' => 'text-editor', 'settings' => [ 'editor' => $html ], 'elements' => [] ];
+    };
+
+    $make_tool_card = function (string $icon, string $title, string $desc, string $bgClass) use ($make_price_block): array {
+        return [
+            'id' => 'pdfm_tool_col_' . wp_generate_password(6, false, false),
+            'elType' => 'column', 'isInner' => false, 'settings' => [ '_column_size' => 50 ], 'elements' => [
+                [ 'id' => 'pdfm_tool_' . wp_generate_password(6, false, false), 'elType' => 'widget', 'isInner' => true, 'widgetType' => 'icon-box', 'settings' => [
+                    'selected_icon' => [ 'value' => $icon, 'library' => 'fa-solid' ],
+                    'view' => 'stacked', 'align' => 'center', 'title_text' => $title, 'description_text' => $desc,
+                    'css_classes' => 'tool-card',
+                ], 'elements' => [] ],
+            ],
+        ];
+    };
+
+    $tools_index = -1;
+    foreach ($data as $i => $node) {
+        if (($node['elType'] ?? '') !== 'section') continue;
+        if ($section_has_iconbox_titles_like($node, 2)) { $tools_index = $i; break; }
+    }
+    if ($tools_index >= 0) {
+        // Insert header before tools section
+        array_splice($data, $tools_index, 0, [$make_tools_header_section()]);
+        $tools_index++;
+        // Ensure 4 cards and add price/time to first two
+        if (isset($data[$tools_index]['elements']) && is_array($data[$tools_index]['elements'])) {
+            // Add price/time widgets to first two columns
+            for ($i=0; $i<min(2, count($data[$tools_index]['elements'])); $i++) {
+                if (isset($data[$tools_index]['elements'][$i]['elements']) && is_array($data[$tools_index]['elements'][$i]['elements'])) {
+                    $data[$tools_index]['elements'][$i]['elements'][] = $make_price_block('$0.99', $i===0 ? '~8 seconds processing' : '~5 seconds processing');
+                }
+            }
+            // Count columns and append missing tool cards
+            $colCount = count($data[$tools_index]['elements']);
+            if ($colCount < 4) {
+                $split = $make_tool_card('fas fa-cut', 'Split PDF', 'Extract specific pages or split into separate files. Simple page range selection.', 'purple-bg');
+                $split['elements'][] = $make_price_block('$0.99', '~6 seconds processing');
+                $convert = $make_tool_card('fas fa-file-import', 'Convert to PDF', 'Convert Word, Excel, PowerPoint and images to PDF. Quality options available.', 'orange-bg');
+                $convert['elements'][] = $make_price_block('$0.99', '~10 seconds processing');
+                $data[$tools_index]['elements'][] = $split;
+                $data[$tools_index]['elements'][] = $convert;
+            }
+            $changed = true;
+        }
+    }
+
+    // 5) Add new Pricing section and comparison after tools
+    $make_pricing_section = function (): array {
+        $card_col_id = 'pdfm_price_col_' . wp_generate_password(6, false, false);
+        $price_html = '<div style="text-align:center;">\n  <div style="font-size:72px;font-weight:700;color:#1F2937;">$0.99</div>\n  <div style="font-size:20px;color:#6B7280;margin-top:8px;">per action</div>\n</div>';
+        $icon_items = [
+            [ '_id' => wp_generate_password(6, false, false), 'text' => 'Any tool: Compress, Merge, Split, Convert', 'selected_icon' => [ 'value' => 'fas fa-check', 'library' => 'fa-solid' ] ],
+            [ '_id' => wp_generate_password(6, false, false), 'text' => 'Files up to 100MB', 'selected_icon' => [ 'value' => 'fas fa-check', 'library' => 'fa-solid' ] ],
+            [ '_id' => wp_generate_password(6, false, false), 'text' => 'No signup required', 'selected_icon' => [ 'value' => 'fas fa-check', 'library' => 'fa-solid' ] ],
+            [ '_id' => wp_generate_password(6, false, false), 'text' => 'Secure processing with auto-delete', 'selected_icon' => [ 'value' => 'fas fa-check', 'library' => 'fa-solid' ] ],
+            [ '_id' => wp_generate_password(6, false, false), 'text' => 'No subscription, no recurring charges', 'selected_icon' => [ 'value' => 'fas fa-check', 'library' => 'fa-solid' ] ],
+        ];
+        return [
+            'id' => 'sec_' . wp_generate_password(8, false, false), 'elType' => 'section', 'isInner' => false,
+            '_element_id' => 'pdfm_price_sec',
+            'settings' => [ 'layout' => 'boxed', 'content_width' => 'boxed', 'gap' => 'wide', 'css_classes' => 'section-spacing', 'pdfm_marker' => 'pricing' ],
+            'elements' => [
+                [ 'id' => 'col_' . wp_generate_password(8, false, false), 'elType' => 'column', 'isInner' => false, 'settings' => [ '_column_size' => 100, 'horizontal_align' => 'center' ], 'elements' => [
+                    [ 'id' => 'w_' . wp_generate_password(8, false, false), 'elType' => 'widget', 'isInner' => false, 'widgetType' => 'heading', 'settings' => [ 'title' => 'Simple, Honest Pricing', 'header_size' => 'h2', 'align' => 'center' ], 'elements' => [] ],
+                    [ 'id' => 'w_' . wp_generate_password(8, false, false), 'elType' => 'widget', 'isInner' => false, 'widgetType' => 'text-editor', 'settings' => [ 'editor' => 'One price for everything. No tiers, no packages, no confusion.', 'align' => 'center' ], 'elements' => [] ],
+                    // Card container as inner section with styled column
+                    [ 'id' => 'sec_' . wp_generate_password(8, false, false), 'elType' => 'section', 'isInner' => true, 'settings' => [ 'layout' => 'boxed' ], 'elements' => [
+                        [ 'id' => $card_col_id, 'elType' => 'column', 'isInner' => true, 'settings' => [ '_column_size' => 100, 'padding' => [ 'unit' => 'px', 'top' => 32, 'right' => 32, 'bottom' => 32, 'left' => 32 ], 'css_classes' => 'pricing-card' ], 'elements' => [
+                            [ 'id' => 'w_' . wp_generate_password(8, false, false), 'elType' => 'widget', 'isInner' => true, 'widgetType' => 'html', 'settings' => [ 'html' => $price_html ], 'elements' => [] ],
+                            [ 'id' => 'w_' . wp_generate_password(8, false, false), 'elType' => 'widget', 'isInner' => true, 'widgetType' => 'icon-list', 'settings' => [ 'icon_list' => $icon_items, 'align' => 'left' ], 'elements' => [] ],
+                            [ 'id' => 'w_' . wp_generate_password(8, false, false), 'elType' => 'widget', 'isInner' => true, 'widgetType' => 'button', 'settings' => [ 'text' => 'Try Any Tool Now', 'size' => 'lg', 'button_type' => 'primary', 'button_css_id' => '', 'align' => 'center', 'button_full_width' => 'yes' ], 'elements' => [] ],
+                        ]],
+                    ]],
+                ]],
+            ],
+        ];
+    };
+
+    $make_comparison_section = function (): array {
+        return [
+            'id' => 'pdfm_comp_sec_' . wp_generate_password(6, false, false), 'elType' => 'section', 'isInner' => false,
+            'settings' => [ 'layout' => 'boxed', 'content_width' => 'boxed', 'css_classes' => 'comparison-section' ],
+            'elements' => [
+                [ 'id' => 'pdfm_comp_col_' . wp_generate_password(6, false, false), 'elType' => 'column', 'isInner' => false, 'settings' => [ '_column_size' => 100 ], 'elements' => [
+                    [ 'id' => 'pdfm_comp_h_' . wp_generate_password(6, false, false), 'elType' => 'widget', 'isInner' => false, 'widgetType' => 'heading', 'settings' => [ 'title' => 'The Subscription Trap vs. The Smart Choice', 'header_size' => 'h3', 'align' => 'center' ], 'elements' => [] ],
+                    [ 'id' => 'pdfm_comp_inner_' . wp_generate_password(6, false, false), 'elType' => 'section', 'isInner' => true, 'settings' => [ 'layout' => 'columns' ], 'elements' => [
+                        [ 'id' => 'pdfm_comp_c1_' . wp_generate_password(6, false, false), 'elType' => 'column', 'isInner' => true, 'settings' => [ '_column_size' => 50, 'padding' => [ 'unit' => 'px', 'top' => 24, 'right' => 24, 'bottom' => 24, 'left' => 24 ] ], 'elements' => [
+                            [ 'id' => 'pdfm_comp_bad_' . wp_generate_password(6, false, false), 'elType' => 'widget', 'isInner' => true, 'widgetType' => 'icon-box', 'settings' => [ 'selected_icon' => [ 'value' => 'fas fa-times-circle', 'library' => 'fa-solid' ], 'title_text' => 'Typical Competitor (Smallpdf Pro)', 'description_text' => "$108/year subscription\nMost users need only 9 actions/year\n= $99.09 wasted annually" ], 'elements' => [] ],
+                        ]],
+                        [ 'id' => 'pdfm_comp_c2_' . wp_generate_password(6, false, false), 'elType' => 'column', 'isInner' => true, 'settings' => [ '_column_size' => 50, 'padding' => [ 'unit' => 'px', 'top' => 24, 'right' => 24, 'bottom' => 24, 'left' => 24 ], 'css_classes' => 'good' ], 'elements' => [
+                            [ 'id' => 'pdfm_comp_good_' . wp_generate_password(6, false, false), 'elType' => 'widget', 'isInner' => true, 'widgetType' => 'icon-box', 'settings' => [ 'selected_icon' => [ 'value' => 'fas fa-check-circle', 'library' => 'fa-solid' ], 'title_text' => 'PDFMaster', 'description_text' => "Pay only when you use it\n9 actions × $0.99 each\n= $8.91 total per year" ], 'elements' => [] ],
+                        ]],
+                    ]],
+                    [ 'id' => 'pdfm_comp_note_' . wp_generate_password(6, false, false), 'elType' => 'widget', 'isInner' => false, 'widgetType' => 'text-editor', 'settings' => [ 'editor' => '<div style="text-align:center;font-size:20px;font-weight:700;color:#1E3A8A;">Save $99.09 annually by paying only for what you actually use.</div>' ], 'elements' => [] ],
+                ]],
+            ],
+        ];
+    };
+
+    // Insert pricing + comparison after tools section (by index)
+    if ($tools_index >= 0) {
+        array_splice($data, $tools_index + 1, 0, [$make_pricing_section(), $make_comparison_section()]);
+        $changed = true;
+    }
+
+    if ($changed) {
+        // Save via Elementor API (handles serialization & sanitization)
+        try {
+            if (method_exists($document, 'set_elements_data')) {
+                $document->set_elements_data($data);
+                $document->save([]);
+            } else {
+                $document->save([ 'elements' => $data ]);
+            }
+            // Fallback: force persist to post meta in case Document API no-ops under CLI
+            update_post_meta($post_id, '_elementor_data', wp_slash(wp_json_encode($data)));
+            // Clear caches
+            if (class_exists('Elementor\\Plugin')) {
+                \Elementor\Plugin::$instance->files_manager->clear_cache();
+            }
+            wp_cache_flush();
+
+            update_option('pdfm_migrated_landing_p0', current_time('mysql'));
+            if ($force) { delete_option('pdfm_force_migrate'); }
+
+            error_log('PDFMaster: Data saved, verifying...');
+            $saved = get_post_meta($post_id, '_elementor_data', true);
+            error_log('PDFMaster: Saved _elementor_data length: ' . (is_string($saved) ? strlen($saved) : 0));
+            error_log('PDFMaster: Migration P0 completed successfully');
+        } catch (\Throwable $e) {
+            error_log('PDFMaster: Migration save error: ' . $e->getMessage());
+        }
+    } else {
+        error_log('PDFMaster: No changes detected; migration skipped');
+    }
+}
+
+// Run on wp_loaded to ensure Elementor is fully initialized
+add_action('wp_loaded', 'pdfm_run_landing_migration_p0');
 
 /**
  * Phase 2 Migration: Convert hero shortcodes to native Elementor widgets
