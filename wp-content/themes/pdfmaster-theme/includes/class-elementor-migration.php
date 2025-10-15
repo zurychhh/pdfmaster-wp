@@ -384,4 +384,41 @@ if ( defined( 'WP_CLI' ) && WP_CLI ) {
             WP_CLI::error( 'Migration failed - markers NOT found in _elementor_data' );
         }
     } );
+
+    // New command for P0 Critical sections
+    WP_CLI::add_command( 'pdfmaster migrate-landing-p0-critical', function( $args, $assoc_args ) {
+        $post_id = (int) get_option( 'page_on_front' );
+        if ( $post_id <= 0 ) { $post_id = 11; }
+
+        if ( isset( $assoc_args['force'] ) ) {
+            update_option( 'pdfm_force_migrate', true );
+            WP_CLI::log( 'Force flag set - will re-run migration' );
+        }
+
+        if ( function_exists( 'pdfm_run_landing_p0_critical' ) ) {
+            call_user_func( 'pdfm_run_landing_p0_critical' );
+        } else {
+            WP_CLI::error( 'Critical migration function not found' );
+        }
+
+        // Verify new markers
+        $data = get_post_meta( $post_id, '_elementor_data', true );
+        $data = is_string( $data ) ? $data : wp_json_encode( $data );
+        $needles = [
+            '"_element_id":"pdfm_how_it_works"',
+            '"_element_id":"pdfm_final_cta"',
+            '"_element_id":"pdfm_footer"',
+        ];
+        $ok = true;
+        foreach ( $needles as $n ) {
+            if ( strpos( (string) $data, $n ) === false ) { $ok = false; break; }
+        }
+
+        if ( $ok ) {
+            WP_CLI::success( 'P0 Critical migration completed - markers found in _elementor_data' );
+            WP_CLI::log( "Edit in Elementor: http://localhost:10003/wp-admin/post.php?post={$post_id}&action=elementor" );
+        } else {
+            WP_CLI::error( 'P0 Critical migration failed - markers NOT found in _elementor_data' );
+        }
+    } );
 }
