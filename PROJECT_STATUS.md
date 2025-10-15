@@ -15,36 +15,6 @@ Repository: https://github.com/zurychhh/pdfmaster-wp
 Branch: main (active feature branch: feature/pay-per-action-99)
 Last PR: #7 — Pay‑per‑action + payment modal fixes (OPEN)
 
-## 📚 Documentation Structure
-
-Root Level (Quick Access)
-
-- README.md - Quick start, project basics, links to all docs
-- PROJECT_STATUS.md - SINGLE SOURCE OF TRUTH - Current state, architecture, next tasks
-
-User Documentation (docs/user/)
-
-- ELEMENTOR_EDITING_GUIDE.md - How to edit site via Elementor UI (self-service)
-- ELEMENTOR_STRUCTURE_MAP.md - Page structure map with widget types
-
-Historical Records (docs/)
-
-- session_notes/ - Work logs from each session (SESSION_NOTES_YYYY-MM-DD.md)
-- archive/ - Completed phase documentation (e.g., AUDIT_RESULTS.md)
-
-Purpose:
-
-- For Droids: PROJECT_STATUS.md = comprehensive current state
-- For Users: docs/user/ = self-service editing (no Droid needed)
-- For Team: session_notes/ = decision history and context
-
-Maintenance:
-
-- PROJECT_STATUS.md updated every session (living document)
-- User guides updated only when structure changes
-- Session notes created at end of each work session
-- Archive old docs when phases complete
-
 ---
 
 ## 📈 Status Update — 2025-10-15
