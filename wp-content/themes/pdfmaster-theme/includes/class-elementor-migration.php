@@ -343,7 +343,45 @@ class PDFMaster_Elementor_Migration {
     }
 }
 
-// Register WP-CLI command
+// Register WP-CLI command (supports --force and verifies markers)
 if ( defined( 'WP_CLI' ) && WP_CLI ) {
-    WP_CLI::add_command( 'pdfmaster migrate-landing', [ 'PDFMaster_Elementor_Migration', 'migrate_landing_p0' ] );
+    WP_CLI::add_command( 'pdfmaster migrate-landing', function( $args, $assoc_args ) {
+        $post_id = (int) get_option( 'page_on_front' );
+        if ( $post_id <= 0 ) { $post_id = 11; }
+
+        if ( isset( $assoc_args['force'] ) ) {
+            update_option( 'pdfm_force_migrate', true );
+            WP_CLI::log( 'Force flag set - will re-run migration' );
+        }
+
+        if ( function_exists( 'pdfm_run_landing_migration_p0' ) ) {
+            call_user_func( 'pdfm_run_landing_migration_p0' );
+        } else {
+            WP_CLI::warning( 'Migration function not found, falling back to class method' );
+            if ( method_exists( 'PDFMaster_Elementor_Migration', 'migrate_landing_p0' ) ) {
+                PDFMaster_Elementor_Migration::migrate_landing_p0();
+            } else {
+                WP_CLI::error( 'No migration entrypoint available' );
+            }
+        }
+
+        // Verify markers in _elementor_data using Elementor-native _element_id and optional pdfm_marker
+        $data = get_post_meta( $post_id, '_elementor_data', true );
+        $data = is_string( $data ) ? $data : wp_json_encode( $data );
+        $needles = [
+            '"_element_id":"pdfm_hero_badges"',
+            '"_element_id":"pdfm_tools_hdr"',
+            '"_element_id":"pdfm_price_sec"',
+        ];
+        $ok = true;
+        foreach ( $needles as $n ) {
+            if ( strpos( (string) $data, $n ) === false ) { $ok = false; break; }
+        }
+
+        if ( $ok ) {
+            WP_CLI::success( 'Migration completed - markers found in _elementor_data' );
+        } else {
+            WP_CLI::error( 'Migration failed - markers NOT found in _elementor_data' );
+        }
+    } );
 }
