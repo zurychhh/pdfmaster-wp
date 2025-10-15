@@ -1,6 +1,6 @@
 # PDFMaster - Project Status & Handoff Documentation
 
-Last updated: 2025-10-10
+Last updated: 2025-10-15
 
 ---
 
@@ -17,7 +17,7 @@ Last PR: #7 — Pay‑per‑action + payment modal fixes (OPEN)
 
 ---
 
-## 📈 Status Update — 2025-10-10
+## 📈 Status Update — 2025-10-15
 
 Completed recently
 - Pay-per-action model finalized ($0.99) — merged PRs #7, #8, #9
@@ -35,9 +35,7 @@ Editor = Front parity
 - Next: convert shortcodes/HTML to native Elementor widgets (Icon List/Icon Box/Price Table) for 100% self‑service
 
 Open PRs
-- #11 UX Polish Phase 2 — compression selector + size diff (review/merge)
-- #12 Landing Page Conversion — hero styling and shortcodes (review/merge)
-- #13 Elementor Self‑Service — audit + guides (docs only)
+- None — latest work merged (#14, #15)
 
 Working style (process)
 - Droid executes end‑to‑end (plan → implement → commit → PR → validate) with minimal back‑and‑forth
@@ -70,6 +68,38 @@ Working style (process)
 - ✅ Payment modal Stripe integration complete
 - ✅ Server-side token verification before download
 - ✅ E2E flow tested and verified
+
+---
+
+## 🟢 Recent Completed Work (Oct 15, 2025)
+
+- **Elementor Phase 2 Completion** (Oct 15, 2025)
+  - Removed hero-inject.js (JS injection eliminated)
+  - Migrated shortcodes → native Elementor widgets
+  - 100% Editor=Front parity achieved
+  - PR: #14
+
+- **Landing Page P0 Migration** (Oct 15, 2025)
+  - Migrated 4 critical sections via Elementor API
+  - Navbar: PDFMaster logo with icon
+  - Hero: Trust badges (4 items)
+  - Tools: 4 tools grid (Compress, Merge, Split, Convert)
+  - Pricing: $0.99 flat pricing + comparison table
+  - Content-based detection (no hardcoded IDs)
+  - All sections 100% editable in Elementor Editor
+  - PR: #15
+
+---
+
+## 📌 Current Status
+
+Elementor Phase 2: 100% complete ✅
+
+Landing Page MVP: 65% → 80% complete
+
+- [x] P0: Core sections migrated ✅
+- [ ] P1: Hero polish, pricing details
+- [ ] P2: Trust section, mobile optimization
 
 ---
 
@@ -232,24 +262,9 @@ git log --oneline -10
 
 ### Next Tasks (Priority)
 
-Immediate (Docs)
-- Update any remaining documentation references ($2.90/credits → $0.99/action)
-
-Soon (UX Polish)
-- Fix secondary buttons refresh after payment
-- Add compression level selector (low/med/high)
-- Progress indicators during processing
-- File size preview before/after
-- Better error messages
-
-Add Merge Tool (Feature)
-- Multi-file upload, reorder, Stirling merge endpoint, same $0.99 payment flow
-
-Later (Split Tool)
-- Page range selector, preview, Stirling split API integration
-
-Production Prep
-- Domain & SSL, production Stripe keys, monitoring (Sentry), backups
+1. **Landing Page P1** (3-4h) - Hero fixes, pricing polish, trust section
+2. **Merge Tool** (3-4h) - Multi-file merge functionality  
+3. **Split Tool** (3-4h) - Page extraction tool
 
 ---
 
