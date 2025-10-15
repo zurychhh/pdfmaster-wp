@@ -239,12 +239,13 @@ add_action('wp_enqueue_scripts', static function (): void {
 });
 
 /**
- * One-time migration: insert Shortcode widgets ([pdfm_trust_badges], [pdfm_hero_tools])
- * into the Home page Elementor data after the secondary CTA. Ensures Editor = Front parity.
+ * Phase 2 Migration: Convert hero shortcodes to native Elementor widgets
+ * - Replace [pdfm_trust_badges] shortcode widgets with Icon List (inline)
+ * - Replace [pdfm_hero_tools] shortcode widgets with a 3-column Icon Box row
+ * Ensures Editor = Front parity and self-service editing.
  */
 add_action('init', static function (): void {
-    // Run once
-    if (get_option('pdfm_migrated_hero_shortcodes') === 'yes') {
+    if (get_option('pdfm_migrated_phase2_hero') === 'yes') {
         return;
     }
 
@@ -255,60 +256,105 @@ add_action('init', static function (): void {
 
     $raw = get_post_meta($home_id, '_elementor_data', true);
     if (! $raw) {
-        return; // No elementor data
+        return;
     }
-
     $json = is_string($raw) ? wp_unslash($raw) : $raw;
     $data = json_decode($json, true);
     if (! is_array($data)) {
         return;
     }
 
-    $inserted = false;
+    $changed = false;
 
-    $new_nodes = [
-        [
-            'id' => 'pdfm_trust_badges_' . wp_generate_password(6, false, false),
+    $make_icon_list = function (): array {
+        $items = [
+            [ '_id' => wp_generate_password(6, false, false), 'text' => 'No signup required', 'selected_icon' => [ 'value' => 'fas fa-check', 'library' => 'fa-solid' ], 'icon' => [ 'value' => 'fas fa-check', 'library' => 'fa-solid' ] ],
+            [ '_id' => wp_generate_password(6, false, false), 'text' => 'Bank-level encryption', 'selected_icon' => [ 'value' => 'fas fa-check', 'library' => 'fa-solid' ], 'icon' => [ 'value' => 'fas fa-check', 'library' => 'fa-solid' ] ],
+            [ '_id' => wp_generate_password(6, false, false), 'text' => 'Files deleted after 1 hour', 'selected_icon' => [ 'value' => 'fas fa-check', 'library' => 'fa-solid' ], 'icon' => [ 'value' => 'fas fa-check', 'library' => 'fa-solid' ] ],
+            [ '_id' => wp_generate_password(6, false, false), 'text' => '50,000+ docs processed weekly', 'selected_icon' => [ 'value' => 'fas fa-check', 'library' => 'fa-solid' ], 'icon' => [ 'value' => 'fas fa-check', 'library' => 'fa-solid' ] ],
+        ];
+        return [
+            'id' => 'pdfm_icon_list_' . wp_generate_password(6, false, false),
             'elType' => 'widget',
             'isInner' => false,
-            'widgetType' => 'shortcode',
-            'settings' => [ 'shortcode' => '[pdfm_trust_badges]' ],
+            'widgetType' => 'icon-list',
+            'settings' => [
+                'icon_list' => $items,
+                'view' => 'inline',
+                'align' => 'center',
+                'css_classes' => 'pdfm-hero-badges',
+            ],
             'elements' => [],
-        ],
-        [
-            'id' => 'pdfm_hero_tools_' . wp_generate_password(6, false, false),
+        ];
+    };
+
+    $make_icon_box = function (string $title, string $desc, string $icon): array {
+        return [
+            'id' => 'pdfm_icon_box_' . wp_generate_password(6, false, false),
             'elType' => 'widget',
-            'isInner' => false,
-            'widgetType' => 'shortcode',
-            'settings' => [ 'shortcode' => '[pdfm_hero_tools]' ],
+            'isInner' => true,
+            'widgetType' => 'icon-box',
+            'settings' => [
+                'title_text' => $title,
+                'description_text' => $desc,
+                'selected_icon' => [ 'value' => $icon, 'library' => 'fa-solid' ],
+                'align' => 'center',
+            ],
             'elements' => [],
-        ],
-    ];
+        ];
+    };
 
-    $target_id = 'w_zeBvQh4E'; // "See All Tools & Pricing" button widget id observed in markup
+    $make_tools_section = function () use ($make_icon_box): array {
+        $col = function (array $widget): array {
+            return [
+                'id' => 'pdfm_col_' . wp_generate_password(6, false, false),
+                'elType' => 'column',
+                'isInner' => false,
+                'settings' => [ '_column_size' => 33.33 ],
+                'elements' => [ $widget ],
+            ];
+        };
+        $widgets = [
+            $make_icon_box('Compress PDF', 'Reduce file size without losing quality.', 'fas fa-compress'),
+            $make_icon_box('Merge PDF', 'Combine multiple PDFs into one.', 'fas fa-plus'),
+            $make_icon_box('Convert PDF', 'Change format instantly.', 'fas fa-sync'),
+        ];
+        return [
+            'id' => 'pdfm_tools_sec_' . wp_generate_password(6, false, false),
+            'elType' => 'section',
+            'isInner' => false,
+            'settings' => [ 'layout' => 'columns', 'content_width' => 'boxed', 'css_classes' => 'pdfm-hero-tools' ],
+            'elements' => [ $col($widgets[0]), $col($widgets[1]), $col($widgets[2]) ],
+        ];
+    };
 
-    $insert_after = function (&$nodes) use (&$insert_after, $target_id, $new_nodes, &$inserted) {
+    $convert = function (&$nodes) use (&$convert, $make_icon_list, $make_tools_section, &$changed) {
         if (! is_array($nodes)) return;
-        foreach ($nodes as $idx => &$node) {
+        foreach ($nodes as $i => &$node) {
             if (! is_array($node)) continue;
-            if (isset($node['id']) && $node['id'] === $target_id) {
-                array_splice($nodes, $idx + 1, 0, $new_nodes);
-                $inserted = true;
-                return;
-            }
+            // Recurse first
             if (isset($node['elements']) && is_array($node['elements'])) {
-                $insert_after($node['elements']);
-                if ($inserted) return;
+                $convert($node['elements']);
+            }
+            // Replace shortcodes
+            if (isset($node['widgetType']) && $node['widgetType'] === 'shortcode' && isset($node['settings']['shortcode'])) {
+                $short = trim((string) $node['settings']['shortcode']);
+                if ($short === '[pdfm_trust_badges]') {
+                    $nodes[$i] = $make_icon_list();
+                    $changed = true;
+                } elseif ($short === '[pdfm_hero_tools]') {
+                    $nodes[$i] = $make_tools_section();
+                    $changed = true;
+                }
             }
         }
     };
 
-    $insert_after($data);
+    $convert($data);
 
-    if ($inserted) {
+    if ($changed) {
         update_post_meta($home_id, '_elementor_data', wp_slash(wp_json_encode($data)));
-        update_option('pdfm_migrated_hero_shortcodes', 'yes');
-        // Optionally, regenerate Elementor CSS is left to manual tools for performance.
+        update_option('pdfm_migrated_phase2_hero', 'yes');
     }
 });
 
