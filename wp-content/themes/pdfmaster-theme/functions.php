@@ -975,3 +975,133 @@ add_shortcode('pdfm_hero_tools', static function (): string {
 </div>
 HTML;
 });
+
+/**
+ * Landing Page P0 (REVISED) — Strict text updates for Hero + ensure tools pricing + comparison present.
+ *
+ * Scope (DB-only change for page ID 11):
+ * - Hero Heading (ID: 37aa84bf) -> "Professional PDF Tools in 30 Seconds" (H1, centered)
+ * - Hero Subtitle (ID: 25d9dff) -> exact mockup copy (centered)
+ * - CTA Button 1 (ID: 7d9f384f) -> "Try Any Tool – $0.99"
+ * - CTA Button 2 (ID: 55f24265) -> "See How It Works"
+ * - Trust badges (ID: 7dc375bb) — verify/correct 4 items text
+ * - Tools pricing text editors (IDs: 69f68297, 25172dc7, 50a18679, 6afaccf4) — ensure $0.99 and correct seconds
+ * - Comparison section already present — no change (verification only)
+ */
+function pdfm_migrate_landing_p0_revised(): void {
+    $home_id = (int) get_option('page_on_front');
+    if ($home_id <= 0) { $home_id = 11; }
+
+    $raw = get_post_meta($home_id, '_elementor_data', true);
+    if (! $raw) { return; }
+    $json = is_string($raw) ? wp_unslash($raw) : $raw;
+    $data = json_decode($json, true);
+    if (! is_array($data)) { return; }
+
+    // Backup current _elementor_data
+    $dir = get_stylesheet_directory() . '/backups';
+    if (! is_dir($dir)) { wp_mkdir_p($dir); }
+    $ts = gmdate('YmdHis');
+    @file_put_contents($dir . "/homepage-elementor-{$home_id}-{$ts}.json", (string) $json);
+
+    $changed = false;
+
+    $find_and_update_by_id = function (&$nodes, string $target_id, callable $updater) use (&$find_and_update_by_id, &$changed): void {
+        if (! is_array($nodes)) return;
+        foreach ($nodes as &$n) {
+            if (! is_array($n)) continue;
+            if (isset($n['id']) && $n['id'] === $target_id) {
+                $old = $n;
+                $n = $updater($n);
+                if ($n !== $old) { $changed = true; }
+                // do not break; IDs are unique but continue for safety
+            }
+            if (isset($n['elements']) && is_array($n['elements'])) {
+                $find_and_update_by_id($n['elements'], $target_id, $updater);
+            }
+        }
+    };
+
+    // 1) Hero heading
+    $find_and_update_by_id($data, '37aa84bf', function (array $node): array {
+        if (! isset($node['settings'])) { $node['settings'] = []; }
+        $node['settings']['title'] = 'Professional PDF Tools in 30 Seconds';
+        $node['settings']['header_size'] = 'h1';
+        $node['settings']['align'] = 'center';
+        return $node;
+    });
+
+    // 2) Hero subtitle
+    $find_and_update_by_id($data, '25d9dff', function (array $node): array {
+        if (! isset($node['settings'])) { $node['settings'] = []; }
+        $node['settings']['editor'] = 'Compress, merge, split and convert PDF files without installing software. Just $0.99 per action. No subscriptions, no hidden fees.';
+        $node['settings']['align'] = 'center';
+        return $node;
+    });
+
+    // 3) Buttons
+    $find_and_update_by_id($data, '7d9f384f', function (array $node): array {
+        if (! isset($node['settings'])) { $node['settings'] = []; }
+        $node['settings']['text'] = 'Try Any Tool – $0.99';
+        return $node;
+    });
+    $find_and_update_by_id($data, '55f24265', function (array $node): array {
+        if (! isset($node['settings'])) { $node['settings'] = []; }
+        $node['settings']['text'] = 'See How It Works';
+        return $node;
+    });
+
+    // 4) Trust badges (ensure exact 4 items)
+    $find_and_update_by_id($data, '7dc375bb', function (array $node): array {
+        $items = [
+            [ '_id' => wp_generate_password(6, false, false), 'text' => 'No signup required', 'selected_icon' => [ 'value' => 'fas fa-check', 'library' => 'fa-solid' ] ],
+            [ '_id' => wp_generate_password(6, false, false), 'text' => 'Files deleted after 1 hour', 'selected_icon' => [ 'value' => 'fas fa-check', 'library' => 'fa-solid' ] ],
+            [ '_id' => wp_generate_password(6, false, false), 'text' => 'Bank-level encryption', 'selected_icon' => [ 'value' => 'fas fa-check', 'library' => 'fa-solid' ] ],
+            [ '_id' => wp_generate_password(6, false, false), 'text' => '2M+ users monthly', 'selected_icon' => [ 'value' => 'fas fa-check', 'library' => 'fa-solid' ] ],
+        ];
+        if (! isset($node['settings'])) { $node['settings'] = []; }
+        $node['settings']['icon_list'] = $items;
+        $node['settings']['view'] = 'inline';
+        $node['settings']['align'] = 'center';
+        return $node;
+    });
+
+    // 5) Tools pricing widgets (ensure unified $0.99 and correct times)
+    $price_html = function (string $seconds): string {
+        return '<div style="margin-top:16px;text-align:center;">\n'
+             . '<div style="font-size:32px;font-weight:700;color:#2563EB;">$0.99</div>\n'
+             . '<div style="font-size:14px;color:#6B7280;margin-top:4px;">' . $seconds . ' processing</div>\n'
+             . '</div>';
+    };
+    $find_and_update_by_id($data, '69f68297', function (array $node) use ($price_html): array { // Compress
+        $node['settings']['editor'] = $price_html('~8 seconds');
+        return $node;
+    });
+    $find_and_update_by_id($data, '25172dc7', function (array $node) use ($price_html): array { // Merge
+        $node['settings']['editor'] = $price_html('~5 seconds');
+        return $node;
+    });
+    $find_and_update_by_id($data, '50a18679', function (array $node) use ($price_html): array { // Split
+        $node['settings']['editor'] = $price_html('~6 seconds');
+        return $node;
+    });
+    $find_and_update_by_id($data, '6afaccf4', function (array $node) use ($price_html): array { // Convert
+        $node['settings']['editor'] = $price_html('~10 seconds');
+        return $node;
+    });
+
+    if ($changed) {
+        update_post_meta($home_id, '_elementor_data', wp_slash(wp_json_encode($data)));
+        if (class_exists('Elementor\\Plugin')) { \Elementor\Plugin::$instance->files_manager->clear_cache(); }
+        wp_cache_flush();
+    }
+}
+
+// WP-CLI command: wp pdfm migrate-p0-revised
+if (defined('WP_CLI') && WP_CLI) {
+    WP_CLI::add_command('pdfm migrate-p0-revised', function () {
+        pdfm_migrate_landing_p0_revised();
+        WP_CLI::success('P0 (REVISED) migration applied.');
+    });
+}
+
