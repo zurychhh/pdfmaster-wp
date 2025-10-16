@@ -79,6 +79,10 @@ class Processor
         $output .= '<input type="radio" name="operation" value="merge">';
         $output .= '<span class="pdfm-tool-label">' . esc_html__('Merge PDFs', 'pdfmaster-processor') . '</span>';
         $output .= '</label>';
+        $output .= '<label class="pdfm-tool-option" data-operation="split">';
+        $output .= '<input type="radio" name="operation" value="split">';
+        $output .= '<span class="pdfm-tool-label">' . esc_html__('Split PDF', 'pdfmaster-processor') . '</span>';
+        $output .= '</label>';
         $output .= '</div>';
 
         // File upload section
@@ -91,6 +95,7 @@ class Processor
         // Conditional help text
         $output .= '<p class="pdfm-help" data-for="compress">' . esc_html__('Add 1 PDF file (max 100MB)', 'pdfmaster-processor') . '</p>';
         $output .= '<p class="pdfm-help" data-for="merge" style="display:none">' . esc_html__('Add 2-10 PDF files (max 100MB each)', 'pdfmaster-processor') . '</p>';
+        $output .= '<p class="pdfm-help" data-for="split" style="display:none">' . esc_html__('Add 1 PDF file to extract pages from', 'pdfmaster-processor') . '</p>';
 
         // Compression level selector (show only for compress)
         $output .= '<div class="pdfm-level-group" data-show-for="compress">';
@@ -101,6 +106,13 @@ class Processor
         $output .= '<option value="high">' . esc_html__('High Quality - Min Compression (Larger file, better quality)', 'pdfmaster-processor') . '</option>';
         $output .= '</select>';
         $output .= '<p class="pdfm-level-help">' . esc_html__('Lower quality = smaller file size. Medium recommended for most files.', 'pdfmaster-processor') . '</p>';
+        $output .= '</div>';
+
+        // Page range input (show only for split)
+        $output .= '<div class="pdfm-pages-group" style="display:none" data-show-for="split">';
+        $output .= '  <label for="pdfm_pages" class="pdfm-pages-label">' . esc_html__('Page Numbers', 'pdfmaster-processor') . '</label>';
+        $output .= '  <input type="text" id="pdfm_pages" name="pages" class="pdfm-pages" placeholder="' . esc_attr__('e.g., 1-5 or 1,3,5-7', 'pdfmaster-processor') . '" />';
+        $output .= '  <p class="pdfm-pages-help">' . esc_html__('Enter page numbers or ranges. Examples: "1-5" or "1,3,5-7"', 'pdfmaster-processor') . '</p>';
         $output .= '</div>';
 
         $output .= '<button type="submit">' . esc_html__('Process PDF', 'pdfmaster-processor') . '</button>';
@@ -120,6 +132,8 @@ class Processor
         }
 
         $operation = sanitize_text_field($_POST['operation'] ?? 'compress');
+        $pages = sanitize_text_field($_POST['pages'] ?? '');
+
         // Map user-friendly level to Stirling optimizeLevel (1-9)
         $level_raw = sanitize_text_field($_POST['compression_level'] ?? 'medium');
         $map = [
@@ -179,7 +193,7 @@ class Processor
             wp_send_json_error(['message' => __('No valid files processed.', 'pdfmaster-processor')]);
         }
 
-        $processed_path = $this->stirling_api->process($stored_files, $operation, $level);
+        $processed_path = $this->stirling_api->process($stored_files, $operation, $level, $pages);
 
         if ($processed_path instanceof WP_Error) {
             $msg = $processed_path->get_error_message() ?: __('Compression failed. This might be due to a corrupted PDF. Please try another file.', 'pdfmaster-processor');

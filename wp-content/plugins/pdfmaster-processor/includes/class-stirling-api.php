@@ -28,24 +28,33 @@ class StirlingApi
 
     /**
      * @param array<int,string> $files
-     * @param string $operation compress|merge
+     * @param string $operation compress|merge|split
      * @param int $level Optimize level for compression (1-9), only used for compress
+     * @param string $pages Page ranges for split (e.g., "1-5" or "1,3,5-7")
      * @return string|WP_Error Absolute path to processed file
      */
-    public function process(array $files, string $operation = 'compress', int $level = 5): string|WP_Error
+    public function process(array $files, string $operation = 'compress', int $level = 5, string $pages = ''): string|WP_Error
     {
         if ($files === []) {
             return new WP_Error('no_files', __('No files provided for processing', 'pdfmaster-processor'));
         }
 
-        $operation = $operation === 'merge' ? 'merge' : 'compress';
+        $operation = in_array($operation, ['compress', 'merge', 'split'], true) ? $operation : 'compress';
 
         if ($operation === 'compress') {
             $level = max(1, min(9, $level));
             return $this->compress_pdf($files[0], $level);
         }
 
-        return $this->merge_pdfs($files);
+        if ($operation === 'merge') {
+            return $this->merge_pdfs($files);
+        }
+
+        if ($operation === 'split') {
+            return $this->split_pdf($files[0], $pages);
+        }
+
+        return new WP_Error('invalid_operation', __('Invalid operation', 'pdfmaster-processor'));
     }
 
     private function compress_pdf(string $file_path, int $level = 5): string|WP_Error
@@ -114,6 +123,38 @@ class StirlingApi
         ]);
 
         return $this->handle_response($response, 'merged');
+    }
+
+    private function split_pdf(string $file_path, string $pages): string|WP_Error
+    {
+        if (! file_exists($file_path)) {
+            return new WP_Error('file_not_found', __('File does not exist', 'pdfmaster-processor'));
+        }
+
+        if ($pages === '') {
+            return new WP_Error('no_pages', __('Please specify page numbers', 'pdfmaster-processor'));
+        }
+
+        $url = $this->get_endpoint() . '/api/v1/general/rearrange-pages';
+
+        $boundary = wp_generate_password(24, false);
+        $body = $this->build_multipart_body([
+            'fileInput' => [
+                'filename' => basename($file_path),
+                'content'  => file_get_contents($file_path),
+                'mime'     => 'application/pdf',
+            ],
+        ], [
+            'pageNumbers' => $pages,
+        ], $boundary);
+
+        $response = wp_remote_post($url, [
+            'timeout' => $this->get_timeout(),
+            'headers' => [ 'Content-Type' => 'multipart/form-data; boundary=' . $boundary ],
+            'body'    => $body,
+        ]);
+
+        return $this->handle_response($response, 'split');
     }
 
     /**

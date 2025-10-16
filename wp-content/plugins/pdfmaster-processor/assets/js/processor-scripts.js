@@ -82,7 +82,27 @@
         updateFileList();
     });
 
-    // Tool selector toggle
+    // Tool selector toggle - handle click on label
+    $(document).on('click', '.pdfm-tool-option', function () {
+        const $radio = $(this).find('input[name="operation"]');
+        $radio.prop('checked', true);
+
+        const operation = $radio.val();
+
+        // Toggle active state
+        $('.pdfm-tool-option').removeClass('active');
+        $(this).addClass('active');
+
+        // Show/hide conditional fields
+        $('.pdfm-level-group').toggle(operation === 'compress');
+        $('.pdfm-pages-group').toggle(operation === 'split');
+
+        // Toggle help text
+        $('.pdfm-help[data-for]').hide();
+        $('.pdfm-help[data-for="' + operation + '"]').show();
+    });
+
+    // Also handle direct change event (keyboard navigation)
     $(document).on('change', 'input[name="operation"]', function () {
         const operation = $(this).val();
 
@@ -90,8 +110,9 @@
         $('.pdfm-tool-option').removeClass('active');
         $(this).closest('.pdfm-tool-option').addClass('active');
 
-        // Show/hide compression level
+        // Show/hide conditional fields
         $('.pdfm-level-group').toggle(operation === 'compress');
+        $('.pdfm-pages-group').toggle(operation === 'split');
 
         // Toggle help text
         $('.pdfm-help[data-for]').hide();
@@ -107,6 +128,27 @@
             return;
         }
 
+        const operation = $('input[name="operation"]:checked').val();
+
+        // Split validation
+        if (operation === 'split') {
+            if (selectedFiles.length > 1) {
+                alert('Split requires exactly 1 PDF file.');
+                return;
+            }
+            const pages = $('#pdfm_pages').val().trim();
+            if (pages === '') {
+                alert('Please enter page numbers to extract.');
+                return;
+            }
+        }
+
+        // Merge validation
+        if (operation === 'merge' && selectedFiles.length < 2) {
+            alert('Merge requires at least 2 PDF files.');
+            return;
+        }
+
         const $form = $(this);
         const $container = $form.closest('.pdfm-processor');
         // Ensure result container exists
@@ -117,7 +159,6 @@
             $result.empty();
         }
 
-        const operation = $('input[name="operation"]:checked').val();
         const compression_level = $('select[name="compression_level"]').val();
 
         // Build FormData with selected files
@@ -126,6 +167,7 @@
         formData.append('nonce', pdfmProcessor.nonce);
         formData.append('operation', operation);
         formData.append('compression_level', compression_level);
+        formData.append('pages', $('#pdfm_pages').val());
 
         // Add all selected files
         selectedFiles.forEach((file, index) => {
@@ -141,9 +183,15 @@
             beforeSend: function () {
                 // Show processing spinner & message quickly
                 const operation = formData.get('operation');
-                const spinnerText = operation === 'merge'
-                    ? 'Merging your PDFs... (usually 5-10 seconds)'
-                    : 'Compressing your PDF... (usually 5-10 seconds)';
+                let spinnerText = 'Processing your PDF... (usually 5-10 seconds)';
+
+                if (operation === 'compress') {
+                    spinnerText = 'Compressing your PDF... (usually 5-10 seconds)';
+                } else if (operation === 'merge') {
+                    spinnerText = 'Merging your PDFs... (usually 5-10 seconds)';
+                } else if (operation === 'split') {
+                    spinnerText = 'Splitting your PDF... (usually 5-10 seconds)';
+                }
 
                 const processingHtml = [
                     '<div class="pdfm-processing">',
@@ -185,6 +233,9 @@
                         ].join('');
                     } else if (operation === 'merge') {
                         statsHtml = '<p class="pdfm-merge-success">✓ Successfully merged ' + selectedFiles.length + ' files</p>';
+                    } else if (operation === 'split') {
+                        const pages = formData.get('pages');
+                        statsHtml = '<p class="pdfm-split-success">✓ Successfully extracted pages: ' + pages + '</p>';
                     }
 
                     // Always gate by payment now (pay-per-action $0.99)
