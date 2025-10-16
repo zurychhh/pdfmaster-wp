@@ -975,3 +975,122 @@ add_shortcode('pdfm_hero_tools', static function (): string {
 </div>
 HTML;
 });
+
+/**
+ * Rebuild Section 1 (Hero) using CONTENT-BASED detection (no hardcoded IDs).
+ * - Finds the hero section by text that contains "Convert, Merge & Edit PDFs" or by matching a hero-like heading.
+ * - Updates: heading, subtitle, two CTA buttons.
+ * - Leaves trust badges intact.
+ */
+function pdfm_rebuild_hero_by_content(): void {
+    $post_id = (int) get_option('page_on_front');
+    if ($post_id <= 0) { $post_id = 11; }
+
+    if (! class_exists('Elementor\\Plugin')) { return; }
+    $document = \Elementor\Plugin::$instance->documents->get($post_id);
+    if (! $document) { return; }
+
+    $data = $document->get_elements_data();
+    if (! is_array($data)) { return; }
+
+    $changed = false;
+
+    $node_contains = function (array $node, string $needle): bool {
+        $needle = strtolower($needle);
+        $fields = ['title', 'title_text', 'editor', 'html', 'text', 'description', 'description_text'];
+        $s = strtolower(wp_json_encode($node['settings'] ?? []));
+        if ($s && strpos($s, $needle) !== false) return true;
+        foreach ($fields as $f) {
+            if (isset($node['settings'][$f]) && is_string($node['settings'][$f]) && strpos(strtolower((string)$node['settings'][$f]), $needle) !== false) {
+                return true;
+            }
+        }
+        return false;
+    };
+
+    $is_hero_section = function (array $section) use ($node_contains): bool {
+        if (($section['elType'] ?? '') !== 'section') return false;
+        // Match explicit phrase from legacy content
+        if ($node_contains($section, 'convert, merge & edit pdfs')) return true;
+        // Or a section containing any heading mentioning convert/merge/pdf near top
+        $q = [$section]; $depth = 0; $found_heading = false;
+        while ($q && $depth < 3) {
+            $size = count($q);
+            for ($i=0;$i<$size;$i++) {
+                $n = array_shift($q);
+                if (($n['elType'] ?? '') === 'widget' && ($n['widgetType'] ?? '') === 'heading') {
+                    if ($node_contains($n, 'convert') || $node_contains($n, 'merge') || $node_contains($n, 'pdf')) {
+                        $found_heading = true; break 2;
+                    }
+                }
+                if (!empty($n['elements']) && is_array($n['elements'])) { foreach ($n['elements'] as $c) { $q[] = $c; } }
+            }
+            $depth++;
+        }
+        return $found_heading;
+    };
+
+    $update_hero = function (array &$section) use (&$changed) {
+        // Find first heading, first text-editor, first two buttons and update texts
+        $heading_done = false; $subtitle_done = false; $buttons_done = 0;
+        $stack = [&$section];
+        while ($stack) {
+            $n =& $stack[array_key_last($stack)];
+            array_pop($stack);
+            if (!is_array($n)) continue;
+            if (($n['elType'] ?? '') === 'widget') {
+                $wt = $n['widgetType'] ?? '';
+                if (!$heading_done && $wt === 'heading') {
+                    $n['settings']['title'] = 'Professional PDF Tools in 30 Seconds';
+                    $n['settings']['header_size'] = 'h1';
+                    $n['settings']['align'] = 'center';
+                    $heading_done = true; $changed = true;
+                } elseif (!$subtitle_done && ($wt === 'text-editor' || $wt === 'heading')) {
+                    $n['settings']['editor'] = 'Compress, merge, split and convert PDF files without installing software. Just $0.99 per action. No subscriptions, no hidden fees.';
+                    $n['settings']['align'] = 'center';
+                    $subtitle_done = true; $changed = true;
+                } elseif ($wt === 'button' && $buttons_done < 2) {
+                    $n['settings']['text'] = ($buttons_done === 0) ? 'Try Any Tool – $0.99' : 'See How It Works';
+                    $buttons_done++; $changed = true;
+                }
+            }
+            if (!empty($n['elements']) && is_array($n['elements'])) {
+                // push children
+                for ($i=count($n['elements'])-1; $i>=0; $i--) { $stack[] =& $n['elements'][$i]; }
+            }
+            if ($heading_done && $subtitle_done && $buttons_done >= 2) { break; }
+        }
+    };
+
+    foreach ($data as &$node) {
+        if ($is_hero_section($node)) {
+            $update_hero($node);
+            break;
+        }
+    }
+
+    if ($changed) {
+        try {
+            if (method_exists($document, 'set_elements_data')) {
+                $document->set_elements_data($data);
+                $document->save([]);
+            } else {
+                $document->save([ 'elements' => $data ]);
+            }
+            update_post_meta($post_id, '_elementor_data', wp_slash(wp_json_encode($data)));
+            if (class_exists('Elementor\\Plugin')) { \Elementor\Plugin::$instance->files_manager->clear_cache(); }
+            wp_cache_flush();
+        } catch (\Throwable $e) {
+            // no-op
+        }
+    }
+}
+
+// WP-CLI command for Section 1 only
+if (defined('WP_CLI') && WP_CLI) {
+    WP_CLI::add_command('pdfm rebuild-hero', function () {
+        pdfm_rebuild_hero_by_content();
+        WP_CLI::success('Hero section rebuilt (content-based).');
+    });
+}
+
