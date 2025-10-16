@@ -290,3 +290,42 @@
 .pdfm-remove-file:hover {
     background: #bb2d3b;
 }
+
+/* Page Range Input (Split Tool) */
+.pdfm-pages-group {
+    margin-bottom: 1rem;
+}
+
+.pdfm-pages-label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: #1d2327;
+}
+
+.pdfm-pages {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #8c8f94;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.pdfm-pages:focus {
+    border-color: #2271b1;
+    outline: none;
+    box-shadow: 0 0 0 1px #2271b1;
+}
+
+.pdfm-pages-help {
+    font-size: 0.9em;
+    color: #646970;
+    margin: 0.5rem 0 0;
+}
+
+/* Split Success Message */
+.pdfm-split-success {
+    color: #00a32a;
+    font-weight: 600;
+    margin: 0.5rem 0;
+}
