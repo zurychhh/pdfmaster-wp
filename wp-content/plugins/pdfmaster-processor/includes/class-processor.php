@@ -68,13 +68,32 @@ class Processor
         $output  = '<div class="pdfm-processor">';
         $output .= '<form class="pdfm-processor__form" method="post" enctype="multipart/form-data">';
         $output .= wp_nonce_field('pdfm_processor_nonce', '_pdfm_nonce', true, false);
-        $output .= '<input type="file" name="pdf_files[]" multiple accept="application/pdf" />';
-        $output .= '<select name="operation" class="pdfm-op">'
-                . '<option value="compress">' . esc_html__('Compress', 'pdfmaster-processor') . '</option>'
-                . '<option value="merge">' . esc_html__('Merge', 'pdfmaster-processor') . '</option>'
-                . '</select>';
-        // Compression level selector
-        $output .= '<div class="pdfm-level-group">';
+
+        // Tool selector (visual radio buttons)
+        $output .= '<div class="pdfm-tool-selector">';
+        $output .= '<label class="pdfm-tool-option active" data-operation="compress">';
+        $output .= '<input type="radio" name="operation" value="compress" checked>';
+        $output .= '<span class="pdfm-tool-label">' . esc_html__('Compress PDF', 'pdfmaster-processor') . '</span>';
+        $output .= '</label>';
+        $output .= '<label class="pdfm-tool-option" data-operation="merge">';
+        $output .= '<input type="radio" name="operation" value="merge">';
+        $output .= '<span class="pdfm-tool-label">' . esc_html__('Merge PDFs', 'pdfmaster-processor') . '</span>';
+        $output .= '</label>';
+        $output .= '</div>';
+
+        // File upload section
+        $output .= '<div class="pdfm-file-upload">';
+        $output .= '  <input type="file" id="pdfm-file-input" accept="application/pdf" style="display:none" />';
+        $output .= '  <button type="button" class="pdfm-add-file button">' . esc_html__('Add PDF File', 'pdfmaster-processor') . '</button>';
+        $output .= '  <div class="pdfm-file-list"></div>';
+        $output .= '</div>';
+
+        // Conditional help text
+        $output .= '<p class="pdfm-help" data-for="compress">' . esc_html__('Add 1 PDF file (max 100MB)', 'pdfmaster-processor') . '</p>';
+        $output .= '<p class="pdfm-help" data-for="merge" style="display:none">' . esc_html__('Add 2-10 PDF files (max 100MB each)', 'pdfmaster-processor') . '</p>';
+
+        // Compression level selector (show only for compress)
+        $output .= '<div class="pdfm-level-group" data-show-for="compress">';
         $output .= '<label for="pdfm_level" class="pdfm-level-label">' . esc_html__('Compression Level', 'pdfmaster-processor') . '</label>';
         $output .= '<select id="pdfm_level" name="compression_level" class="pdfm-level">';
         $output .= '<option value="low">' . esc_html__('Low Quality - Max Compression (Smaller file, lower quality)', 'pdfmaster-processor') . '</option>';
@@ -83,7 +102,8 @@ class Processor
         $output .= '</select>';
         $output .= '<p class="pdfm-level-help">' . esc_html__('Lower quality = smaller file size. Medium recommended for most files.', 'pdfmaster-processor') . '</p>';
         $output .= '</div>';
-        $output .= '<button type="submit">' . esc_html__('Upload', 'pdfmaster-processor') . '</button>';
+
+        $output .= '<button type="submit">' . esc_html__('Process PDF', 'pdfmaster-processor') . '</button>';
         $output .= '</form>';
         $output .= $content;
         $output .= '</div>';

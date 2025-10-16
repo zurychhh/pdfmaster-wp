@@ -151,3 +151,142 @@
     border-radius: 6px;
     padding: 6px 12px;
 }
+
+/* Tool Selector */
+.pdfm-tool-selector {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.pdfm-tool-option {
+    flex: 1;
+    padding: 1rem;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.2s;
+    background: #fff;
+}
+
+.pdfm-tool-option:hover {
+    border-color: #2271b1;
+}
+
+.pdfm-tool-option.active {
+    border-color: #2271b1;
+    background: #f0f6fc;
+}
+
+.pdfm-tool-option input[type="radio"] {
+    display: none;
+}
+
+.pdfm-tool-label {
+    font-weight: 600;
+    color: #2c3338;
+}
+
+/* Merge Success Message */
+.pdfm-merge-success {
+    color: #00a32a;
+    font-weight: 600;
+    margin: 0.5rem 0;
+}
+
+/* Help Text */
+.pdfm-help {
+    font-size: 0.9em;
+    color: #646970;
+    margin: 0.5rem 0 1rem;
+}
+
+/* Hide compression level when not compress */
+.pdfm-level-group[style*="display: none"] {
+    display: none !important;
+}
+
+/* File Upload Section */
+.pdfm-file-upload {
+    margin: 1rem 0;
+}
+
+.pdfm-add-file {
+    margin-bottom: 1rem;
+    background: #2271b1;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.pdfm-add-file:hover {
+    background: #135e96;
+}
+
+/* File List */
+.pdfm-file-list {
+    margin-top: 1rem;
+}
+
+.pdfm-no-files {
+    color: #646970;
+    font-style: italic;
+    margin: 0;
+    font-size: 0.9em;
+}
+
+.pdfm-files {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.pdfm-file-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem;
+    background: #f0f0f1;
+    border: 1px solid #dcdcde;
+    border-radius: 4px;
+    margin-bottom: 0.5rem;
+}
+
+.pdfm-file-name {
+    flex: 1;
+    font-weight: 500;
+    color: #1d2327;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.pdfm-file-size {
+    color: #646970;
+    font-size: 0.9em;
+}
+
+.pdfm-remove-file {
+    background: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    line-height: 1;
+    font-size: 18px;
+    cursor: pointer;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s;
+}
+
+.pdfm-remove-file:hover {
+    background: #bb2d3b;
+}
