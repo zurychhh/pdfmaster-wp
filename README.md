@@ -37,6 +37,15 @@ View Recent PRs:
 git log --oneline -10
 ```
 
+## Available Tools
+
+1. **Compress PDF** - Reduce PDF file size (3 quality levels)
+2. **Merge PDFs** - Combine multiple PDFs into one
+3. **Split PDF** - Extract specific pages from PDF
+4. **Convert** - Bidirectional image conversion:
+   - Images → PDF (JPG, PNG, BMP)
+   - PDF → Images (JPG, PNG formats)
+
 ## Pricing Model
 
 - $0.99 per operation (pay-per-action)
@@ -51,8 +60,15 @@ git log --oneline -10
 
 Plugins:
 
-- `pdfmaster-processor` — Upload, validation, Stirling API, token gating
+- `pdfmaster-processor` — Upload, validation, Stirling API (compress, merge, split, convert), token gating
 - `pdfmaster-payments` — Stripe integration, payment modal
+
+Stirling PDF Endpoints:
+- `/api/v1/misc/compress-pdf` - Compress
+- `/api/v1/general/merge-pdfs` - Merge
+- `/api/v1/general/rearrange-pages` - Split (extract pages)
+- `/api/v1/convert/img/pdf` - Images → PDF
+- `/api/v1/convert/pdf/img` - PDF → Images (returns ZIP)
 
 ## Payment Flow
 

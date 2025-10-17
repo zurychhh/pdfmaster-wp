@@ -33,8 +33,9 @@ class FileHandler
         }
 
         $extension = strtolower((string) pathinfo((string) $file['name'], PATHINFO_EXTENSION));
-        if (! in_array($extension, ['pdf'], true)) {
-            return new WP_Error('pdfm_unsupported_type', __('Only PDF files are accepted.', 'pdfmaster-processor'));
+        $allowed_extensions = ['pdf', 'jpg', 'jpeg', 'png', 'bmp'];
+        if (! in_array($extension, $allowed_extensions, true)) {
+            return new WP_Error('pdfm_unsupported_type', __('Unsupported file type.', 'pdfmaster-processor'));
         }
 
         if (! isset($file['size']) || (int) $file['size'] <= 0) {
@@ -93,15 +94,9 @@ class FileHandler
             return new \WP_Error('upload_error', __('File upload failed', 'pdfmaster-processor'));
         }
 
-        // MIME validation
+        // Basic validation - MIME validation is done in Processor class
         if (!is_readable($file['tmp_name'] ?? '')) {
             return new \WP_Error('invalid_upload', __('Missing uploaded file', 'pdfmaster-processor'));
-        }
-        $finfo = finfo_open(FILEINFO_MIME_TYPE);
-        $mime  = $finfo ? finfo_file($finfo, $file['tmp_name']) : '';
-        if ($finfo) finfo_close($finfo);
-        if ($mime !== 'application/pdf') {
-            return new \WP_Error('invalid_type', __('Only PDF files are allowed', 'pdfmaster-processor'));
         }
 
         $max = (int) get_option('pdfm_max_file_size', 104857600);

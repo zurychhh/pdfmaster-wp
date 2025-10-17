@@ -42,11 +42,33 @@
         const file = this.files[0];
         if (!file) return;
 
-        // Validate PDF
-        if (file.type !== 'application/pdf') {
-            alert('Only PDF files are supported.');
-            this.value = '';
-            return;
+        // Validate file type based on current operation
+        const operation = $('input[name="operation"]:checked').val();
+        const validImageTypes = ['image/jpeg', 'image/png', 'image/bmp'];
+
+        if (operation === 'convert') {
+            const direction = $('input[name="convert_direction"]:checked').val();
+            if (direction === 'img-to-pdf') {
+                if (!validImageTypes.includes(file.type)) {
+                    alert('Images to PDF: Only JPG, PNG, and BMP files supported.');
+                    this.value = '';
+                    return;
+                }
+            } else {
+                // pdf-to-img requires PDF
+                if (file.type !== 'application/pdf') {
+                    alert('Only PDF files are supported.');
+                    this.value = '';
+                    return;
+                }
+            }
+        } else {
+            // All other operations require PDF
+            if (file.type !== 'application/pdf') {
+                alert('Only PDF files are supported.');
+                this.value = '';
+                return;
+            }
         }
 
         // Check size (100MB)
@@ -96,10 +118,23 @@
         // Show/hide conditional fields
         $('.pdfm-level-group').toggle(operation === 'compress');
         $('.pdfm-pages-group').toggle(operation === 'split');
+        $('.pdfm-convert-group').toggle(operation === 'convert');
 
         // Toggle help text
         $('.pdfm-help[data-for]').hide();
         $('.pdfm-help[data-for="' + operation + '"]').show();
+
+        // Update file input accept attribute
+        if (operation === 'convert') {
+            const direction = $('input[name="convert_direction"]:checked').val();
+            if (direction === 'img-to-pdf') {
+                $('#pdfm-file-input').attr('accept', 'image/jpeg,image/png,image/bmp');
+            } else {
+                $('#pdfm-file-input').attr('accept', 'application/pdf');
+            }
+        } else {
+            $('#pdfm-file-input').attr('accept', 'application/pdf');
+        }
     });
 
     // Also handle direct change event (keyboard navigation)
@@ -113,10 +148,33 @@
         // Show/hide conditional fields
         $('.pdfm-level-group').toggle(operation === 'compress');
         $('.pdfm-pages-group').toggle(operation === 'split');
+        $('.pdfm-convert-group').toggle(operation === 'convert');
 
         // Toggle help text
         $('.pdfm-help[data-for]').hide();
         $('.pdfm-help[data-for="' + operation + '"]').show();
+    });
+
+    // Convert direction toggle
+    $(document).on('change', 'input[name="convert_direction"]', function () {
+        const direction = $(this).val();
+
+        $('.pdfm-direction-option').removeClass('active');
+        $(this).closest('.pdfm-direction-option').addClass('active');
+
+        // Show format selector only for pdf-to-img
+        $('.pdfm-format-group').toggle(direction === 'pdf-to-img');
+
+        // Toggle help text
+        $('.pdfm-convert-help[data-for]').hide();
+        $('.pdfm-convert-help[data-for="' + direction + '"]').show();
+
+        // Update file input accept attribute
+        if (direction === 'img-to-pdf') {
+            $('#pdfm-file-input').attr('accept', 'image/jpeg,image/png,image/bmp');
+        } else {
+            $('#pdfm-file-input').attr('accept', 'application/pdf');
+        }
     });
 
     $(document).on('submit', '.pdfm-processor__form', function (event) {
@@ -149,6 +207,30 @@
             return;
         }
 
+        // Convert validation
+        if (operation === 'convert') {
+            const direction = $('input[name="convert_direction"]:checked').val();
+            if (direction === 'img-to-pdf') {
+                // Check all files are images
+                const validTypes = ['image/jpeg', 'image/png', 'image/bmp'];
+                for (let file of selectedFiles) {
+                    if (!validTypes.includes(file.type)) {
+                        alert('Images to PDF: Only JPG, PNG, and BMP files supported.');
+                        return;
+                    }
+                }
+            } else if (direction === 'pdf-to-img') {
+                if (selectedFiles.length > 1) {
+                    alert('PDF to Images: Upload exactly 1 PDF file.');
+                    return;
+                }
+                if (selectedFiles[0].type !== 'application/pdf') {
+                    alert('PDF to Images: Please upload a PDF file.');
+                    return;
+                }
+            }
+        }
+
         const $form = $(this);
         const $container = $form.closest('.pdfm-processor');
         // Ensure result container exists
@@ -165,7 +247,18 @@
         const formData = new FormData();
         formData.append('action', 'pdfm_process_pdf');
         formData.append('nonce', pdfmProcessor.nonce);
-        formData.append('operation', operation);
+
+        // Handle convert operation differently
+        if (operation === 'convert') {
+            const direction = $('input[name="convert_direction"]:checked').val();
+            formData.append('operation', direction);
+            if (direction === 'pdf-to-img') {
+                formData.append('format', $('#pdfm_format').val());
+            }
+        } else {
+            formData.append('operation', operation);
+        }
+
         formData.append('compression_level', compression_level);
         formData.append('pages', $('#pdfm_pages').val());
 
@@ -183,7 +276,7 @@
             beforeSend: function () {
                 // Show processing spinner & message quickly
                 const operation = formData.get('operation');
-                let spinnerText = 'Processing your PDF... (usually 5-10 seconds)';
+                let spinnerText = 'Processing... (usually 5-10 seconds)';
 
                 if (operation === 'compress') {
                     spinnerText = 'Compressing your PDF... (usually 5-10 seconds)';
@@ -191,6 +284,10 @@
                     spinnerText = 'Merging your PDFs... (usually 5-10 seconds)';
                 } else if (operation === 'split') {
                     spinnerText = 'Splitting your PDF... (usually 5-10 seconds)';
+                } else if (operation === 'img-to-pdf') {
+                    spinnerText = 'Converting images to PDF... (usually 5-10 seconds)';
+                } else if (operation === 'pdf-to-img') {
+                    spinnerText = 'Extracting images from PDF... (usually 5-10 seconds)';
                 }
 
                 const processingHtml = [
@@ -232,10 +329,15 @@
                             '</div>'
                         ].join('');
                     } else if (operation === 'merge') {
-                        statsHtml = '<p class="pdfm-merge-success">✓ Successfully merged ' + selectedFiles.length + ' files</p>';
+                        statsHtml = '<p class="pdfm-success">✓ Successfully merged ' + selectedFiles.length + ' files</p>';
                     } else if (operation === 'split') {
                         const pages = formData.get('pages');
-                        statsHtml = '<p class="pdfm-split-success">✓ Successfully extracted pages: ' + pages + '</p>';
+                        statsHtml = '<p class="pdfm-success">✓ Successfully extracted pages: ' + pages + '</p>';
+                    } else if (operation === 'img-to-pdf') {
+                        statsHtml = '<p class="pdfm-success">✓ Converted ' + selectedFiles.length + ' images to PDF</p>';
+                    } else if (operation === 'pdf-to-img') {
+                        const format = formData.get('format') || 'JPG';
+                        statsHtml = '<p class="pdfm-success">✓ Extracted images as ' + format.toUpperCase() + '</p>';
                     }
 
                     // Always gate by payment now (pay-per-action $0.99)

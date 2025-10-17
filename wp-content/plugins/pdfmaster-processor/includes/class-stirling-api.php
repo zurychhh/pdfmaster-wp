@@ -33,13 +33,13 @@ class StirlingApi
      * @param string $pages Page ranges for split (e.g., "1-5" or "1,3,5-7")
      * @return string|WP_Error Absolute path to processed file
      */
-    public function process(array $files, string $operation = 'compress', int $level = 5, string $pages = ''): string|WP_Error
+    public function process(array $files, string $operation = 'compress', int $level = 5, string $pages = '', string $format = 'jpg'): string|WP_Error
     {
         if ($files === []) {
             return new WP_Error('no_files', __('No files provided for processing', 'pdfmaster-processor'));
         }
 
-        $operation = in_array($operation, ['compress', 'merge', 'split'], true) ? $operation : 'compress';
+        $operation = in_array($operation, ['compress', 'merge', 'split', 'img-to-pdf', 'pdf-to-img'], true) ? $operation : 'compress';
 
         if ($operation === 'compress') {
             $level = max(1, min(9, $level));
@@ -52,6 +52,14 @@ class StirlingApi
 
         if ($operation === 'split') {
             return $this->split_pdf($files[0], $pages);
+        }
+
+        if ($operation === 'img-to-pdf') {
+            return $this->images_to_pdf($files);
+        }
+
+        if ($operation === 'pdf-to-img') {
+            return $this->pdf_to_images($files[0], $format);
         }
 
         return new WP_Error('invalid_operation', __('Invalid operation', 'pdfmaster-processor'));
@@ -204,12 +212,103 @@ class StirlingApi
             wp_mkdir_p($processed_dir);
         }
 
-        $filename = uniqid('pdf_' . $suffix . '_') . '.pdf';
+        // Detect file type from content
+        $extension = '.pdf';
+        if ($suffix === 'pdf_to_images') {
+            // Check if content is ZIP
+            if (substr($content, 0, 2) === 'PK') { // ZIP magic bytes
+                $extension = '.zip';
+            }
+        }
+
+        $filename = uniqid('pdf_' . $suffix . '_') . $extension;
         $path = $processed_dir . $filename;
         if (file_put_contents($path, $content) === false) {
             return new WP_Error('save_failed', __('Failed to save processed file', 'pdfmaster-processor'));
         }
 
         return $path;
+    }
+
+    /**
+     * @param array<int,string> $image_paths
+     */
+    private function images_to_pdf(array $image_paths): string|WP_Error
+    {
+        if (count($image_paths) === 0) {
+            return new WP_Error('no_images', __('No images provided', 'pdfmaster-processor'));
+        }
+
+        $url = $this->get_endpoint() . '/api/v1/convert/img/pdf';
+
+        $files = [];
+        foreach ($image_paths as $index => $path) {
+            if (! file_exists($path)) {
+                return new WP_Error('file_not_found', sprintf(__('File not found: %s', 'pdfmaster-processor'), $path));
+            }
+
+            // Validate image type
+            $finfo = finfo_open(FILEINFO_MIME_TYPE);
+            $mime = $finfo ? finfo_file($finfo, $path) : '';
+            if ($finfo) {
+                finfo_close($finfo);
+            }
+
+            if (! in_array($mime, ['image/jpeg', 'image/png', 'image/bmp'], true)) {
+                return new WP_Error('invalid_image', __('Only JPG, PNG, and BMP images supported', 'pdfmaster-processor'));
+            }
+
+            $files["fileInput[$index]"] = [
+                'filename' => basename($path),
+                'content'  => file_get_contents($path),
+                'mime'     => $mime,
+            ];
+        }
+
+        $boundary = wp_generate_password(24, false);
+        $body = $this->build_multipart_body($files, [
+            'fitOption' => 'fitDocumentToImage',
+            'colorType' => 'color',
+        ], $boundary);
+
+        $response = wp_remote_post($url, [
+            'timeout' => $this->get_timeout(),
+            'headers' => [ 'Content-Type' => 'multipart/form-data; boundary=' . $boundary ],
+            'body'    => $body,
+        ]);
+
+        return $this->handle_response($response, 'images_to_pdf');
+    }
+
+    private function pdf_to_images(string $pdf_path, string $format = 'jpg'): string|WP_Error
+    {
+        if (! file_exists($pdf_path)) {
+            return new WP_Error('file_not_found', __('PDF file not found', 'pdfmaster-processor'));
+        }
+
+        $format = in_array($format, ['jpg', 'png'], true) ? $format : 'jpg';
+        $url = $this->get_endpoint() . '/api/v1/convert/pdf/img';
+
+        $boundary = wp_generate_password(24, false);
+        $body = $this->build_multipart_body([
+            'fileInput' => [
+                'filename' => basename($pdf_path),
+                'content'  => file_get_contents($pdf_path),
+                'mime'     => 'application/pdf',
+            ],
+        ], [
+            'imageFormat' => $format,
+            'singleOrMultiple' => 'multiple',
+            'colorType' => 'color',
+            'dpi' => '300',
+        ], $boundary);
+
+        $response = wp_remote_post($url, [
+            'timeout' => $this->get_timeout(),
+            'headers' => [ 'Content-Type' => 'multipart/form-data; boundary=' . $boundary ],
+            'body'    => $body,
+        ]);
+
+        return $this->handle_response($response, 'pdf_to_images');
     }
 }
