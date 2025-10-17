@@ -86,4 +86,7 @@
             cardElement.mount(mountEl);
         }
     }
+
+    // Export ensureStripe globally for use by other scripts
+    window.pdfmEnsureStripe = ensureStripe;
 })(jQuery);

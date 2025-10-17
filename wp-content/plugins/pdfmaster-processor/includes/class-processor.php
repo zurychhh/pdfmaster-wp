@@ -146,6 +146,79 @@ class Processor
 
         $output .= '<button type="submit">' . esc_html__('Process PDF', 'pdfmaster-processor') . '</button>';
         $output .= '</form>';
+
+        // Success state (initially hidden, shown after successful compression)
+        $output .= '<div id="pdfm-success-state" class="pdfm-success-container" style="display:none;">';
+        $output .= '  <div class="pdfm-success-icon">';
+        $output .= '    <svg viewBox="0 0 24 24" class="pdfm-checkmark" aria-hidden="true">';
+        $output .= '      <polyline points="20 6 9 17 4 12"></polyline>';
+        $output .= '    </svg>';
+        $output .= '  </div>';
+        $output .= '  <h2 class="pdfm-success-title">' . esc_html__('Compression Successful!', 'pdfmaster-processor') . '</h2>';
+        $output .= '  <p class="pdfm-success-subtitle">' . esc_html__('Your PDF has been optimized and is ready to download', 'pdfmaster-processor') . '</p>';
+        $output .= '  <div class="pdfm-stats-card">';
+        $output .= '    <div class="pdfm-stat-row">';
+        $output .= '      <span class="pdfm-stat-label">' . esc_html__('Original Size', 'pdfmaster-processor') . '</span>';
+        $output .= '      <span class="pdfm-stat-value" id="pdfm-original-size"></span>';
+        $output .= '    </div>';
+        $output .= '    <div class="pdfm-divider"></div>';
+        $output .= '    <div class="pdfm-stat-row">';
+        $output .= '      <span class="pdfm-stat-label">' . esc_html__('Compressed Size', 'pdfmaster-processor') . '</span>';
+        $output .= '      <span class="pdfm-stat-value pdfm-stat-green" id="pdfm-compressed-size"></span>';
+        $output .= '    </div>';
+        $output .= '    <div class="pdfm-divider"></div>';
+        $output .= '    <div class="pdfm-stat-row">';
+        $output .= '      <span class="pdfm-stat-label">' . esc_html__('Space Saved', 'pdfmaster-processor') . '</span>';
+        $output .= '      <span class="pdfm-stat-improvement" id="pdfm-improvement"></span>';
+        $output .= '    </div>';
+        $output .= '  </div>';
+        $output .= '  <button class="pdfm-btn pdfm-btn-primary" id="pdfm-pay-button" type="button">';
+        $output .= esc_html__('Pay $0.99 to Download', 'pdfmaster-processor');
+        $output .= '  </button>';
+        $output .= '  <button class="pdfm-btn pdfm-btn-secondary" id="pdfm-reset-button" type="button">';
+        $output .= esc_html__('Process Another File', 'pdfmaster-processor');
+        $output .= '  </button>';
+        $output .= '  <div class="pdfm-trust-signal">';
+        $output .= '    <svg viewBox="0 0 24 24" class="pdfm-lock-icon" aria-hidden="true">';
+        $output .= '      <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>';
+        $output .= '      <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>';
+        $output .= '    </svg>';
+        $output .= '    <span>' . esc_html__('Your file will be automatically deleted after 1 hour', 'pdfmaster-processor') . '</span>';
+        $output .= '  </div>';
+        $output .= '</div>';
+
+        // Download Success State (shown after payment success)
+        $output .= '<div class="pdfm-download-success-state" style="display:none;">';
+        $output .= '  <div class="pdfm-success-container">';
+        $output .= '    <div class="pdfm-success-checkmark">';
+        $output .= '      <svg viewBox="0 0 24 24" class="pdfm-checkmark-icon" aria-hidden="true">';
+        $output .= '        <polyline points="20 6 9 17 4 12"></polyline>';
+        $output .= '      </svg>';
+        $output .= '    </div>';
+        $output .= '    <h2 class="pdfm-success-title">' . esc_html__('Payment Successful!', 'pdfmaster-processor') . '</h2>';
+        $output .= '    <p class="pdfm-success-subtitle">' . esc_html__('Your compressed PDF is ready to download.', 'pdfmaster-processor') . '</p>';
+        $output .= '    <button id="pdfm-download-final" class="pdfm-btn-download-final" type="button">';
+        $output .= '      <svg viewBox="0 0 24 24" class="pdfm-download-icon" aria-hidden="true">';
+        $output .= '        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>';
+        $output .= '        <polyline points="7 10 12 15 17 10"></polyline>';
+        $output .= '        <line x1="12" y1="15" x2="12" y2="3"></line>';
+        $output .= '      </svg>';
+        $output .= esc_html__('Download Your PDF', 'pdfmaster-processor');
+        $output .= '    </button>';
+        $output .= '    <button id="pdfm-process-another-final" class="pdfm-btn-secondary-final" type="button">';
+        $output .= esc_html__('Process Another File', 'pdfmaster-processor');
+        $output .= '    </button>';
+        $output .= '    <div class="pdfm-auto-delete-notice">';
+        $output .= '      <svg viewBox="0 0 24 24" class="pdfm-notice-icon" aria-hidden="true">';
+        $output .= '        <circle cx="12" cy="12" r="10"></circle>';
+        $output .= '        <line x1="12" y1="8" x2="12" y2="12"></line>';
+        $output .= '        <line x1="12" y1="16" x2="12.01" y2="16"></line>';
+        $output .= '      </svg>';
+        $output .= '      <span>' . esc_html__('Your file will be automatically deleted from our servers in 1 hour for your security.', 'pdfmaster-processor') . '</span>';
+        $output .= '    </div>';
+        $output .= '  </div>';
+        $output .= '</div>';
+
         $output .= $content;
         $output .= '</div>';
 

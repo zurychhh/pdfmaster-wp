@@ -1,32 +1,236 @@
-/* Styles for PDFMaster payment modal */
+/* Payment Modal - PDFMaster */
+
+/* Modal Overlay */
 .pdfm-payment-modal {
-    background-color: rgba(0, 0, 0, 0.6);
     position: fixed;
     inset: 0;
+    background: rgba(0, 0, 0, 0.5);
     display: none;
     align-items: center;
     justify-content: center;
     z-index: 9999;
+    padding: 20px;
 }
 
+/* Modal Dialog */
 .pdfm-payment-modal__dialog {
-    background: #ffffff;
-    border-radius: 12px;
-    padding: 2rem;
-    width: min(420px, 90%);
-    box-shadow: 0 20px 45px rgba(56, 102, 255, 0.25);
+    max-width: 480px;
+    width: 100%;
+    background: white;
+    border-radius: 16px;
+    padding: 40px;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+    position: relative;
 }
 
-.pdfm-payment-modal__actions {
+/* Header Section */
+.pdfm-modal-header {
+    text-align: center;
+    margin-bottom: 32px;
+}
+
+.pdfm-card-icon {
+    width: 64px;
+    height: 64px;
+    background: #EEF2FF;
+    border-radius: 50%;
+    margin: 0 auto 16px;
     display: flex;
-    gap: 1rem;
-    margin-top: 1.5rem;
+    align-items: center;
+    justify-content: center;
 }
 
-.pdfm-payment-modal__button {
-    flex: 1;
-    padding: 0.75rem 1rem;
+.pdfm-card-icon svg {
+    width: 32px;
+    height: 32px;
+    stroke: #2563EB;
+    stroke-width: 2;
+    fill: none;
+}
+
+.pdfm-modal-title {
+    font-size: 20px;
+    font-weight: 600;
+    color: #1F2937;
+    margin: 0 0 8px 0;
+    line-height: 1.2;
+}
+
+.pdfm-modal-subtitle {
+    font-size: 14px;
+    color: #6B7280;
+    margin: 0;
+    line-height: 1.4;
+}
+
+/* Price Display */
+.pdfm-price-display {
+    text-align: center;
+    margin-bottom: 32px;
+}
+
+.pdfm-price-amount {
+    font-size: 56px;
+    font-weight: 700;
+    color: #1F2937;
+    line-height: 1;
+    margin: 0;
+}
+
+.pdfm-price-label {
+    font-size: 16px;
+    color: #6B7280;
+    margin-top: 4px;
+}
+
+/* Form Elements */
+.pdfm-payment-form {
+    margin: 0;
+}
+
+.pdfm-form-group {
+    margin-bottom: 24px;
+}
+
+.pdfm-form-label {
+    display: block;
+    font-size: 14px;
+    font-weight: 500;
+    color: #374151;
+    margin-bottom: 8px;
+}
+
+.pdfm-stripe-element {
+    border: 2px solid #E5E7EB;
+    border-radius: 8px;
+    padding: 14px 16px;
+    background: white;
+    font-size: 16px;
+    transition: border-color 0.2s;
+    min-height: 44px;
+}
+
+.pdfm-stripe-element:focus-within {
+    outline: none;
+    border-color: #2563EB;
+}
+
+/* Pay Button */
+.pdfm-btn-pay {
+    width: 100%;
+    background: #10B981;
+    color: white;
     border: none;
     border-radius: 8px;
+    padding: 16px;
+    font-size: 18px;
+    font-weight: 600;
     cursor: pointer;
+    margin-bottom: 16px;
+    transition: background 0.2s;
+    font-family: inherit;
+}
+
+.pdfm-btn-pay:hover {
+    background: #059669;
+}
+
+.pdfm-btn-pay:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* Cancel Button */
+.pdfm-btn-cancel {
+    display: block;
+    text-align: center;
+    color: #6B7280;
+    font-size: 14px;
+    text-decoration: none;
+    margin-bottom: 24px;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.pdfm-btn-cancel:hover {
+    color: #374151;
+}
+
+/* Trust Badges */
+.pdfm-trust-badges {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    padding-top: 24px;
+    border-top: 1px solid #E5E7EB;
+}
+
+.pdfm-badge {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: #6B7280;
+}
+
+.pdfm-badge svg {
+    width: 16px;
+    height: 16px;
+    stroke: #10B981;
+    stroke-width: 2;
+    fill: none;
+}
+
+/* Responsive Design */
+@media (max-width: 640px) {
+    .pdfm-payment-modal__dialog {
+        padding: 32px 24px;
+    }
+
+    .pdfm-price-amount {
+        font-size: 48px;
+    }
+
+    .pdfm-btn-pay {
+        font-size: 16px;
+        padding: 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    .pdfm-payment-modal {
+        padding: 16px;
+    }
+
+    .pdfm-payment-modal__dialog {
+        padding: 24px 20px;
+    }
+
+    .pdfm-modal-title {
+        font-size: 18px;
+    }
+
+    .pdfm-modal-subtitle {
+        font-size: 13px;
+    }
+
+    .pdfm-price-amount {
+        font-size: 40px;
+    }
+
+    .pdfm-card-icon {
+        width: 56px;
+        height: 56px;
+    }
+
+    .pdfm-card-icon svg {
+        width: 28px;
+        height: 28px;
+    }
+
+    .pdfm-trust-badges {
+        flex-direction: column;
+        gap: 12px;
+    }
 }
