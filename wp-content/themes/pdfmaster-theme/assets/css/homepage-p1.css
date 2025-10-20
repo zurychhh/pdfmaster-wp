@@ -1,0 +1,885 @@
+/**
+ * PDFMaster Homepage P1 Template Styles
+ * All 7 visual enhancements from approved mockup
+ *
+ * @package PDFMaster
+ * @since 1.0.0
+ */
+
+/* ===== BASE & CONTAINER ===== */
+.pdfm-homepage-p1 {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    color: #1f2937;
+    background: #ffffff;
+}
+
+.container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+/* ===== 1) STICKY TRUST BAR ===== */
+.pdfm-trust-bar {
+    display: none; /* Hidden by default */
+    position: sticky;
+    top: 64px;
+    z-index: 40;
+    background: #f9fafb;
+    border-bottom: 1px solid #e5e7eb;
+    padding: 0.5rem 0;
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+
+.pdfm-trust-bar.visible {
+    display: block;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.pdfm-trust-bar .trust-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    font-size: 0.875rem;
+    color: #374151;
+}
+
+.pdfm-trust-bar .trust-item {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.pdfm-trust-bar .trust-item.stars {
+    font-weight: 600;
+}
+
+.pdfm-trust-bar .star-icon {
+    width: 16px;
+    height: 16px;
+}
+
+.pdfm-trust-bar .separator {
+    color: #9ca3af;
+}
+
+/* ===== 2) HERO SECTION ===== */
+.pdfm-hero {
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(to bottom, #eff6ff 0%, #ffffff 100%);
+    padding: 6rem 0;
+}
+
+/* Blur decorations */
+.pdfm-hero::before {
+    content: '';
+    position: absolute;
+    top: 5rem;
+    left: 2.5rem;
+    width: 16rem;
+    height: 16rem;
+    background: rgba(37, 99, 235, 0.05);
+    border-radius: 50%;
+    filter: blur(80px);
+    z-index: 0;
+    pointer-events: none;
+}
+
+.pdfm-hero::after {
+    content: '';
+    position: absolute;
+    bottom: 5rem;
+    right: 2.5rem;
+    width: 24rem;
+    height: 24rem;
+    background: rgba(96, 165, 250, 0.05);
+    border-radius: 50%;
+    filter: blur(80px);
+    z-index: 0;
+    pointer-events: none;
+}
+
+.pdfm-hero .hero-content {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    max-width: 56rem;
+    margin: 0 auto;
+}
+
+.pdfm-hero h1 {
+    font-size: 3.5rem; /* 56px */
+    font-weight: 700;
+    line-height: 1.1;
+    color: #1f2937;
+    margin-bottom: 1.5rem;
+}
+
+.pdfm-hero .hero-subtitle {
+    font-size: 1.25rem;
+    line-height: 1.7;
+    color: #6b7280;
+    margin-bottom: 2rem;
+}
+
+.pdfm-hero .hero-ctas {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+}
+
+.pdfm-hero .trust-indicators {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.pdfm-hero .trust-badge {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    color: #6b7280;
+}
+
+.pdfm-hero .check-icon {
+    flex-shrink: 0;
+}
+
+/* ===== 3) BUTTONS ===== */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem 2.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 0.75rem;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    border: none;
+}
+
+.btn-primary {
+    background: #2563eb;
+    color: #ffffff;
+    padding: 1.25rem 2.5rem; /* Bigger primary CTA */
+    font-size: 1.125rem;
+    box-shadow: 0 10px 25px -5px rgba(37, 99, 235, 0.3);
+}
+
+.btn-primary:hover {
+    background: #1d4ed8;
+    transform: translateY(-2px);
+    box-shadow: 0 20px 30px -10px rgba(37, 99, 235, 0.4);
+}
+
+.btn-secondary {
+    background: transparent;
+    color: #374151;
+    border: 2px solid #d1d5db;
+    padding: 1rem 2rem; /* Smaller secondary CTA */
+}
+
+.btn-secondary:hover {
+    border-color: #9ca3af;
+    background: #f9fafb;
+}
+
+.btn-cta {
+    background: #ffffff;
+    color: #2563eb;
+    padding: 1.25rem 2.5rem;
+    font-size: 1.125rem;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    animation: pulse-subtle 2s infinite;
+}
+
+.btn-cta:hover {
+    animation: none;
+    transform: scale(1.02);
+    background: #f9fafb;
+}
+
+.btn-full {
+    width: 100%;
+}
+
+@keyframes pulse-subtle {
+    0%, 100% {
+        transform: scale(1);
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    }
+    50% {
+        transform: scale(1.02);
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.35), 0 0 0 8px rgba(255, 255, 255, 0.2);
+    }
+}
+
+/* ===== 4) SECTION HEADERS ===== */
+.section-header {
+    text-align: center;
+    margin-bottom: 4rem;
+}
+
+.section-header h2 {
+    font-size: 3rem;
+    font-weight: 700;
+    color: #1f2937;
+    margin-bottom: 1rem;
+}
+
+.section-header p {
+    font-size: 1.25rem;
+    color: #6b7280;
+}
+
+/* ===== 5) TRUST BADGES SECTION ===== */
+.pdfm-trust-badges {
+    padding: 5rem 0;
+    background: #ffffff;
+}
+
+.badges-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+}
+
+.badge-card {
+    text-align: center;
+    padding: 2rem;
+    background: #f9fafb;
+    border-radius: 1rem;
+    transition: all 0.3s ease;
+}
+
+.badge-card:hover {
+    background: #f3f4f6;
+    transform: translateY(-4px);
+}
+
+.badge-icon {
+    width: 4rem;
+    height: 4rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.5rem;
+}
+
+.badge-icon.bg-blue {
+    background: #dbeafe;
+    color: #2563eb;
+}
+
+.badge-icon.bg-green {
+    background: #d1fae5;
+    color: #10b981;
+}
+
+.badge-icon.bg-purple {
+    background: #e9d5ff;
+    color: #9333ea;
+}
+
+.badge-card h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #1f2937;
+    margin-bottom: 0.75rem;
+}
+
+.badge-card p {
+    color: #6b7280;
+    line-height: 1.6;
+}
+
+/* ===== 6) TOOLS SECTION ===== */
+.pdfm-tools {
+    padding: 5rem 0;
+    background: #f9fafb;
+}
+
+.tools-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+}
+
+/* ✨ ENHANCEMENT 3: Tool card hover effects */
+.tool-card {
+    background: #ffffff;
+    padding: 2rem;
+    border-radius: 1rem;
+    border: 2px solid #e5e7eb;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.tool-card:hover {
+    transform: translateY(-8px); /* Enhanced lift */
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); /* shadow-2xl */
+    border-color: #2563eb;
+}
+
+.tool-icon {
+    width: 4rem;
+    height: 4rem;
+    border-radius: 0.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+    transition: transform 0.3s ease;
+}
+
+.tool-card:hover .tool-icon {
+    transform: scale(1.1); /* Icon scale on hover */
+}
+
+.tool-icon.bg-blue {
+    background: #dbeafe;
+    color: #2563eb;
+}
+
+.tool-icon.bg-green {
+    background: #d1fae5;
+    color: #10b981;
+}
+
+.tool-icon.bg-purple {
+    background: #e9d5ff;
+    color: #9333ea;
+}
+
+.tool-icon.bg-orange {
+    background: #fed7aa;
+    color: #f97316;
+}
+
+.tool-card h3 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #1f2937;
+    margin-bottom: 0.75rem;
+}
+
+.tool-card p {
+    color: #6b7280;
+    line-height: 1.6;
+    margin-bottom: 1rem;
+}
+
+.tool-price {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #2563eb;
+    margin-bottom: 0.5rem;
+}
+
+.tool-time {
+    font-size: 0.875rem;
+    color: #9ca3af;
+}
+
+/* ===== 7) PRICING COMPARISON ===== */
+.pdfm-pricing {
+    padding: 5rem 0;
+    background: #ffffff;
+}
+
+.pricing-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+    max-width: 80rem;
+    margin: 0 auto 3rem;
+}
+
+.pricing-card {
+    position: relative;
+    padding: 2rem;
+    border-radius: 1.5rem;
+    text-align: center;
+}
+
+.pricing-card.competitor {
+    opacity: 0.75;
+    background: #ffffff;
+    border: 2px solid #fecaca;
+}
+
+.pricing-card.pdfmaster {
+    background: linear-gradient(to bottom right, #eff6ff, #dbeafe);
+    border: 4px solid #2563eb;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+
+.badge {
+    position: absolute;
+    top: -1rem;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 0.25rem 1rem;
+    border-radius: 9999px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    white-space: nowrap;
+    z-index: 10;
+}
+
+.badge-red {
+    background: #fee2e2;
+    color: #b91c1c;
+}
+
+.badge-green {
+    background: #10b981;
+    color: #ffffff;
+}
+
+.pricing-icon {
+    margin: 2rem 0 1.5rem;
+    display: flex;
+    justify-content: center;
+}
+
+.price {
+    font-size: 3rem;
+    font-weight: 700;
+    color: #1f2937;
+    margin-bottom: 0.5rem;
+}
+
+.price-period {
+    font-size: 1.125rem;
+    color: #6b7280;
+    margin-bottom: 2rem;
+}
+
+.features-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 2rem;
+    text-align: left;
+}
+
+.features-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+    padding-left: 1rem;
+}
+
+.features-list svg {
+    flex-shrink: 0;
+    margin-top: 0.125rem;
+}
+
+.feature-bad span {
+    color: #6b7280;
+}
+
+.feature-good span {
+    color: #374151;
+}
+
+.wasted {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #dc2626;
+    margin-top: 2rem;
+}
+
+.calculation-box {
+    background: #ffffff;
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.calc-small {
+    font-size: 0.875rem;
+    color: #6b7280;
+    margin-bottom: 0.5rem;
+}
+
+.calc-big {
+    font-size: 1.875rem;
+    font-weight: 700;
+    color: #10b981;
+}
+
+.savings-callout {
+    display: inline-block;
+    background: #d1fae5;
+    border: 2px solid #10b981;
+    border-radius: 0.75rem;
+    padding: 1.5rem 2rem;
+    text-align: center;
+}
+
+.savings-amount {
+    font-size: 1.875rem;
+    font-weight: 700;
+    color: #047857;
+    margin-bottom: 0.5rem;
+}
+
+.savings-text {
+    color: #065f46;
+    font-size: 1rem;
+}
+
+/* ===== 8) WHY IT WORKS ===== */
+.pdfm-why {
+    padding: 5rem 0;
+    background: #f9fafb;
+}
+
+.why-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2rem;
+}
+
+.why-card {
+    text-align: center;
+    background: #ffffff;
+    padding: 2rem;
+    border-radius: 1rem;
+    transition: all 0.3s ease;
+}
+
+.why-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+}
+
+.why-icon {
+    width: 4rem;
+    height: 4rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.5rem;
+}
+
+.why-icon.bg-orange {
+    background: #fed7aa;
+    color: #f97316;
+}
+
+.why-card h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #1f2937;
+    margin-bottom: 0.75rem;
+}
+
+.why-card p {
+    color: #6b7280;
+    line-height: 1.6;
+}
+
+/* ===== 9) FAQ SECTION ===== */
+.pdfm-faq {
+    padding: 5rem 0;
+    background: #ffffff;
+}
+
+.faq-list {
+    max-width: 56rem;
+    margin: 0 auto;
+}
+
+.faq-item {
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.75rem;
+    margin-bottom: 1rem;
+    transition: all 0.3s ease;
+}
+
+.faq-item:hover {
+    border-color: #93c5fd;
+    background: #eff6ff;
+}
+
+.faq-question {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.5rem;
+    background: transparent;
+    border: none;
+    text-align: left;
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: #1f2937;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.faq-question:hover {
+    background: rgba(0, 0, 0, 0.02);
+}
+
+.faq-question span {
+    padding-right: 2rem;
+}
+
+.chevron {
+    flex-shrink: 0;
+    transition: transform 0.3s ease;
+    color: #6b7280;
+}
+
+.faq-item.active .chevron {
+    transform: rotate(180deg);
+}
+
+.faq-answer {
+    display: none;
+    padding: 0 1.5rem 1.5rem;
+    color: #6b7280;
+    line-height: 1.7;
+}
+
+.faq-item.active .faq-answer {
+    display: block;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ===== 10) FINAL CTA ===== */
+.pdfm-cta {
+    position: relative;
+    overflow: hidden;
+    padding: 6rem 0;
+    background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
+    color: #ffffff;
+}
+
+/* Blur decorations */
+.pdfm-cta::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 24rem;
+    height: 24rem;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    filter: blur(80px);
+    pointer-events: none;
+}
+
+.pdfm-cta::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 24rem;
+    height: 24rem;
+    background: rgba(147, 197, 253, 0.1);
+    border-radius: 50%;
+    filter: blur(80px);
+    pointer-events: none;
+}
+
+.pdfm-cta .cta-content {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    max-width: 56rem;
+    margin: 0 auto;
+}
+
+.pdfm-cta h2 {
+    font-size: 3rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+.pdfm-cta p {
+    font-size: 1.25rem;
+    color: #bfdbfe;
+    margin-bottom: 2rem;
+}
+
+.pdfm-cta .cta-trust {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    margin-top: 2rem;
+    color: #dbeafe;
+    font-size: 0.875rem;
+}
+
+.pdfm-cta .trust-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.pdfm-cta .separator {
+    color: #93c5fd;
+}
+
+/* ===== 11) SECTION SPACING ===== */
+section {
+    margin-bottom: 80px;
+}
+
+section:last-child {
+    margin-bottom: 0;
+}
+
+/* ===== 12) RESPONSIVE BREAKPOINTS ===== */
+
+/* Tablet (768px) */
+@media (max-width: 1024px) {
+    .pdfm-hero h1 {
+        font-size: 3rem;
+    }
+
+    .section-header h2 {
+        font-size: 2.5rem;
+    }
+
+    .why-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    section {
+        margin-bottom: 60px;
+    }
+}
+
+@media (max-width: 768px) {
+    .pdfm-hero {
+        padding: 4rem 0;
+    }
+
+    .pdfm-hero h1 {
+        font-size: 2.25rem; /* 36px */
+    }
+
+    .pdfm-hero .hero-subtitle {
+        font-size: 1.125rem;
+    }
+
+    .pdfm-hero .hero-ctas {
+        flex-direction: column;
+    }
+
+    .btn {
+        width: 100%;
+    }
+
+    .pdfm-trust-bar {
+        top: 56px;
+    }
+
+    .pdfm-trust-bar .trust-content {
+        gap: 0.75rem;
+        font-size: 0.75rem;
+    }
+
+    .badges-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .tools-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .pricing-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .pricing-card {
+        margin-bottom: 2rem;
+    }
+
+    .why-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .section-header h2 {
+        font-size: 2rem;
+    }
+
+    .section-header p {
+        font-size: 1.125rem;
+    }
+
+    .pdfm-cta h2 {
+        font-size: 2rem;
+    }
+
+    .pdfm-cta p {
+        font-size: 1.125rem;
+    }
+
+    section {
+        margin-bottom: 40px;
+    }
+}
+
+/* Mobile (375px) */
+@media (max-width: 480px) {
+    .container {
+        padding: 0 1rem;
+    }
+
+    .pdfm-hero h1 {
+        font-size: 2rem;
+    }
+
+    .section-header h2 {
+        font-size: 1.75rem;
+    }
+
+    .price {
+        font-size: 2.5rem;
+    }
+
+    .pdfm-cta h2 {
+        font-size: 1.75rem;
+    }
+
+    .tool-card,
+    .badge-card,
+    .why-card {
+        padding: 1.5rem;
+    }
+}
