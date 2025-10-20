@@ -104,15 +104,15 @@
         updateFileList();
     });
 
-    // Tool selector toggle - handle click on label
-    $(document).on('click', '.pdfm-tool-option', function () {
+    // Service tab selector - handle click on label
+    $(document).on('click', '.pdfm-tab', function () {
         const $radio = $(this).find('input[name="operation"]');
         $radio.prop('checked', true);
 
         const operation = $radio.val();
 
         // Toggle active state
-        $('.pdfm-tool-option').removeClass('active');
+        $('.pdfm-tab').removeClass('active');
         $(this).addClass('active');
 
         // Show/hide conditional fields
@@ -142,8 +142,8 @@
         const operation = $(this).val();
 
         // Toggle active state
-        $('.pdfm-tool-option').removeClass('active');
-        $(this).closest('.pdfm-tool-option').addClass('active');
+        $('.pdfm-tab').removeClass('active');
+        $(this).closest('.pdfm-tab').addClass('active');
 
         // Show/hide conditional fields
         $('.pdfm-level-group').toggle(operation === 'compress');

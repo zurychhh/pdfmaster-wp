@@ -66,26 +66,37 @@ class Processor
         wp_enqueue_script('pdfm-processor-scripts');
 
         $output  = '<div class="pdfm-processor">';
+
+        // Hero Section
+        $output .= '<div class="pdfm-hero">';
+        $output .= '  <h1 class="pdfm-hero-title">' . esc_html__('PDF Tools', 'pdfmaster-processor') . '</h1>';
+        $output .= '  <p class="pdfm-hero-subtitle">' . esc_html__('Professional PDF processing in seconds. $0.99 per action, no subscription required.', 'pdfmaster-processor') . '</p>';
+        $output .= '</div>';
+
         $output .= '<form class="pdfm-processor__form" method="post" enctype="multipart/form-data">';
         $output .= wp_nonce_field('pdfm_processor_nonce', '_pdfm_nonce', true, false);
 
-        // Tool selector (visual radio buttons)
-        $output .= '<div class="pdfm-tool-selector">';
-        $output .= '<label class="pdfm-tool-option active" data-operation="compress">';
+        // Service Tabs with descriptions
+        $output .= '<div class="pdfm-service-tabs">';
+        $output .= '<label class="pdfm-tab active" data-operation="compress">';
         $output .= '<input type="radio" name="operation" value="compress" checked>';
-        $output .= '<span class="pdfm-tool-label">' . esc_html__('Compress', 'pdfmaster-processor') . '</span>';
+        $output .= '<div class="pdfm-tab-label">' . esc_html__('Compress', 'pdfmaster-processor') . '</div>';
+        $output .= '<div class="pdfm-tab-desc">' . esc_html__('Reduce file size by up to 90%', 'pdfmaster-processor') . '</div>';
         $output .= '</label>';
-        $output .= '<label class="pdfm-tool-option" data-operation="merge">';
+        $output .= '<label class="pdfm-tab" data-operation="merge">';
         $output .= '<input type="radio" name="operation" value="merge">';
-        $output .= '<span class="pdfm-tool-label">' . esc_html__('Merge', 'pdfmaster-processor') . '</span>';
+        $output .= '<div class="pdfm-tab-label">' . esc_html__('Merge', 'pdfmaster-processor') . '</div>';
+        $output .= '<div class="pdfm-tab-desc">' . esc_html__('Combine multiple PDFs into one', 'pdfmaster-processor') . '</div>';
         $output .= '</label>';
-        $output .= '<label class="pdfm-tool-option" data-operation="split">';
+        $output .= '<label class="pdfm-tab" data-operation="split">';
         $output .= '<input type="radio" name="operation" value="split">';
-        $output .= '<span class="pdfm-tool-label">' . esc_html__('Split', 'pdfmaster-processor') . '</span>';
+        $output .= '<div class="pdfm-tab-label">' . esc_html__('Split', 'pdfmaster-processor') . '</div>';
+        $output .= '<div class="pdfm-tab-desc">' . esc_html__('Extract specific pages from PDF', 'pdfmaster-processor') . '</div>';
         $output .= '</label>';
-        $output .= '<label class="pdfm-tool-option" data-operation="convert">';
+        $output .= '<label class="pdfm-tab" data-operation="convert">';
         $output .= '<input type="radio" name="operation" value="convert">';
-        $output .= '<span class="pdfm-tool-label">' . esc_html__('Convert', 'pdfmaster-processor') . '</span>';
+        $output .= '<div class="pdfm-tab-label">' . esc_html__('Convert', 'pdfmaster-processor') . '</div>';
+        $output .= '<div class="pdfm-tab-desc">' . esc_html__('Images ↔ PDF conversion', 'pdfmaster-processor') . '</div>';
         $output .= '</label>';
         $output .= '</div>';
 
