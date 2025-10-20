@@ -306,88 +306,73 @@
                     const data = response.data;
                     const operation = formData.get('operation');
 
-                    // For compress operation, show new success state
-                    if (operation === 'compress' && data.original_size && data.compressed_size) {
-                        // Hide form and result container
-                        $form.hide();
-                        $result.hide();
+                    // Hide form and result container
+                    $form.hide();
+                    $result.hide();
 
+                    // Store token globally for payment
+                    window.pdfmDownloadToken = data.token || data.download_token;
+                    window.pdfmDownloadUrl = data.downloadUrl;
+
+                    // Store file token on modal for payment flow
+                    const $modal = $('.pdfm-payment-modal');
+                    $modal.attr('data-file-token', data.token);
+
+                    // For compress operation, show stats-based success state
+                    if (operation === 'compress' && data.original_size && data.compressed_size) {
                         // Populate success state stats
                         $('#pdfm-original-size').text(data.original_size);
                         $('#pdfm-compressed-size').text(data.compressed_size);
                         $('#pdfm-improvement').text(data.reduction_percent + '% smaller');
 
-                        // Store token globally for payment
-                        window.pdfmDownloadToken = data.token || data.download_token;
-                        window.pdfmDownloadUrl = data.downloadUrl;
-
                         // Show success state with animation
                         $('#pdfm-success-state').fadeIn(400);
-
-                        // Store file token on modal for payment flow
-                        const $modal = $('.pdfm-payment-modal');
-                        $modal.attr('data-file-token', data.token);
                     } else {
-                        // For non-compress operations, use old UI (merge, split, convert)
-                        $form.hide();
+                        // For merge, split, convert - use generic success state
+                        var title = 'Success!';
+                        var subtitle = 'Your file is ready to download.';
 
-                        // Build file stats (conditional by operation)
-                        var statsHtml = '';
                         if (operation === 'merge') {
-                            statsHtml = '<p class="pdfm-success">✓ Successfully merged ' + selectedFiles.length + ' files</p>';
+                            title = 'Merge Successful!';
+                            subtitle = 'Successfully merged ' + selectedFiles.length + ' files into one PDF.';
                         } else if (operation === 'split') {
                             const pages = formData.get('pages');
-                            statsHtml = '<p class="pdfm-success">✓ Successfully extracted pages: ' + pages + '</p>';
+                            title = 'Split Successful!';
+                            subtitle = 'Successfully extracted pages: ' + pages;
                         } else if (operation === 'img-to-pdf') {
-                            statsHtml = '<p class="pdfm-success">✓ Converted ' + selectedFiles.length + ' images to PDF</p>';
+                            title = 'Conversion Successful!';
+                            subtitle = 'Converted ' + selectedFiles.length + ' images to PDF.';
                         } else if (operation === 'pdf-to-img') {
                             const format = formData.get('format') || 'JPG';
-                            statsHtml = '<p class="pdfm-success">✓ Extracted images as ' + format.toUpperCase() + '</p>';
+                            title = 'Conversion Successful!';
+                            subtitle = 'Extracted images as ' + format.toUpperCase() + ' files.';
                         }
 
-                        // Always gate by payment now (pay-per-action $0.99)
-                        const html = [
-                            '<div class="pdfm-result">',
-                            '  <p>Success! Your file is ready.</p>',
-                            statsHtml,
-                            '  <a class="button button-primary" href="#" data-pdfm-open-modal data-file-token="' + (data.token || data.download_token || '') + '">Pay $0.99 to Download</a>',
-                            '  <button type="button" class="pdfm-reset button button-secondary">Process Another File</button>',
-                            '</div>'
-                        ].join('');
-                        $result.html(html);
+                        // Populate generic success state
+                        $('#pdfm-generic-title').text(title);
+                        $('#pdfm-generic-subtitle').text(subtitle);
 
-                        // Store file token on modal for payment flow
-                        const $modal = $('.pdfm-payment-modal');
-                        $modal.attr('data-file-token', data.token);
+                        // Show generic success state
+                        $('#pdfm-success-state-generic').fadeIn(400);
                     }
 
                     // After successful payment, handle download
                     $(document).one('pdfm:payment:success', function (e, eventData) {
-                        if (operation === 'compress') {
-                            // For compress: show new download success state
-                            $('#pdfm-success-state').hide();
-                            $result.hide();
+                        // Hide all success states
+                        $('#pdfm-success-state').hide();
+                        $('#pdfm-success-state-generic').hide();
+                        $result.hide();
 
-                            // Attach download URL to button
-                            $('#pdfm-download-final').data('download-url', window.pdfmDownloadUrl);
+                        // Attach download URL to button
+                        $('#pdfm-download-final').data('download-url', window.pdfmDownloadUrl);
 
-                            // Show download success state
-                            $('.pdfm-download-success-state').fadeIn(300);
+                        // Show download success state (same for all operations)
+                        $('.pdfm-download-success-state').fadeIn(300);
 
-                            // Animate checkmark after 100ms delay
-                            setTimeout(function() {
-                                $('.pdfm-success-checkmark').addClass('pdfm-animate-bounce');
-                            }, 100);
-                        } else {
-                            // For other operations: update existing result
-                            const clean = [
-                                '<div class="pdfm-result">',
-                                '  <a class="pdfm-download button button-primary" href="' + data.downloadUrl + '" download>Download Your PDF</a>',
-                                '  <button type="button" class="pdfm-reset button button-secondary">Process Another File</button>',
-                                '</div>'
-                            ].join('');
-                            $result.html(clean);
-                        }
+                        // Animate checkmark after 100ms delay
+                        setTimeout(function() {
+                            $('.pdfm-success-checkmark').addClass('pdfm-animate-bounce');
+                        }, 100);
                     });
                 } else {
                     const message = (response && response.data && response.data.message) ? response.data.message : 'Compression failed. This might be due to a corrupted PDF. Please try another file.';
@@ -465,10 +450,52 @@
         }
     });
 
-    // Reset button handler (new success state)
+    // Reset button handler (compress success state)
     $(document).on('click', '#pdfm-reset-button', function () {
         // Hide success state
         $('#pdfm-success-state').hide();
+
+        // Show form again
+        const $container = $(this).closest('.pdfm-processor');
+        const $form = $container.find('.pdfm-processor__form');
+        $form.show();
+
+        // Reset form state
+        selectedFiles = [];
+        updateFileList();
+        $form[0].reset();
+        $form.find('button, input, select').prop('disabled', false);
+
+        // Clear result container
+        $container.find('.pdfm-processor__result').empty();
+
+        // Clear stored tokens
+        delete window.pdfmDownloadToken;
+        delete window.pdfmDownloadUrl;
+    });
+
+    // Pay button handler (generic success state - merge/split/convert)
+    $(document).on('click', '#pdfm-pay-button-generic', function (e) {
+        e.preventDefault();
+        if (window.pdfmDownloadToken) {
+            // Set token on modal
+            const $modal = $('.pdfm-payment-modal');
+            $modal.attr('data-file-token', window.pdfmDownloadToken);
+
+            // Open modal directly
+            $modal.fadeIn(200);
+
+            // Ensure Stripe is initialized
+            if (typeof window.pdfmEnsureStripe === 'function') {
+                window.pdfmEnsureStripe();
+            }
+        }
+    });
+
+    // Reset button handler (generic success state - merge/split/convert)
+    $(document).on('click', '#pdfm-reset-button-generic', function () {
+        // Hide generic success state
+        $('#pdfm-success-state-generic').hide();
 
         // Show form again
         const $container = $(this).closest('.pdfm-processor');

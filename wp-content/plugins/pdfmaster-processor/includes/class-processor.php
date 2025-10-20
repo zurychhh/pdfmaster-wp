@@ -187,6 +187,30 @@ class Processor
         $output .= '  </div>';
         $output .= '</div>';
 
+        // Generic Success State (for merge, split, convert - no stats card)
+        $output .= '<div id="pdfm-success-state-generic" class="pdfm-success-container" style="display:none;">';
+        $output .= '  <div class="pdfm-success-icon">';
+        $output .= '    <svg viewBox="0 0 24 24" class="pdfm-checkmark" aria-hidden="true">';
+        $output .= '      <polyline points="20 6 9 17 4 12"></polyline>';
+        $output .= '    </svg>';
+        $output .= '  </div>';
+        $output .= '  <h2 class="pdfm-success-title" id="pdfm-generic-title"></h2>';
+        $output .= '  <p class="pdfm-success-subtitle" id="pdfm-generic-subtitle"></p>';
+        $output .= '  <button class="pdfm-btn pdfm-btn-primary" id="pdfm-pay-button-generic" type="button">';
+        $output .= esc_html__('Pay $0.99 to Download', 'pdfmaster-processor');
+        $output .= '  </button>';
+        $output .= '  <button class="pdfm-btn pdfm-btn-secondary" id="pdfm-reset-button-generic" type="button">';
+        $output .= esc_html__('Process Another File', 'pdfmaster-processor');
+        $output .= '  </button>';
+        $output .= '  <div class="pdfm-trust-signal">';
+        $output .= '    <svg viewBox="0 0 24 24" class="pdfm-lock-icon" aria-hidden="true">';
+        $output .= '      <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>';
+        $output .= '      <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>';
+        $output .= '    </svg>';
+        $output .= '    <span>' . esc_html__('Your file will be automatically deleted after 1 hour', 'pdfmaster-processor') . '</span>';
+        $output .= '  </div>';
+        $output .= '</div>';
+
         // Download Success State (shown after payment success)
         $output .= '<div class="pdfm-download-success-state" style="display:none;">';
         $output .= '  <div class="pdfm-success-container">';
