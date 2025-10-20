@@ -1094,3 +1094,62 @@ if (defined('WP_CLI') && WP_CLI) {
     });
 }
 
+/**
+ * Enqueue sticky trust bar JavaScript on homepage
+ */
+add_action('wp_footer', static function (): void {
+    if (! is_front_page()) {
+        return;
+    }
+    ?>
+    <script>
+    (function() {
+        'use strict';
+
+        // Sticky trust bar functionality
+        const initStickyTrustBar = function() {
+            const trustBar = document.querySelector('.pdfm-trust-bar');
+            if (!trustBar) return;
+
+            let lastScrollY = window.pageYOffset;
+            const scrollThreshold = 100;
+
+            const handleScroll = function() {
+                const currentScrollY = window.pageYOffset;
+
+                if (currentScrollY > scrollThreshold) {
+                    trustBar.classList.add('visible');
+                } else {
+                    trustBar.classList.remove('visible');
+                }
+
+                lastScrollY = currentScrollY;
+            };
+
+            // Throttle scroll events for performance
+            let ticking = false;
+            window.addEventListener('scroll', function() {
+                if (!ticking) {
+                    window.requestAnimationFrame(function() {
+                        handleScroll();
+                        ticking = false;
+                    });
+                    ticking = true;
+                }
+            });
+
+            // Initial check
+            handleScroll();
+        };
+
+        // Initialize when DOM is ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initStickyTrustBar);
+        } else {
+            initStickyTrustBar();
+        }
+    })();
+    </script>
+    <?php
+});
+

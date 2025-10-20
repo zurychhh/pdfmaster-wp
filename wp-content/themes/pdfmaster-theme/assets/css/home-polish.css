@@ -300,3 +300,376 @@ body.home .tool-cards .elementor-column{ margin-bottom: 0; }
 
 /* Smooth transitions default */
 .tool-card, .btn-hero-cta, .btn-buy-now, .pricing-card{ will-change: transform, box-shadow; }
+
+/* ===== P1 VISUAL REDESIGN ENHANCEMENTS ===== */
+
+/* ===== 1) STICKY TRUST BAR ===== */
+.pdfm-trust-bar {
+  position: sticky;
+  top: 64px; /* Below navbar */
+  z-index: 40;
+  background: #f9fafb;
+  border-bottom: 1px solid #e5e7eb;
+  padding: 0.5rem 0;
+  display: none; /* Hidden by default */
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+
+.pdfm-trust-bar.visible {
+  display: block;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.pdfm-trust-bar .elementor-icon-list-items {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.pdfm-trust-bar .elementor-icon-list-item {
+  font-size: 0.875rem;
+  color: #374151;
+}
+
+.pdfm-trust-bar .elementor-icon-list-icon {
+  color: #f59e0b;
+}
+
+@media (max-width: 768px) {
+  .pdfm-trust-bar {
+    top: 56px;
+  }
+  .pdfm-trust-bar .elementor-icon-list-items {
+    gap: 0.75rem;
+    font-size: 0.75rem;
+  }
+}
+
+/* ===== 2) HERO TYPOGRAPHY SCALE UP ===== */
+.pdfm-hero h1,
+.pdfm-hero .elementor-heading-title {
+  font-size: 3.5rem; /* 56px */
+  line-height: 1.1;
+  font-weight: 700;
+}
+
+.pdfm-hero .elementor-button.pdfm-primary-cta {
+  padding: 1.25rem 2.5rem; /* py-5 px-10 */
+  font-size: 1.125rem;
+}
+
+.pdfm-hero .elementor-button.pdfm-secondary-cta {
+  padding: 1rem 2rem; /* py-4 px-8 */
+  font-size: 1rem;
+}
+
+/* Hero background decoration */
+.pdfm-hero {
+  position: relative;
+  overflow: hidden;
+}
+
+.pdfm-hero::before {
+  content: '';
+  position: absolute;
+  top: 5rem;
+  left: 2.5rem;
+  width: 16rem;
+  height: 16rem;
+  background: rgba(37, 99, 235, 0.05);
+  border-radius: 50%;
+  filter: blur(80px);
+  z-index: 0;
+  pointer-events: none;
+}
+
+.pdfm-hero::after {
+  content: '';
+  position: absolute;
+  bottom: 5rem;
+  right: 2.5rem;
+  width: 24rem;
+  height: 24rem;
+  background: rgba(96, 165, 250, 0.05);
+  border-radius: 50%;
+  filter: blur(80px);
+  z-index: 0;
+  pointer-events: none;
+}
+
+.pdfm-hero > .elementor-container {
+  position: relative;
+  z-index: 1;
+}
+
+@media (max-width: 1024px) {
+  .pdfm-hero h1,
+  .pdfm-hero .elementor-heading-title {
+    font-size: 3rem; /* 48px */
+  }
+}
+
+@media (max-width: 768px) {
+  .pdfm-hero h1,
+  .pdfm-hero .elementor-heading-title {
+    font-size: 2.25rem; /* 36px */
+  }
+  .pdfm-hero .elementor-button {
+    width: 100%;
+  }
+}
+
+/* ===== 3) ENHANCED TOOL CARD HOVER EFFECTS ===== */
+.pdfm-tool-card {
+  transition: all 0.3s ease;
+  border: 2px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 2rem;
+  cursor: pointer;
+  background: #fff;
+  position: relative;
+}
+
+.pdfm-tool-card:hover {
+  transform: translateY(-8px); /* Increased from -4px */
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); /* shadow-2xl */
+  border-color: #3b82f6;
+}
+
+.pdfm-tool-card .elementor-icon,
+.pdfm-tool-card .icon {
+  transition: transform 0.3s ease;
+}
+
+.pdfm-tool-card:hover .elementor-icon,
+.pdfm-tool-card:hover .icon {
+  transform: scale(1.1);
+}
+
+/* Override existing tool-card if present */
+.tool-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+
+/* ===== 4) PRICING COMPARISON 2-COLUMN LAYOUT ===== */
+.pdfm-pricing-comparison {
+  max-width: 80rem;
+  margin: 0 auto;
+}
+
+.pdfm-pricing-comparison .elementor-section.elementor-inner-section {
+  margin-bottom: 3rem;
+}
+
+.pdfm-pricing-comparison .competitor {
+  opacity: 0.75;
+  border: 2px solid #fecaca;
+  border-radius: 16px;
+  padding: 2rem;
+  background: white;
+  position: relative;
+}
+
+.pdfm-pricing-comparison .pdfmaster {
+  background: linear-gradient(to bottom right, #eff6ff, #dbeafe);
+  border: 4px solid #3b82f6;
+  border-radius: 16px;
+  padding: 2rem;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  position: relative;
+}
+
+.pdfm-pricing-comparison .badge {
+  position: absolute;
+  top: -1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 0.25rem 1rem;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  white-space: nowrap;
+  z-index: 10;
+}
+
+.pdfm-pricing-comparison .badge-red {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+.pdfm-pricing-comparison .badge-green {
+  background: #10b981;
+  color: white;
+}
+
+.pdfm-pricing-comparison .price-large {
+  font-size: 3rem;
+  font-weight: 700;
+  color: #1f2937;
+  text-align: center;
+}
+
+.pdfm-pricing-comparison .price-huge {
+  font-size: 3.75rem;
+  font-weight: 700;
+  color: #1f2937;
+  text-align: center;
+}
+
+.pdfm-savings-callout {
+  display: inline-block;
+  background: #d1fae5;
+  border: 2px solid #10b981;
+  border-radius: 12px;
+  padding: 1rem 2rem;
+  text-align: center;
+  margin-top: 1rem;
+}
+
+@media (max-width: 768px) {
+  .pdfm-pricing-comparison .competitor,
+  .pdfm-pricing-comparison .pdfmaster {
+    margin-bottom: 2rem;
+  }
+}
+
+/* ===== 5) FAQ ACCORDION WIDGET ENHANCEMENTS ===== */
+.pdfm-faq .elementor-toggle,
+.pdfm-faq .elementor-accordion {
+  margin-bottom: 1rem;
+}
+
+.pdfm-faq .elementor-toggle-item,
+.pdfm-faq .elementor-accordion-item {
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  transition: border-color 0.3s ease, background-color 0.3s ease;
+}
+
+.pdfm-faq .elementor-toggle-item:hover,
+.pdfm-faq .elementor-accordion-item:hover {
+  border-color: #93c5fd;
+  background: #eff6ff;
+}
+
+.pdfm-faq .elementor-toggle-icon,
+.pdfm-faq .elementor-accordion-icon {
+  transition: transform 0.3s ease;
+}
+
+.pdfm-faq .elementor-tab-title.elementor-active .elementor-toggle-icon,
+.pdfm-faq .elementor-tab-title.elementor-active .elementor-accordion-icon {
+  transform: rotate(180deg);
+}
+
+.pdfm-faq .elementor-toggle-title,
+.pdfm-faq .elementor-accordion-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.pdfm-faq .elementor-tab-content {
+  color: #6b7280;
+  line-height: 1.6;
+}
+
+/* ===== 6) GRADIENT CTA + PULSING BUTTON ===== */
+.pdfm-cta-section {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%) !important;
+}
+
+/* Subtle background decoration */
+.pdfm-cta-section::before,
+.pdfm-cta-section::after {
+  content: '';
+  position: absolute;
+  width: 24rem;
+  height: 24rem;
+  border-radius: 50%;
+  filter: blur(80px);
+  pointer-events: none;
+}
+
+.pdfm-cta-section::before {
+  top: 0;
+  left: 0;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.pdfm-cta-section::after {
+  bottom: 0;
+  right: 0;
+  background: rgba(147, 197, 253, 0.1);
+}
+
+.pdfm-cta-section > .elementor-container {
+  position: relative;
+  z-index: 1;
+}
+
+@keyframes pulse-subtle {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  }
+  50% {
+    transform: scale(1.02);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.35), 0 0 0 8px rgba(255, 255, 255, 0.2);
+  }
+}
+
+.pdfm-pulse-button {
+  animation: pulse-subtle 2s infinite;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+
+.pdfm-pulse-button:hover {
+  animation: none;
+  transform: scale(1.02);
+}
+
+/* Trust icons below CTA */
+.pdfm-cta-trust .elementor-icon-list-items {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  color: #dbeafe;
+}
+
+.pdfm-cta-trust .elementor-icon-list-icon {
+  color: #dbeafe;
+}
+
+/* ===== 7) INCREASED VERTICAL SPACING ===== */
+.pdfm-homepage .elementor-section {
+  margin-bottom: 80px;
+}
+
+.pdfm-homepage .elementor-section.no-spacing {
+  margin-bottom: 0;
+}
+
+@media (max-width: 1024px) {
+  .pdfm-homepage .elementor-section {
+    margin-bottom: 60px;
+  }
+}
+
+@media (max-width: 768px) {
+  .pdfm-homepage .elementor-section {
+    margin-bottom: 40px;
+  }
+}
