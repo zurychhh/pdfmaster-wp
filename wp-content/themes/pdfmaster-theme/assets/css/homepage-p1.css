@@ -230,6 +230,13 @@ body.admin-bar .pdfm-trust-bar {
     width: 100%;
 }
 
+/* Fix button overflow in pricing card */
+.pricing-card .btn-full {
+    width: auto; /* Override width: 100% */
+    display: block; /* Make it block-level */
+    margin: 0 auto; /* Center it */
+}
+
 @keyframes pulse-subtle {
     0%, 100% {
         transform: scale(1);
