@@ -6,7 +6,7 @@
 /wp-content/themes/index.php
 
 # WordPress Config
-wp-config.php
+# wp-config.php now uses env vars, safe to commit
 .env
 wp-config.php.backup_*
 .htaccess
@@ -43,4 +43,4 @@ Thumbs.db
 !/wp-content/plugins/pdfmaster-payments/
 /wp-content/plugins/pdfmaster-payments/vendor/
 backups/*.sql
-backups/*.sql
+local-backup.sql
