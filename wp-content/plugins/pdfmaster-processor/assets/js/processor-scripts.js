@@ -30,6 +30,29 @@
     // Initialize empty state
     $(document).ready(function () {
         updateFileList();
+
+        // ✨ OPTIMIZATION: Read ?tool= parameter from URL and activate corresponding tab
+        const urlParams = new URLSearchParams(window.location.search);
+        const toolParam = urlParams.get('tool');
+        const validTools = ['compress', 'merge', 'split', 'convert'];
+
+        if (toolParam && validTools.includes(toolParam)) {
+            // Find and click the tab for this tool
+            const $targetRadio = $('input[name="operation"][value="' + toolParam + '"]');
+            if ($targetRadio.length) {
+                $targetRadio.prop('checked', true).trigger('change');
+                $targetRadio.closest('.pdfm-tab').addClass('active');
+
+                // Show/hide conditional fields based on tool
+                $('.pdfm-level-group').toggle(toolParam === 'compress');
+                $('.pdfm-pages-group').toggle(toolParam === 'split');
+                $('.pdfm-convert-group').toggle(toolParam === 'convert');
+
+                // Show correct help text
+                $('.pdfm-help[data-for]').hide();
+                $('.pdfm-help[data-for="' + toolParam + '"]').show();
+            }
+        }
     });
 
     // Trigger file input when button clicked

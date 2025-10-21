@@ -112,7 +112,7 @@ get_header();
             </div>
 
             <div class="tools-grid">
-                <div class="tool-card">
+                <a href="<?php echo esc_url(home_url('/test-processor/?tool=compress')); ?>" class="tool-card">
                     <div class="tool-icon bg-blue">
                         <svg width="32" height="32" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z" clip-rule="evenodd"/></svg>
                     </div>
@@ -120,9 +120,9 @@ get_header();
                     <p>Reduce file size by up to 90% without quality loss. Perfect for email attachments.</p>
                     <div class="tool-price">$0.99</div>
                     <p class="tool-time">~8 seconds processing</p>
-                </div>
+                </a>
 
-                <div class="tool-card">
+                <a href="<?php echo esc_url(home_url('/test-processor/?tool=merge')); ?>" class="tool-card">
                     <div class="tool-icon bg-green">
                         <svg width="32" height="32" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z" clip-rule="evenodd"/></svg>
                     </div>
@@ -130,9 +130,9 @@ get_header();
                     <p>Combine multiple PDF files into one organized document. Up to 20 files at once.</p>
                     <div class="tool-price">$0.99</div>
                     <p class="tool-time">~8 seconds processing</p>
-                </div>
+                </a>
 
-                <div class="tool-card">
+                <a href="<?php echo esc_url(home_url('/test-processor/?tool=split')); ?>" class="tool-card">
                     <div class="tool-icon bg-purple">
                         <svg width="32" height="32" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z" clip-rule="evenodd"/></svg>
                     </div>
@@ -140,9 +140,9 @@ get_header();
                     <p>Extract specific pages or split into separate files. Simple page range selection.</p>
                     <div class="tool-price">$0.99</div>
                     <p class="tool-time">~8 seconds processing</p>
-                </div>
+                </a>
 
-                <div class="tool-card">
+                <a href="<?php echo esc_url(home_url('/test-processor/?tool=convert')); ?>" class="tool-card">
                     <div class="tool-icon bg-orange">
                         <svg width="32" height="32" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z" clip-rule="evenodd"/></svg>
                     </div>
@@ -150,7 +150,7 @@ get_header();
                     <p>Convert Word, Excel, PowerPoint and images to PDF. Quality options available.</p>
                     <div class="tool-price">$0.99</div>
                     <p class="tool-time">~8 seconds processing</p>
-                </div>
+                </a>
             </div>
         </div>
     </section>

@@ -7,10 +7,13 @@
  */
 
 /* ===== BASE & CONTAINER ===== */
+/* ✨ OPTIMIZATION 1: Global Scale Reduction (10%) */
 .pdfm-homepage-p1 {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
     color: #1f2937;
     background: #ffffff;
+    /* Reduce all sizes by 10% */
+    font-size: 90%; /* Base font-size from 16px to 14.4px equivalent */
 }
 
 .container {
@@ -20,10 +23,11 @@
 }
 
 /* ===== 1) STICKY TRUST BAR ===== */
+/* ✨ OPTIMIZATION 2: Trust Bar Sticky Position Fix */
 .pdfm-trust-bar {
     display: none; /* Hidden by default */
     position: sticky;
-    top: 64px;
+    top: 64px; /* Default: below header */
     z-index: 40;
     background: #f9fafb;
     border-bottom: 1px solid #e5e7eb;
@@ -31,6 +35,17 @@
     opacity: 0;
     transform: translateY(-10px);
     transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+
+/* Account for WordPress admin bar when logged in */
+body.admin-bar .pdfm-trust-bar {
+    top: 96px; /* 64px (header) + 32px (admin bar desktop) */
+}
+
+@media screen and (max-width: 782px) {
+    body.admin-bar .pdfm-trust-bar {
+        top: 110px; /* 64px (header) + 46px (admin bar mobile) */
+    }
 }
 
 .pdfm-trust-bar.visible {
@@ -395,22 +410,23 @@
 }
 
 /* ===== 7) PRICING COMPARISON ===== */
+/* ✨ OPTIMIZATION 3: Pricing Section Layout Compression (~20% height reduction) */
 .pdfm-pricing {
-    padding: 5rem 0;
+    padding: 4rem 0; /* Reduced from 5rem (20% reduction) */
     background: #ffffff;
 }
 
 .pricing-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 2rem;
+    gap: 1.5rem; /* Reduced from 2rem */
     max-width: 80rem;
-    margin: 0 auto 3rem;
+    margin: 0 auto 2rem; /* Reduced from 3rem */
 }
 
 .pricing-card {
     position: relative;
-    padding: 2rem;
+    padding: 1.5rem; /* Reduced from 2rem */
     border-radius: 1.5rem;
     text-align: center;
 }
@@ -451,28 +467,28 @@
 }
 
 .pricing-icon {
-    margin: 2rem 0 1.5rem;
+    margin: 1.5rem 0 1rem; /* Reduced margins */
     display: flex;
     justify-content: center;
 }
 
 .price {
-    font-size: 3rem;
+    font-size: 2.75rem; /* Slightly reduced from 3rem */
     font-weight: 700;
     color: #1f2937;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.375rem; /* Reduced from 0.5rem */
 }
 
 .price-period {
     font-size: 1.125rem;
     color: #6b7280;
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem; /* Reduced from 2rem */
 }
 
 .features-list {
     list-style: none;
     padding: 0;
-    margin: 0 0 2rem;
+    margin: 0 0 1.5rem; /* Reduced from 2rem */
     text-align: left;
 }
 
@@ -480,7 +496,7 @@
     display: flex;
     align-items: flex-start;
     gap: 0.75rem;
-    margin-bottom: 1rem;
+    margin-bottom: 0.75rem; /* Reduced from 1rem */
     padding-left: 1rem;
 }
 
@@ -498,37 +514,40 @@
 }
 
 .wasted {
-    font-size: 1.25rem;
+    font-size: 1.125rem; /* Slightly reduced */
     font-weight: 700;
     color: #dc2626;
-    margin-top: 2rem;
+    margin-top: 1.5rem; /* Reduced from 2rem */
 }
 
 .calculation-box {
     background: #ffffff;
     border-radius: 0.75rem;
-    padding: 1.5rem;
-    margin-bottom: 1.5rem;
+    padding: 1.25rem; /* Reduced from 1.5rem */
+    margin-bottom: 1.25rem; /* Reduced from 1.5rem */
 }
 
 .calc-small {
     font-size: 0.875rem;
     color: #6b7280;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.375rem; /* Reduced from 0.5rem */
 }
 
 .calc-big {
-    font-size: 1.875rem;
+    font-size: 1.75rem; /* Reduced from 1.875rem */
     font-weight: 700;
     color: #10b981;
 }
 
+/* ✨ OPTIMIZATION 3b: Center-align savings callout */
 .savings-callout {
-    display: inline-block;
+    display: block; /* Changed from inline-block */
+    max-width: 28rem; /* Add max-width */
+    margin: 0 auto; /* Center horizontally */
     background: #d1fae5;
     border: 2px solid #10b981;
     border-radius: 0.75rem;
-    padding: 1.5rem 2rem;
+    padding: 1.25rem 1.75rem; /* Reduced padding */
     text-align: center;
 }
 
