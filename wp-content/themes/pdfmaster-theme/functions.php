@@ -1094,3 +1094,28 @@ if (defined('WP_CLI') && WP_CLI) {
     });
 }
 
+/**
+ * Enqueue assets for Homepage P1 custom template
+ */
+if (! function_exists('pdfm_homepage_p1_assets')) {
+    function pdfm_homepage_p1_assets(): void {
+        if (is_page_template('page-homepage-p1.php')) {
+            wp_enqueue_style(
+                'pdfm-homepage-p1-css',
+                get_template_directory_uri() . '/assets/css/homepage-p1.css',
+                array(),
+                '1.0.1'
+            );
+
+            wp_enqueue_script(
+                'pdfm-homepage-p1-js',
+                get_template_directory_uri() . '/assets/js/homepage-p1.js',
+                array('jquery'),
+                '1.0.1',
+                true
+            );
+        }
+    }
+}
+add_action('wp_enqueue_scripts', 'pdfm_homepage_p1_assets');
+

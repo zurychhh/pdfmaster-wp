@@ -378,27 +378,4 @@ get_header();
 
 </div>
 
-<?php
-// Enqueue CSS and JS for this template
-function pdfm_homepage_p1_assets() {
-    if (is_page_template('page-homepage-p1.php')) {
-        wp_enqueue_style(
-            'pdfm-homepage-p1-css',
-            get_template_directory_uri() . '/assets/css/homepage-p1.css',
-            array(),
-            '1.0.0'
-        );
-
-        wp_enqueue_script(
-            'pdfm-homepage-p1-js',
-            get_template_directory_uri() . '/assets/js/homepage-p1.js',
-            array('jquery'),
-            '1.0.0',
-            true
-        );
-    }
-}
-add_action('wp_enqueue_scripts', 'pdfm_homepage_p1_assets');
-
-get_footer();
-?>
+<?php get_footer(); ?>

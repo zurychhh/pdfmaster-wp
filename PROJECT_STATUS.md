@@ -1,6 +1,6 @@
 # PDFMaster - Project Status & Handoff Documentation
 
-Last updated: 2025-10-15
+Last updated: 2025-10-21
 
 ---
 
@@ -8,24 +8,25 @@ Last updated: 2025-10-15
 
 What: PDFMaster - WordPress pay-per-action PDF processing app
 Business Model: $0.99 per file processed (no subscriptions, no credits)
-Tech Stack: WordPress + Elementor Pro + Stirling PDF + Stripe
+Tech Stack: WordPress + Custom PHP Templates + Stirling PDF + Stripe
 Goal: MVP with compress tool, working payment flow
 
 Repository: https://github.com/zurychhh/pdfmaster-wp
-Branch: main (active feature branch: feature/pay-per-action-99)
-Last PR: #7 — Pay‑per‑action + payment modal fixes (OPEN)
+Branch: main (active feature branch: feature/homepage-p1-custom-template)
+Last PR: #26 — Homepage P1 Custom Template (OPEN)
 
 ## 📚 Documentation Structure
 
 Root Level (Quick Access)
 
 - README.md - Quick start, project basics, links to all docs
-- PROJECT_STATUS.md - SINGLE SOURCE OF TRUTH - Current state, architecture, next tasks
+- PROJECT_STATUS.md - SINGLE SOURCE OF TRUTH - Current state, recent work, next tasks
+- docs/PDFMASTER_PROJECT_DOCS.md - Comprehensive methodology, architecture, reference
 
 User Documentation (docs/user/)
 
-- ELEMENTOR_EDITING_GUIDE.md - How to edit site via Elementor UI (self-service)
-- ELEMENTOR_STRUCTURE_MAP.md - Page structure map with widget types
+- ELEMENTOR_EDITING_GUIDE.md - How to edit site via Elementor UI (legacy - for Elementor pages)
+- ELEMENTOR_STRUCTURE_MAP.md - Page structure map (legacy - for Elementor pages)
 
 Historical Records (docs/)
 
@@ -34,44 +35,44 @@ Historical Records (docs/)
 
 Purpose:
 
-- For Droids: PROJECT_STATUS.md = comprehensive current state
-- For Users: docs/user/ = self-service editing (no Droid needed)
+- For Development: PROJECT_STATUS.md = current state | PDFMASTER_PROJECT_DOCS.md = how we work
+- For Users: docs/user/ = self-service editing (for Elementor pages only)
 - For Team: session_notes/ = decision history and context
 
 Maintenance:
 
-- PROJECT_STATUS.md updated every session (living document)
-- User guides updated only when structure changes
-- Session notes created at end of each work session
+- PROJECT_STATUS.md updated every session (current state)
+- PDFMASTER_PROJECT_DOCS.md updated when methodology changes
+- Session notes created for significant work
 - Archive old docs when phases complete
 
 ---
 
-## 📈 Status Update — 2025-10-15
+## 📈 Status Update — 2025-10-21
 
 Completed recently
-- Pay-per-action model finalized ($0.99) — merged PRs #7, #8, #9
-- UX Polish Phase 1 — spinner, clearer errors, payment UI cleanup — merged PR #10
-- UX Polish Phase 2 (compression level selector; before/after file size) — PR #11 opened
-- Landing page conversion fixes (hero navbar height, trust badges, hero tools row, secondary button styling) — PR #12 opened
-- Elementor Self‑Service (Phase 1: Audit & Docs) — PR #13 opened
-  - ELEMENTOR_EDITING_GUIDE.md (how to edit everything via Elementor UI)
-  - ELEMENTOR_STRUCTURE_MAP.md (full hierarchy + widget types)
-  - docs/AUDIT_RESULTS.md (inventory + actions)
+- Homepage P1 Custom Template — 3 files created (page-homepage-p1.php, homepage-p1.css, homepage-p1.js)
+- All 7 visual enhancements implemented (sticky bar, hero typography, tool hovers, pricing grid, FAQ accordion, pulsing CTA, spacing)
+- CSS/JS loading fix — moved asset enqueuing from template to functions.php
+- Complete UX redesign for all 4 tools (compress, merge, split, convert)
+- Tool page redesign with service tabs + hero section
+- Homepage structure analysis (5 docs, 71KB)
 
-Editor = Front parity
-- Rolled back JS auto‑injection in hero to avoid editor/front mismatch
-- Inserted hero trust badges/tools into page content (shortcodes) as stop‑gap
-- Next: convert shortcodes/HTML to native Elementor widgets (Icon List/Icon Box/Price Table) for 100% self‑service
+Current approach
+- Custom PHP templates for performance-critical pages (Homepage P1)
+- Hardcoded HTML/CSS/JS for maximum control
+- Elementor for content pages where self-service editing needed
+- User explicitly accepted zero Elementor editability for Homepage P1 in exchange for speed
 
 Open PRs
-- None — latest work merged (#14, #15)
+- #26 — Homepage P1 Custom Template (OPEN)
 
 Working style (process)
-- Droid executes end‑to‑end (plan → implement → commit → PR → validate) with minimal back‑and‑forth
-- You provide only privileged inputs (e.g., API keys) or approvals
-- Rule: all visual content must remain 100% editable in Elementor; avoid code‑only content
-- Use .pdfm-* CSS classes; prefer native Elementor widgets over HTML
+- Claude Code (AI assistant) executes end‑to‑end with minimal back‑and‑forth
+- User provides approvals, API keys, strategic decisions
+- Custom templates when: speed critical, complex features, user accepts zero editability
+- Elementor when: frequent content updates, non-developer editing needed
+- Use .pdfm-* CSS classes for all custom styles
 
 ---
 
@@ -93,23 +94,115 @@ Working style (process)
 - ✅ Test card (4242...) processes successfully
 
 ### Recent Completed Work
-- ✅ Removed credits system → $0.99 pay‑per‑action
-- ✅ Fixed Stirling API endpoint: /api/v1/misc/compress-pdf
-- ✅ Payment modal Stripe integration complete
+- ✅ Complete UX redesign for all 4 tools (compress, merge, split, convert)
+- ✅ Animated success states with checkmark bounce effect
+- ✅ Stats card showing compression improvements
+- ✅ Payment modal redesign (card icon, trust badges, Stripe Elements)
+- ✅ Post-payment download screen with security notice
+- ✅ Tool page with service tabs + hero section
+- ✅ Homepage fully documented (structure, content, technical specs)
+- ✅ Mobile responsive design (768px, 480px breakpoints)
 - ✅ Server-side token verification before download
-- ✅ E2E flow tested and verified
+- ✅ E2E flow tested and verified for all tools
 
 ---
 
-## 🟢 Recent Completed Work (Oct 15, 2025)
+## 🟢 Recent Completed Work
 
-- **Elementor Phase 2 Completion** (Oct 15, 2025)
+### Session 2025-10-21
+
+**Homepage P1 Custom Template** (Branch: feature/homepage-p1-custom-template, PR: #26)
+
+1. **Template Creation**
+   - Created page-homepage-p1.php (27KB) - Custom WordPress template
+   - 8 sections: Sticky Trust Bar, Hero, Trust Badges, Tools, Pricing, Why It Works, FAQ, CTA
+   - Zero Elementor dependency (hardcoded HTML)
+   - Files: page-homepage-p1.php, homepage-p1.css (15KB), homepage-p1.js (2.4KB)
+
+2. **7 Visual Enhancements Implemented**
+   - Sticky trust bar (appears after 100px scroll with requestAnimationFrame)
+   - Hero typography scale (56px H1 desktop, 36px mobile)
+   - Enhanced tool card hovers (-8px lift, shadow-2xl, icon scale 1.1)
+   - 2-column pricing comparison grid
+   - FAQ accordion with smooth transitions
+   - Gradient CTA with pulsing animation
+   - Increased vertical spacing (80px between sections)
+
+3. **CSS/JS Loading Fix** (Critical Bug Fix)
+   - Issue: Assets not loading (CSS/JS enqueuing placed inside template file after get_footer())
+   - Solution: Moved pdfm_homepage_p1_assets() function to functions.php:1097-1120
+   - Conditional loading with is_page_template('page-homepage-p1.php')
+   - Version bumped to 1.0.1 for cache busting
+   - Cleared WordPress cache
+   - Files: functions.php (+24 lines), page-homepage-p1.php (-23 lines)
+
+**Technical Decisions:**
+- User explicitly accepted zero Elementor editability for speed
+- Custom template approach = faster implementation, maximum control
+- Mobile-first responsive design (1024px, 768px, 480px breakpoints)
+- Hardware-accelerated animations (transform, opacity)
+
+**Documentation:**
+- Created docs/PDFMASTER_PROJECT_DOCS.md (v3.0, ~25KB)
+- Updated workflow: Factory.ai → Claude Code
+- Documented custom template pattern
+- Added troubleshooting for asset loading
+
+### Session 2025-10-20
+
+**Complete UX Redesign for All Tools** (3 commits: 6d44e2e, 0853d4a, 82d3622)
+
+1. **Compression Success Flow** (Commit: 6d44e2e)
+   - Post-compression success state with animated checkmark
+   - Stats card showing Original → Compressed → % saved
+   - Prominent "Pay $0.99" CTA with trust signals
+   - Payment modal redesign (mockup-based, card icon header)
+   - Post-payment success state with download screen
+   - Files: class-processor.php (+90 lines), processor-scripts.js (updated handlers), processor-styles.css (+300 lines), payment-modal.php (complete rewrite), payment-modal.css (redesigned), payment-modal.js (ensureStripe globally exported)
+
+2. **Extended to All Tools** (Commit: 0853d4a)
+   - Generic success state for merge, split, convert (no stats card)
+   - Dynamic title/subtitle populated by JS
+   - Unified payment flow for all 4 tools
+   - All tools use same download success state
+   - Files: class-processor.php (+24 lines), processor-scripts.js (~150 lines refactored)
+
+3. **Tool Page Redesign** (Commit: 82d3622)
+   - Hero section with blue gradient background
+   - Service tabs with descriptions (4-column → 2x2 mobile)
+   - Better active states (blue border + shadow)
+   - Responsive design (768px, 480px breakpoints)
+   - Files: class-processor.php (+45 lines), processor-scripts.js (updated handlers), processor-styles.css (+80 lines)
+
+**Homepage Structure Analysis**
+   - Complete documentation package (5 files, ~71KB)
+   - Location: /tmp/homepage-*.md
+   - Deliverables:
+     - homepage-elementor.json (20KB backup)
+     - homepage-structure-map.md (9 sections, 40 widgets)
+     - homepage-content-inventory.md (25 headlines, 3 CTAs)
+     - homepage-technical-specs.md (CSS, colors, fonts, performance)
+     - homepage-analysis-summary.md (executive summary + roadmap)
+     - README.md (navigation guide)
+   - Key findings: Homepage 80% launch-ready, critical issues identified (placeholder menu, broken CTAs, no footer)
+
+**Technical Metrics:**
+   - Lines Added: ~1,200
+   - Lines Removed: ~175
+   - Net Change: +1,025 lines
+   - Files Modified: 9 files
+   - Commits: 3
+   - E2E Testing: All 4 tools verified (compress, merge, split, convert)
+
+### Session 2025-10-15
+
+- **Elementor Phase 2 Completion**
   - Removed hero-inject.js (JS injection eliminated)
   - Migrated shortcodes → native Elementor widgets
   - 100% Editor=Front parity achieved
   - PR: #14
 
-- **Landing Page P0 Migration** (Oct 15, 2025)
+- **Landing Page P0 Migration**
   - Migrated 4 critical sections via Elementor API
   - Navbar: PDFMaster logo with icon
   - Hero: Trust badges (4 items)
@@ -123,13 +216,32 @@ Working style (process)
 
 ## 📌 Current Status
 
-Elementor Phase 2: 100% complete ✅
+**All 4 Tools UX: 100% complete** ✅
+- [x] Compression success flow with stats ✅
+- [x] Payment modal redesign (mockup-based) ✅
+- [x] Post-payment download state ✅
+- [x] Extended to all tools (merge, split, convert) ✅
+- [x] Tool page with service tabs + hero ✅
+- [x] Mobile responsive (768px, 480px breakpoints) ✅
 
-Landing Page MVP: 65% → 80% complete
+**Homepage Analysis: 100% complete** ✅
+- [x] Complete documentation (5 files, 71KB) ✅
+- [x] Elementor JSON backup ✅
+- [x] Structure map (9 sections, 40 widgets) ✅
+- [x] Content inventory (25 headlines, 3 CTAs) ✅
+- [x] Technical specs (CSS, colors, fonts) ✅
+- [x] Strategic recommendations (5-phase roadmap) ✅
 
+**Landing Page MVP: 85% → 90% complete**
 - [x] P0: Core sections migrated ✅
-- [ ] P1: Hero polish, pricing details
-- [ ] P2: Trust section, mobile optimization
+- [x] P0: Tool page redesign ✅
+- [x] P0: Homepage documented ✅
+- [x] P1: Homepage custom template created ✅
+- [x] P1: All 7 visual enhancements implemented ✅
+- [x] P1: CSS/JS loading fix ✅
+- [ ] P1: Template testing on live page
+- [ ] P1: Mobile responsive verification
+- [ ] P2: Deploy to staging
 
 ---
 
@@ -182,8 +294,14 @@ Key functions:
 
 wp-content/themes/pdfmaster-theme/
 ├── style.css
-├── functions.php (design tokens, global colors/typography)
-└── assets/css/home-polish.css
+├── functions.php (design tokens, global colors/typography, asset enqueuing)
+├── page-homepage-p1.php (custom template with 8 sections)
+└── assets/
+    ├── css/
+    │   ├── homepage-p1.css (15KB - all 7 enhancements)
+    │   └── home-polish.css
+    └── js/
+        └── homepage-p1.js (2.4KB - sticky bar, FAQ, smooth scroll)
 
 ### Test Page
 - Page ID: 12
@@ -292,9 +410,29 @@ git log --oneline -10
 
 ### Next Tasks (Priority)
 
-1. **Landing Page P1** (3-4h) - Hero fixes, pricing polish, trust section
-2. **Merge Tool** (3-4h) - Multi-file merge functionality  
-3. **Split Tool** (3-4h) - Page extraction tool
+1. **Homepage P1 Template Testing** (1-2h)
+   - Create test page with Homepage P1 template
+   - Verify all 7 enhancements work
+   - Test mobile responsive design (768px, 480px)
+   - Fix any browser compatibility issues
+
+2. **Homepage P1 Deployment** (1h)
+   - Replace current homepage with P1 template
+   - Test live site
+   - Verify performance improvements
+   - Monitor for issues
+
+3. **Tool Features** (3-4h each)
+   - Merge tool multi-file support refinement
+   - Split tool page range validation
+   - Convert tool format options (PDF→Images)
+   - Error handling improvements
+
+4. **Production Prep** (2-4h)
+   - Domain + SSL configuration
+   - Performance optimization
+   - Monitoring & error tracking
+   - Backup strategy
 
 ---
 
@@ -343,10 +481,31 @@ Business Validation
 
 - Repository: https://github.com/zurychhh/pdfmaster-wp
 - Test Page: http://localhost:10003/test-processor/
+- Homepage: http://localhost:10003/
 - WP Admin: http://localhost:10003/wp-admin
 - Stirling PDF: http://localhost:8080
 - Stirling Swagger: http://localhost:8080/swagger-ui/index.html
 - Stripe Dashboard: https://dashboard.stripe.com/test/payments
+
+## 📚 Session Documentation
+
+**Latest Session Notes:** /Users/user/Local Sites/pdfmaster/app/public/docs/session_notes/SESSION_NOTES_2025-10-20.md
+
+**Homepage Documentation Package:** (5 files, 71KB total)
+- Location: /tmp/
+- Files:
+  - homepage-elementor.json (20KB) - Full Elementor backup
+  - homepage-structure-map.md (12KB) - Visual structure (9 sections, 40 widgets)
+  - homepage-content-inventory.md (9.8KB) - All copy, headlines, CTAs
+  - homepage-technical-specs.md (14KB) - CSS, colors, fonts, performance
+  - homepage-analysis-summary.md (15KB) - Executive summary + roadmap
+  - README.md (2KB) - Navigation guide
+
+**Quick Access:**
+- For strategic planning: Read homepage-analysis-summary.md
+- For design work: Read homepage-structure-map.md + homepage-technical-specs.md
+- For content updates: Read homepage-content-inventory.md
+- Before changes: Backup homepage-elementor.json to safe location
 
 ---
 
@@ -378,26 +537,44 @@ Notes
 
 ## 💡 Development Notes
 
-Factory.ai Workflow
-- Default: Single Droid (90% of cases)
-- Multi-Droid only if: task > 6h, independent components, zero overlap, >30% time savings
+Claude Code Workflow
+- Claude Code (AI assistant) handles all development tasks
+- End-to-end execution: research → plan → code → test → deploy
+- User provides: approvals, API keys, strategic decisions
+- Documentation updated every session
+
+Development Approach
+- Custom PHP templates when: speed critical, complex features, user accepts zero editability
+- Elementor when: frequent content updates, non-developer editing needed
+- Always test E2E after major changes
+- Use real PDFs (not tiny dummies)
 
 Code Standards
 - WordPress-compatible code, clear structure
-- Explicit require/include where applicable
-
-Testing Protocol
-- Always test E2E after major changes
-- Use real PDFs (not tiny dummies)
-- Verify Stripe test payment; confirm record in Stripe Dashboard
+- Prefix functions: pdfm_*
+- Prefix CSS classes: .pdfm-*
+- Asset enqueuing in functions.php via wp_enqueue_scripts hook
+- Type hints for PHP 8.1+ (: void, : string, : array)
 
 ---
 
-## 🤖 For Next Droid Session
+## 🤖 For Next Session
 
-First message suggestion:
-"Hi! I'm continuing work on PDFMaster.
-I've read PROJECT_STATUS.md and understand current state, structure, and recent changes.
-Next task I'd like to start: [task]. Ready to proceed — please confirm."
+**Before Starting:**
+1. Read docs/PDFMASTER_PROJECT_DOCS.md (methodology, architecture)
+2. Read PROJECT_STATUS.md (current state, recent work)
+3. Check open PRs: https://github.com/zurychhh/pdfmaster-wp/pulls
+4. Verify environment: WordPress, Stirling PDF, Docker
 
-This file should be updated before each session handoff to maintain accurate project state.
+**Opening Message:**
+"Hi! Continuing work on PDFMaster.
+
+I've read:
+- PDFMASTER_PROJECT_DOCS.md (methodology)
+- PROJECT_STATUS.md (current state)
+- Open PRs: [list or 'none']
+
+Current priority: [task from Next Tasks]
+Ready to proceed."
+
+This file should be updated every session to maintain accurate project state.
