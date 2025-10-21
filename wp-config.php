@@ -20,6 +20,11 @@
  */
 
 // ** Database settings - You can get this info from your web host ** //
+// Handle HTTPS behind Railway proxy
+if (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https') {
+    $_SERVER['HTTPS'] = 'on';
+}
+
 // Railway environment detection
 if (getenv('RAILWAY_ENVIRONMENT')) {
     // Railway MySQL connection
