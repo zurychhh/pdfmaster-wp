@@ -1,6 +1,6 @@
-# WordPress Core
-/wp-admin/
-/wp-includes/
+# WordPress Core (keeping core files for Railway deployment)
+# /wp-admin/
+# /wp-includes/
 /wp-content/index.php
 /wp-content/plugins/index.php
 /wp-content/themes/index.php
