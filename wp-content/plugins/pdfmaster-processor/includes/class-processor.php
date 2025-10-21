@@ -66,26 +66,37 @@ class Processor
         wp_enqueue_script('pdfm-processor-scripts');
 
         $output  = '<div class="pdfm-processor">';
+
+        // Hero Section
+        $output .= '<div class="pdfm-hero">';
+        $output .= '  <h1 class="pdfm-hero-title">' . esc_html__('PDF Tools', 'pdfmaster-processor') . '</h1>';
+        $output .= '  <p class="pdfm-hero-subtitle">' . esc_html__('Professional PDF processing in seconds. $0.99 per action, no subscription required.', 'pdfmaster-processor') . '</p>';
+        $output .= '</div>';
+
         $output .= '<form class="pdfm-processor__form" method="post" enctype="multipart/form-data">';
         $output .= wp_nonce_field('pdfm_processor_nonce', '_pdfm_nonce', true, false);
 
-        // Tool selector (visual radio buttons)
-        $output .= '<div class="pdfm-tool-selector">';
-        $output .= '<label class="pdfm-tool-option active" data-operation="compress">';
+        // Service Tabs with descriptions
+        $output .= '<div class="pdfm-service-tabs">';
+        $output .= '<label class="pdfm-tab active" data-operation="compress">';
         $output .= '<input type="radio" name="operation" value="compress" checked>';
-        $output .= '<span class="pdfm-tool-label">' . esc_html__('Compress', 'pdfmaster-processor') . '</span>';
+        $output .= '<div class="pdfm-tab-label">' . esc_html__('Compress', 'pdfmaster-processor') . '</div>';
+        $output .= '<div class="pdfm-tab-desc">' . esc_html__('Reduce file size by up to 90%', 'pdfmaster-processor') . '</div>';
         $output .= '</label>';
-        $output .= '<label class="pdfm-tool-option" data-operation="merge">';
+        $output .= '<label class="pdfm-tab" data-operation="merge">';
         $output .= '<input type="radio" name="operation" value="merge">';
-        $output .= '<span class="pdfm-tool-label">' . esc_html__('Merge', 'pdfmaster-processor') . '</span>';
+        $output .= '<div class="pdfm-tab-label">' . esc_html__('Merge', 'pdfmaster-processor') . '</div>';
+        $output .= '<div class="pdfm-tab-desc">' . esc_html__('Combine multiple PDFs into one', 'pdfmaster-processor') . '</div>';
         $output .= '</label>';
-        $output .= '<label class="pdfm-tool-option" data-operation="split">';
+        $output .= '<label class="pdfm-tab" data-operation="split">';
         $output .= '<input type="radio" name="operation" value="split">';
-        $output .= '<span class="pdfm-tool-label">' . esc_html__('Split', 'pdfmaster-processor') . '</span>';
+        $output .= '<div class="pdfm-tab-label">' . esc_html__('Split', 'pdfmaster-processor') . '</div>';
+        $output .= '<div class="pdfm-tab-desc">' . esc_html__('Extract specific pages from PDF', 'pdfmaster-processor') . '</div>';
         $output .= '</label>';
-        $output .= '<label class="pdfm-tool-option" data-operation="convert">';
+        $output .= '<label class="pdfm-tab" data-operation="convert">';
         $output .= '<input type="radio" name="operation" value="convert">';
-        $output .= '<span class="pdfm-tool-label">' . esc_html__('Convert', 'pdfmaster-processor') . '</span>';
+        $output .= '<div class="pdfm-tab-label">' . esc_html__('Convert', 'pdfmaster-processor') . '</div>';
+        $output .= '<div class="pdfm-tab-desc">' . esc_html__('Images ↔ PDF conversion', 'pdfmaster-processor') . '</div>';
         $output .= '</label>';
         $output .= '</div>';
 
@@ -146,6 +157,103 @@ class Processor
 
         $output .= '<button type="submit">' . esc_html__('Process PDF', 'pdfmaster-processor') . '</button>';
         $output .= '</form>';
+
+        // Success state (initially hidden, shown after successful compression)
+        $output .= '<div id="pdfm-success-state" class="pdfm-success-container" style="display:none;">';
+        $output .= '  <div class="pdfm-success-icon">';
+        $output .= '    <svg viewBox="0 0 24 24" class="pdfm-checkmark" aria-hidden="true">';
+        $output .= '      <polyline points="20 6 9 17 4 12"></polyline>';
+        $output .= '    </svg>';
+        $output .= '  </div>';
+        $output .= '  <h2 class="pdfm-success-title">' . esc_html__('Compression Successful!', 'pdfmaster-processor') . '</h2>';
+        $output .= '  <p class="pdfm-success-subtitle">' . esc_html__('Your PDF has been optimized and is ready to download', 'pdfmaster-processor') . '</p>';
+        $output .= '  <div class="pdfm-stats-card">';
+        $output .= '    <div class="pdfm-stat-row">';
+        $output .= '      <span class="pdfm-stat-label">' . esc_html__('Original Size', 'pdfmaster-processor') . '</span>';
+        $output .= '      <span class="pdfm-stat-value" id="pdfm-original-size"></span>';
+        $output .= '    </div>';
+        $output .= '    <div class="pdfm-divider"></div>';
+        $output .= '    <div class="pdfm-stat-row">';
+        $output .= '      <span class="pdfm-stat-label">' . esc_html__('Compressed Size', 'pdfmaster-processor') . '</span>';
+        $output .= '      <span class="pdfm-stat-value pdfm-stat-green" id="pdfm-compressed-size"></span>';
+        $output .= '    </div>';
+        $output .= '    <div class="pdfm-divider"></div>';
+        $output .= '    <div class="pdfm-stat-row">';
+        $output .= '      <span class="pdfm-stat-label">' . esc_html__('Space Saved', 'pdfmaster-processor') . '</span>';
+        $output .= '      <span class="pdfm-stat-improvement" id="pdfm-improvement"></span>';
+        $output .= '    </div>';
+        $output .= '  </div>';
+        $output .= '  <button class="pdfm-btn pdfm-btn-primary" id="pdfm-pay-button" type="button">';
+        $output .= esc_html__('Pay $0.99 to Download', 'pdfmaster-processor');
+        $output .= '  </button>';
+        $output .= '  <button class="pdfm-btn pdfm-btn-secondary" id="pdfm-reset-button" type="button">';
+        $output .= esc_html__('Process Another File', 'pdfmaster-processor');
+        $output .= '  </button>';
+        $output .= '  <div class="pdfm-trust-signal">';
+        $output .= '    <svg viewBox="0 0 24 24" class="pdfm-lock-icon" aria-hidden="true">';
+        $output .= '      <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>';
+        $output .= '      <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>';
+        $output .= '    </svg>';
+        $output .= '    <span>' . esc_html__('Your file will be automatically deleted after 1 hour', 'pdfmaster-processor') . '</span>';
+        $output .= '  </div>';
+        $output .= '</div>';
+
+        // Generic Success State (for merge, split, convert - no stats card)
+        $output .= '<div id="pdfm-success-state-generic" class="pdfm-success-container" style="display:none;">';
+        $output .= '  <div class="pdfm-success-icon">';
+        $output .= '    <svg viewBox="0 0 24 24" class="pdfm-checkmark" aria-hidden="true">';
+        $output .= '      <polyline points="20 6 9 17 4 12"></polyline>';
+        $output .= '    </svg>';
+        $output .= '  </div>';
+        $output .= '  <h2 class="pdfm-success-title" id="pdfm-generic-title"></h2>';
+        $output .= '  <p class="pdfm-success-subtitle" id="pdfm-generic-subtitle"></p>';
+        $output .= '  <button class="pdfm-btn pdfm-btn-primary" id="pdfm-pay-button-generic" type="button">';
+        $output .= esc_html__('Pay $0.99 to Download', 'pdfmaster-processor');
+        $output .= '  </button>';
+        $output .= '  <button class="pdfm-btn pdfm-btn-secondary" id="pdfm-reset-button-generic" type="button">';
+        $output .= esc_html__('Process Another File', 'pdfmaster-processor');
+        $output .= '  </button>';
+        $output .= '  <div class="pdfm-trust-signal">';
+        $output .= '    <svg viewBox="0 0 24 24" class="pdfm-lock-icon" aria-hidden="true">';
+        $output .= '      <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>';
+        $output .= '      <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>';
+        $output .= '    </svg>';
+        $output .= '    <span>' . esc_html__('Your file will be automatically deleted after 1 hour', 'pdfmaster-processor') . '</span>';
+        $output .= '  </div>';
+        $output .= '</div>';
+
+        // Download Success State (shown after payment success)
+        $output .= '<div class="pdfm-download-success-state" style="display:none;">';
+        $output .= '  <div class="pdfm-success-container">';
+        $output .= '    <div class="pdfm-success-checkmark">';
+        $output .= '      <svg viewBox="0 0 24 24" class="pdfm-checkmark-icon" aria-hidden="true">';
+        $output .= '        <polyline points="20 6 9 17 4 12"></polyline>';
+        $output .= '      </svg>';
+        $output .= '    </div>';
+        $output .= '    <h2 class="pdfm-success-title">' . esc_html__('Payment Successful!', 'pdfmaster-processor') . '</h2>';
+        $output .= '    <p class="pdfm-success-subtitle">' . esc_html__('Your compressed PDF is ready to download.', 'pdfmaster-processor') . '</p>';
+        $output .= '    <button id="pdfm-download-final" class="pdfm-btn-download-final" type="button">';
+        $output .= '      <svg viewBox="0 0 24 24" class="pdfm-download-icon" aria-hidden="true">';
+        $output .= '        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>';
+        $output .= '        <polyline points="7 10 12 15 17 10"></polyline>';
+        $output .= '        <line x1="12" y1="15" x2="12" y2="3"></line>';
+        $output .= '      </svg>';
+        $output .= esc_html__('Download Your PDF', 'pdfmaster-processor');
+        $output .= '    </button>';
+        $output .= '    <button id="pdfm-process-another-final" class="pdfm-btn-secondary-final" type="button">';
+        $output .= esc_html__('Process Another File', 'pdfmaster-processor');
+        $output .= '    </button>';
+        $output .= '    <div class="pdfm-auto-delete-notice">';
+        $output .= '      <svg viewBox="0 0 24 24" class="pdfm-notice-icon" aria-hidden="true">';
+        $output .= '        <circle cx="12" cy="12" r="10"></circle>';
+        $output .= '        <line x1="12" y1="8" x2="12" y2="12"></line>';
+        $output .= '        <line x1="12" y1="16" x2="12.01" y2="16"></line>';
+        $output .= '      </svg>';
+        $output .= '      <span>' . esc_html__('Your file will be automatically deleted from our servers in 1 hour for your security.', 'pdfmaster-processor') . '</span>';
+        $output .= '    </div>';
+        $output .= '  </div>';
+        $output .= '</div>';
+
         $output .= $content;
         $output .= '</div>';
 

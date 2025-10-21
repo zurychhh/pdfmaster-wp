@@ -1,0 +1,383 @@
+################################################################################
+# SITE-VERSION-15-10 - MERGED ARCHIVE
+# Data utworzenia: $(date)
+#
+# Ten plik zawiera WSZYSTKIE pliki z katalogu site-version-15-10
+# w formacie umożliwiającym pełne odtworzenie struktury 1:1
+#
+# Aby odtworzyć strukturę, użyj skryptu: restore_site_version.sh
+################################################################################
+
+# Data utworzenia: śro 15 paź 18:23:59 2025 CEST
+
+################################################################################
+# STRUKTURA KATALOGÓW
+################################################################################
+
+DIRECTORY_STRUCTURE<<ENDSTRUCTURE
+/Users/user/Downloads/site-version-15-10
+├── content
+│   └── page
+│       └── 11.json
+├── manifest.json
+├── site-settings.json
+├── taxonomies
+│   └── category.json
+└── wp-content
+    ├── nav_menu_item
+    │   └── nav_menu_item.xml
+    ├── page
+    │   └── page.xml
+    └── post
+        └── post.xml
+
+8 directories, 7 files
+ENDSTRUCTURE
+
+
+################################################################################
+# LISTA WSZYSTKICH PLIKÓW (z metadanymi)
+################################################################################
+
+FILE: content/page/11.json | SIZE: 22251 bytes | PERMS: -rw-rw-rw-
+FILE: site-settings.json | SIZE: 4652 bytes | PERMS: -rw-rw-rw-
+FILE: manifest.json | SIZE: 1987 bytes | PERMS: -rw-rw-rw-
+FILE: wp-content/page/page.xml | SIZE: 5908 bytes | PERMS: -rw-rw-rw-
+FILE: wp-content/post/post.xml | SIZE: 4464 bytes | PERMS: -rw-rw-rw-
+FILE: wp-content/nav_menu_item/nav_menu_item.xml | SIZE: 2278 bytes | PERMS: -rw-rw-rw-
+FILE: taxonomies/category.json | SIZE: 111 bytes | PERMS: -rw-rw-rw-
+
+
+################################################################################
+# ZAWARTOŚĆ PLIKÓW
+################################################################################
+
+
+################################################################################
+# PLIK [1]: content/page/11.json
+# Pełna ścieżka: /Users/user/Downloads/site-version-15-10/content/page/11.json
+################################################################################
+
+>>>FILE_START: content/page/11.json
+{"content":[{"id":"2f9519ce","settings":{"content_width":"boxed","gap":"default","css_classes":"navbar-sticky"},"elements":[{"id":"257e838c","settings":{"_column_size":50},"elements":[{"id":"113fedb","settings":{"selected_icon":{"value":"fas fa-file-pdf","library":"fa-solid"},"title_text":"PDFMaster","title_size":"span","view":"inline","align":"left"},"elements":[],"isInner":false,"widgetType":"icon-box","elType":"widget"},{"id":"7dc375bb","settings":{"icon_list":[{"_id":"XpLnvl","text":"No signup required","selected_icon":{"value":"fas fa-check","library":"fa-solid"}},{"_id":"t0sYkB","text":"Files deleted after 1 hour","selected_icon":{"value":"fas fa-check","library":"fa-solid"}},{"_id":"vjzNcI","text":"Bank-level encryption","selected_icon":{"value":"fas fa-check","library":"fa-solid"}},{"_id":"lP2LH4","text":"2M+ users monthly","selected_icon":{"value":"fas fa-check","library":"fa-solid"}}],"view":"inline","align":"center","css_classes":"home-hero","pdfm_marker":"hero_badges"},"elements":[],"isInner":false,"widgetType":"icon-list","elType":"widget","_element_id":"pdfm_hero_badges"}],"isInner":false,"elType":"column"},{"id":"4d069fdc","settings":{"_column_size":50,"horizontal_align":"right"},"elements":[{"id":"633b7d70","settings":{"editor":"<a href=\"#pricing\">Pricing<\/a> &nbsp; | &nbsp; <a href=\"#tools\">All Tools<\/a> &nbsp; | &nbsp; <a href=\"#faq\">FAQ<\/a>"},"elements":[],"isInner":false,"widgetType":"text-editor","elType":"widget"}],"isInner":false,"elType":"column"}],"isInner":false,"elType":"section"},{"id":"596acc88","settings":{"content_width":"boxed","gap":"extended","css_classes":"home-hero section-spacing","content_position":"middle"},"elements":[{"id":"7f603d71","settings":{"_column_size":100},"elements":[{"id":"37aa84bf","settings":{"title":"Convert, Merge & Edit PDFs \u2013 Pay Only When You Use It","header_size":"h1","title_color":"#FFFFFF","typography_typography":"global","typography_global":"primary"},"elements":[],"isInner":false,"widgetType":"heading","elType":"widget"},{"id":"25d9dff","settings":{"editor":"No monthly subscriptions. No hidden fees. Just $0.99 per action. Upload, process, and download in seconds. Your files, your control.","text_color":"rgba(255,255,255,0.9)","typography_typography":"global","typography_global":"text"},"elements":[],"isInner":false,"widgetType":"text-editor","elType":"widget"},{"id":"7d9f384f","settings":{"text":"Start Converting \u2013 $0.99","size":"lg","css_classes":"btn-hero-white"},"elements":[],"isInner":false,"widgetType":"button","elType":"widget"},{"id":"55f24265","settings":{"text":"See All Tools & Pricing","size":"lg","button_type":"info","css_classes":"btn-hero-white"},"elements":[],"isInner":false,"widgetType":"button","elType":"widget"},{"id":"3a63771a","settings":{"title_text":"Compress PDF","description_text":"Reduce file size without losing quality.","selected_icon":{"value":"fas fa-file-archive","library":"fa-solid"},"view":"stacked","align":"center","css_classes":"tool-card"},"elements":[],"isInner":false,"widgetType":"icon-box","elType":"widget"}],"isInner":false,"elType":"column"}],"isInner":false,"elType":"section"},{"id":"6aacc6a","settings":{"layout":"boxed","content_width":"boxed","pdfm_marker":"tools_header"},"elements":[{"id":"10ade683","settings":{"_column_size":100},"elements":[{"id":"1ed50321","settings":{"title":"All Tools, One Simple Price","header_size":"h2","align":"center"},"elements":[],"isInner":false,"widgetType":"heading","elType":"widget"},{"id":"52d625ad","settings":{"editor":"$0.99 per action. No subscriptions, no packages, no complexity.","align":"center"},"elements":[],"isInner":false,"widgetType":"text-editor","elType":"widget"}],"isInner":false,"elType":"column"}],"isInner":false,"elType":"section","_element_id":"pdfm_tools_hdr"},{"id":"8449079","settings":{"content_width":"boxed","gap":"wide","css_classes":"section-spacing"},"elements":[{"id":"28920eed","settings":{"_column_size":50},"elements":[{"id":"3f5f30d4","settings":{"title_text":"Compress PDF","description_text":"Reduce file size without losing quality.","selected_icon":{"value":"fas fa-file-archive","library":"fa-solid"},"view":"stacked","align":"center","css_classes":"tool-card"},"elements":[],"isInner":false,"widgetType":"icon-box","elType":"widget"},{"id":"69f68297","settings":{"editor":"<div style=\"margin-top:16px;text-align:center;\">\n<div style=\"font-size:32px;font-weight:700;color:#2563EB;\">$0.99<\/div>\\n<div style=\"font-size:14px;color:#6B7280;margin-top:4px;\">~8 seconds processing<\/div>\\n<\/div>"},"elements":[],"isInner":true,"widgetType":"text-editor","elType":"widget"}],"isInner":false,"elType":"column"},{"id":"3c8ec303","settings":{"_column_size":50},"elements":[{"id":"603512c","settings":{"title_text":"Merge PDF","description_text":"Combine multiple PDFs into one.","selected_icon":{"value":"fas fa-layer-group","library":"fa-solid"},"view":"stacked","align":"center","css_classes":"tool-card"},"elements":[],"isInner":false,"widgetType":"icon-box","elType":"widget"},{"id":"25172dc7","settings":{"editor":"<div style=\"margin-top:16px;text-align:center;\">\n<div style=\"font-size:32px;font-weight:700;color:#2563EB;\">$0.99<\/div>\\n<div style=\"font-size:14px;color:#6B7280;margin-top:4px;\">~5 seconds processing<\/div>\\n<\/div>"},"elements":[],"isInner":true,"widgetType":"text-editor","elType":"widget"}],"isInner":false,"elType":"column"},{"id":"1c75ad52","settings":{"_column_size":50},"elements":[{"id":"8cfff09","settings":{"selected_icon":{"value":"fas fa-cut","library":"fa-solid"},"view":"stacked","align":"center","title_text":"Split PDF","description_text":"Extract specific pages or split into separate files. Simple page range selection.","css_classes":"tool-card"},"elements":[],"isInner":true,"widgetType":"icon-box","elType":"widget"},{"id":"50a18679","settings":{"editor":"<div style=\"margin-top:16px;text-align:center;\">\n<div style=\"font-size:32px;font-weight:700;color:#2563EB;\">$0.99<\/div>\\n<div style=\"font-size:14px;color:#6B7280;margin-top:4px;\">~6 seconds processing<\/div>\\n<\/div>"},"elements":[],"isInner":true,"widgetType":"text-editor","elType":"widget"}],"isInner":false,"elType":"column"},{"id":"17f01ed3","settings":{"_column_size":50},"elements":[{"id":"5a4ab264","settings":{"selected_icon":{"value":"fas fa-file-import","library":"fa-solid"},"view":"stacked","align":"center","title_text":"Convert to PDF","description_text":"Convert Word, Excel, PowerPoint and images to PDF. Quality options available.","css_classes":"tool-card"},"elements":[],"isInner":true,"widgetType":"icon-box","elType":"widget"},{"id":"6afaccf4","settings":{"editor":"<div style=\"margin-top:16px;text-align:center;\">\n<div style=\"font-size:32px;font-weight:700;color:#2563EB;\">$0.99<\/div>\\n<div style=\"font-size:14px;color:#6B7280;margin-top:4px;\">~10 seconds processing<\/div>\\n<\/div>"},"elements":[],"isInner":true,"widgetType":"text-editor","elType":"widget"}],"isInner":false,"elType":"column"}],"isInner":false,"elType":"section"},{"id":"3a8e94a6","settings":{"layout":"boxed","content_width":"boxed","gap":"wide","css_classes":"section-spacing","pdfm_marker":"pricing"},"elements":[{"id":"3b8f4997","settings":{"_column_size":100,"horizontal_align":"center"},"elements":[{"id":"123bd131","settings":{"title":"Simple, Honest Pricing","header_size":"h2","align":"center"},"elements":[],"isInner":false,"widgetType":"heading","elType":"widget"},{"id":"7f949304","settings":{"editor":"One price for everything. No tiers, no packages, no confusion.","align":"center"},"elements":[],"isInner":false,"widgetType":"text-editor","elType":"widget"},{"id":"1c270e9","settings":{"layout":"boxed"},"elements":[{"id":"78bab24a","settings":{"_column_size":100,"padding":{"unit":"px","top":32,"right":32,"bottom":32,"left":32},"css_classes":"pricing-card"},"elements":[{"id":"6532e285","settings":{"html":"<div style=\"text-align:center;\">\\n  <div style=\"font-size:72px;font-weight:700;color:#1F2937;\">$0.99<\/div>\\n  <div style=\"font-size:20px;color:#6B7280;margin-top:8px;\">per action<\/div>\\n<\/div>"},"elements":[],"isInner":true,"widgetType":"html","elType":"widget"},{"id":"40399051","settings":{"icon_list":[{"_id":"IW2EGs","text":"Any tool: Compress, Merge, Split, Convert","selected_icon":{"value":"fas fa-check","library":"fa-solid"}},{"_id":"PQsPMo","text":"Files up to 100MB","selected_icon":{"value":"fas fa-check","library":"fa-solid"}},{"_id":"yimh3q","text":"No signup required","selected_icon":{"value":"fas fa-check","library":"fa-solid"}},{"_id":"zBmwZ8","text":"Secure processing with auto-delete","selected_icon":{"value":"fas fa-check","library":"fa-solid"}},{"_id":"nsYksp","text":"No subscription, no recurring charges","selected_icon":{"value":"fas fa-check","library":"fa-solid"}}],"align":"left"},"elements":[],"isInner":true,"widgetType":"icon-list","elType":"widget"},{"id":"669d2986","settings":{"text":"Try Any Tool Now","size":"lg","button_type":"primary","button_css_id":"","align":"center","button_full_width":"yes"},"elements":[],"isInner":true,"widgetType":"button","elType":"widget"}],"isInner":true,"elType":"column"}],"isInner":true,"elType":"section"}],"isInner":false,"elType":"column"}],"isInner":false,"elType":"section","_element_id":"pdfm_price_sec"},{"id":"42f0bab2","settings":{"layout":"boxed","content_width":"boxed","css_classes":"comparison-section"},"elements":[{"id":"26ecacbc","settings":{"_column_size":100},"elements":[{"id":"4d36a210","settings":{"title":"The Subscription Trap vs. The Smart Choice","header_size":"h3","align":"center"},"elements":[],"isInner":false,"widgetType":"heading","elType":"widget"},{"id":"57f94a22","settings":{"layout":"columns"},"elements":[{"id":"71b8ef49","settings":{"_column_size":50,"padding":{"unit":"px","top":24,"right":24,"bottom":24,"left":24}},"elements":[{"id":"488f750e","settings":{"selected_icon":{"value":"fas fa-times-circle","library":"fa-solid"},"title_text":"Typical Competitor (Smallpdf Pro)","description_text":"$108\/year subscription\nMost users need only 9 actions\/year\n= $99.09 wasted annually"},"elements":[],"isInner":true,"widgetType":"icon-box","elType":"widget"}],"isInner":true,"elType":"column"},{"id":"611cc574","settings":{"_column_size":50,"padding":{"unit":"px","top":24,"right":24,"bottom":24,"left":24},"css_classes":"good"},"elements":[{"id":"4579bba4","settings":{"selected_icon":{"value":"fas fa-check-circle","library":"fa-solid"},"title_text":"PDFMaster","description_text":"Pay only when you use it\n9 actions \u00d7 $0.99 each\n= $8.91 total per year"},"elements":[],"isInner":true,"widgetType":"icon-box","elType":"widget"}],"isInner":true,"elType":"column"}],"isInner":true,"elType":"section"},{"id":"15076653","settings":{"editor":"<div style=\"text-align:center;font-size:20px;font-weight:700;color:#1E3A8A;\">Save $99.09 annually by paying only for what you actually use.<\/div>"},"elements":[],"isInner":false,"widgetType":"text-editor","elType":"widget"}],"isInner":false,"elType":"column"}],"isInner":false,"elType":"section"},{"id":"37a6e194","settings":{"content_width":"boxed","gap":"wide"},"elements":[{"id":"3b543a51","settings":{"_column_size":100},"elements":[{"id":"1ca63e4d","settings":{"selected_icon":{"value":"fas fa-upload","library":"fa-solid"},"align":"center"},"elements":[],"isInner":false,"widgetType":"icon","elType":"widget"},{"id":"465ccc45","settings":{"title":"Drop your PDF here or click to browse","header_size":"h3","align":"center"},"elements":[],"isInner":false,"widgetType":"heading","elType":"widget"},{"id":"50fc0e90","settings":{"editor":"Supported formats: PDF, DOCX, JPG, PNG \u2022 Max size: 100MB","align":"center"},"elements":[],"isInner":false,"widgetType":"text-editor","elType":"widget"},{"id":"70024bd2","settings":{"text":"Select File from Computer","size":"md","align":"center"},"elements":[],"isInner":false,"widgetType":"button","elType":"widget"},{"id":"738f2cc3","settings":{"icon_list":[{"text":"This action costs $0.99 \u2022 Your files will be deleted after 1 hour","selected_icon":{"value":"fas fa-lock","library":"fa-solid"}}],"align":"center"},"elements":[],"isInner":false,"widgetType":"icon-list","elType":"widget"}],"isInner":false,"elType":"column"}],"isInner":false,"elType":"section"},{"id":"60d04d75","settings":{"content_width":"boxed","gap":"wide"},"elements":[{"id":"5ccb316b","settings":{"_column_size":25},"elements":[{"id":"48fe202e","settings":{"title_text":"Pay Only for What You Need","description_text":"Unlike $10+\/month subscriptions, you pay $0.99 only when you convert, merge, or compress a file. No wasted money on unused features.","selected_icon":{"value":"fas fa-dollar-sign","library":"fa-solid"}},"elements":[],"isInner":false,"widgetType":"icon-box","elType":"widget"}],"isInner":false,"elType":"column"},{"id":"67409026","settings":{"_column_size":25},"elements":[{"id":"73288b9b","settings":{"title_text":"Zero Commitment, Zero Hassle","description_text":"No account creation. No credit card on file. Just upload, pay once via Stripe or PayPal, and download your file instantly.","selected_icon":{"value":"fas fa-check","library":"fa-solid"}},"elements":[],"isInner":false,"widgetType":"icon-box","elType":"widget"}],"isInner":false,"elType":"column"},{"id":"3a5ba79f","settings":{"_column_size":25},"elements":[{"id":"4359b320","settings":{"title_text":"Military-Grade Security","description_text":"Your files are encrypted during upload, processing, and download. All documents are permanently deleted from our servers within 1 hour.","selected_icon":{"value":"fas fa-shield-alt","library":"fa-solid"}},"elements":[],"isInner":false,"widgetType":"icon-box","elType":"widget"}],"isInner":false,"elType":"column"},{"id":"7923af36","settings":{"_column_size":25},"elements":[{"id":"7869164","settings":{"title_text":"Lightning-Fast Processing","description_text":"Most conversions complete in under 10 seconds. No waiting rooms, no speed throttling\u2014just instant results.","selected_icon":{"value":"fas fa-bolt","library":"fa-solid"}},"elements":[],"isInner":false,"widgetType":"icon-box","elType":"widget"}],"isInner":false,"elType":"column"}],"isInner":false,"elType":"section"},{"id":"667c6811","settings":{"content_width":"boxed","gap":"wide"},"elements":[{"id":"4228aab9","settings":{"_column_size":33},"elements":[{"id":"680c7723","settings":{"title_text":"Secure Payments","description_text":"We never see your card details. Payments processed by Stripe (PCI DSS Level 1 certified).","selected_icon":{"value":"fas fa-credit-card","library":"fa-solid"}},"elements":[],"isInner":false,"widgetType":"icon-box","elType":"widget"}],"isInner":false,"elType":"column"},{"id":"3d457b38","settings":{"_column_size":33},"elements":[{"id":"5ce2f273","settings":{"title_text":"Data Protection","description_text":"256-bit AES encryption during transfer. Files auto-deleted after 60 minutes\u2014no exceptions, no logs.","selected_icon":{"value":"fas fa-shield-alt","library":"fa-solid"}},"elements":[],"isInner":false,"widgetType":"icon-box","elType":"widget"}],"isInner":false,"elType":"column"},{"id":"103ed07d","settings":{"_column_size":33},"elements":[{"id":"40e2c346","settings":{"title_text":"No Tracking, No Ads","description_text":"We don't sell your data. We don't track your usage. You pay, you convert, you leave.","selected_icon":{"value":"fas fa-lock","library":"fa-solid"}},"elements":[],"isInner":false,"widgetType":"icon-box","elType":"widget"}],"isInner":false,"elType":"column"}],"isInner":false,"elType":"section"},{"id":"3fbbf482","settings":{"content_width":"boxed","gap":"default"},"elements":[{"id":"68b4210b","settings":{"_column_size":100},"elements":[{"id":"7b639b66","settings":{"html":"<div style=\"background:#FEF3C7;border:1px solid #FDE68A;border-radius:12px;padding:24px;max-width:720px;margin:0 auto;\">\\n<div style=\"display:flex;align-items:flex-start;gap:16px;\">\\n<div>\\n<span style=\"color:#F59E0B\">\u2605 \u2605 \u2605 \u2605 \u2605<\/span>\\n<\/div>\\n<div>\\n<p style=\"font-weight:600;margin:0 0 8px;color:#111827\">4.8\/5 from 2,300+ users on Trustpilot<\/p>\\n<p style=\"font-style:italic;margin:0;color:#374151\">\\\"Finally, a PDF tool that respects my wallet AND my privacy.\\\"<\/p>\\n<p style=\"margin:4px 0 0;color:#4B5563\">\u2014 Sarah T., Freelance Designer<\/p>\\n<\/div>\\n<\/div>\\n<\/div>"},"elements":[],"isInner":false,"widgetType":"html","elType":"widget"}],"isInner":false,"elType":"column"}],"isInner":false,"elType":"section"},{"id":"58b08588","settings":{"content_width":"boxed","gap":"wide"},"elements":[{"id":"4b20fb1f","settings":{"_column_size":100},"elements":[{"id":"9b27625","settings":{"editor":"<h3 style=\"margin-bottom:8px;\">Why pay-per-use instead of a subscription?<\/h3><p>Because most people convert PDFs 2-3 times per month\u2014not 50. Why pay $12\/month for something you barely use? With us, you pay $0.99 only when you need it.<\/p>"},"elements":[],"isInner":false,"widgetType":"text-editor","elType":"widget"},{"id":"30b9f09a","settings":{"editor":"<h3 style=\"margin-bottom:8px;\">Do I need to create an account?<\/h3><p>Nope. Just upload your file, pay, and download. We&#039;ll email you a receipt, but that&#039;s it.<\/p>"},"elements":[],"isInner":false,"widgetType":"text-editor","elType":"widget"},{"id":"2a6ce8b5","settings":{"editor":"<h3 style=\"margin-bottom:8px;\">What payment methods do you accept?<\/h3><p>We accept all major credit\/debit cards via Stripe, plus PayPal and Google Pay.<\/p>"},"elements":[],"isInner":false,"widgetType":"text-editor","elType":"widget"},{"id":"617c1a9b","settings":{"editor":"<h3 style=\"margin-bottom:8px;\">Can I get a refund?<\/h3><p>Yes. If your file fails to process or the output is corrupted, email us within 24 hours for a full refund\u2014no questions asked.<\/p>"},"elements":[],"isInner":false,"widgetType":"text-editor","elType":"widget"},{"id":"3e12e0f0","settings":{"editor":"<h3 style=\"margin-bottom:8px;\">How long do you keep my files?<\/h3><p>Maximum 1 hour. After that, they&#039;re permanently deleted from our servers. We don&#039;t store, share, or access your documents.<\/p>"},"elements":[],"isInner":false,"widgetType":"text-editor","elType":"widget"},{"id":"396a7e51","settings":{"editor":"<h3 style=\"margin-bottom:8px;\">Is there a file size limit?<\/h3><p>Each file can be up to 100MB. Need more? Email us for custom enterprise pricing.<\/p>"},"elements":[],"isInner":false,"widgetType":"text-editor","elType":"widget"}],"isInner":false,"elType":"column"}],"isInner":false,"elType":"section"},{"id":"4c782002","settings":{"content_width":"boxed","gap":"wide"},"elements":[{"id":"3c2d88f5","settings":{"_column_size":100},"elements":[{"id":"6312ba16","settings":{"html":"<div id=\"pricing\"><h2>Simple, Honest Pricing \u2013 No Surprises<\/h2><table class=\"table\">\\n<thead><tr><th>Tool<\/th><th>Price<\/th><th>Processing Time<\/th><\/tr><\/thead>\\n<tbody>\\n<tr><td>PDF to Word<\/td><td>$0.99<\/td><td>~8 seconds<\/td><\/tr>\\n<tr><td>Merge PDFs (up to 10 files)<\/td><td>$0.99<\/td><td>~5 seconds<\/td><\/tr>\\n<tr><td>Compress PDF<\/td><td>$0.79<\/td><td>~6 seconds<\/td><\/tr>\\n<tr><td>PDF to Excel<\/td><td>$1.29<\/td><td>~12 seconds<\/td><\/tr>\\n<tr><td colspan=\"3\"><strong>Bulk Discount (10 actions)<\/strong> \u2013 <span style=\"color:#10B981;font-weight:600;\">$7.99<\/span> <em>Save 20%<\/em><\/td><\/tr>\\n<\/tbody><\/table>\\n<\/div>"},"elements":[],"isInner":false,"widgetType":"html","elType":"widget"}],"isInner":false,"elType":"column"}],"isInner":false,"elType":"section"}],"settings":{"template":"default","custom_css":"\/* Hero text colors are set inline in widgets; background via .home-hero *\/\n.tool-card{\n  background:#fff; border:1px solid #E5E7EB; border-radius:12px; padding:32px; text-align:center;\n  box-shadow:0 4px 6px rgba(0,0,0,0.05); transition:all .3s ease; will-change:transform,box-shadow,border-color;\n}\n.tool-card:hover{ border-color: var(--pdfm-color-primary, #2563EB); transform: translateY(-4px); box-shadow:0 8px 16px rgba(37,99,235,0.15); }\n.tool-card .elementor-icon{ width:80px; height:80px; background: rgba(37,99,235,0.1); border-radius:9999px; display:flex; align-items:center; justify-content:center; margin:0 auto 16px; }\n.tool-card .elementor-icon i{ font-size:48px; color: var(--pdfm-color-primary, #2563EB); }\n\n.btn-primary:hover{ background:#1E40AF; }\n.btn-hero-white:hover{ opacity:.9; }\n\n\/* How it works *\/\n.step-card{ background: var(--pdfm-color-surface, #F9FAFB); border-radius:8px; padding:24px; }\n.step-number{ width:64px; height:64px; border-radius:50%; background: var(--pdfm-color-primary, #2563EB); color:#fff; font-size:24px; font-weight:700; display:flex; align-items:center; justify-content:center; margin:0 auto 16px; }\n\n\/* Pricing *\/\n.pricing-card{ position:relative; background:#fff; border:2px solid var(--pdfm-color-primary, #2563EB); box-shadow:0 8px 24px rgba(37,99,235,0.12); padding:24px; border-radius:12px; }\n.pricing-card .elementor-price-table__currency{ font-size:24px; opacity:.7; }\n.pricing-card .elementor-price-table__integer-part{ font-size:72px; font-weight:700; color: var(--pdfm-color-text, #1F2937); }\n.pricing-card .elementor-price-table__fractional-part{ font-size:36px; vertical-align:top; }\n.pricing-card .elementor-price-table__features-list li:before{ color: var(--pdfm-color-secondary, #10B981); }\n.pricing-card .elementor-price-table__features-list li{ font-size:16px; color: var(--pdfm-color-text, #1F2937); line-height:1.8; }\n.pricing-card.popular:after{ content:\"POPULAR\"; position:absolute; top:12px; right:12px; background: var(--pdfm-color-secondary, #10B981); color:#fff; padding:4px 12px; border-radius:4px; font-size:12px; font-weight:600; }\n\n\/* Spacing system *\/\n.section-spacing{ margin-bottom: var(--pdfm-space-16, 64px); padding-top: var(--pdfm-space-12, 48px); padding-bottom: var(--pdfm-space-12, 48px); }\n\n\/* Responsive *\/\n@media (max-width: 767px){\n  .elementor-button{ width:100%; }\n  .section-spacing{ margin-bottom: calc(var(--pdfm-space-16, 64px) * .7); padding-top: calc(var(--pdfm-space-12, 48px) * .7); padding-bottom: calc(var(--pdfm-space-12, 48px) * .7); }\n}"},"metadata":[]}
+<<<FILE_END: content/page/11.json
+
+
+################################################################################
+# PLIK [2]: manifest.json
+# Pełna ścieżka: /Users/user/Downloads/site-version-15-10/manifest.json
+################################################################################
+
+>>>FILE_START: manifest.json
+{"name":"site-version-15-10","title":"site-version-15-10","description":null,"author":"Zurych","version":"3.0","elementor_version":"3.32.4","created":"2025-10-15 16:19:16","thumbnail":false,"site":"http:\/\/localhost:10003","theme":{"name":"PDFMaster Theme","theme_uri":"https:\/\/pdfmaster.example.com","version":"0.1.0","slug":"pdfmaster-theme"},"experiments":["e_font_icon_svg","additional_custom_breakpoints","container","e_optimized_markup","theme_builder_v2","e_pro_free_trial_popup","nested-elements","pages_panel","home_screen","e_atomic_elements","e_classes","global_classes_should_enforce_capabilities","e_variables","cloud-library","e_opt_in_v4_page","e_opt_in_v4","e_components","import-export-customization","mega-menu","e_pro_variables","editor_events"],"site-settings":{"theme":true,"globalColors":true,"globalFonts":true,"themeStyleSettings":true,"generalSettings":true,"experiments":true},"plugins":[{"name":"Elementor","plugin":"elementor\/elementor","pluginUri":"https:\/\/elementor.com\/?utm_source=wp-plugins&utm_campaign=plugin-uri&utm_medium=wp-dash","version":"3.32.4"},{"name":"Elementor Pro","plugin":"elementor-pro\/elementor-pro","pluginUri":"https:\/\/go.elementor.com\/wp-dash-wp-plugins-author-uri\/","version":"3.32.2"},{"name":"PDFMaster Payments","plugin":"pdfmaster-payments\/pdfmaster-payments","pluginUri":"https:\/\/pdfmaster.example.com","version":"0.1.0"},{"name":"PDFMaster Processor","plugin":"pdfmaster-processor\/pdfmaster-processor","pluginUri":"https:\/\/pdfmaster.example.com","version":"0.1.0"}],"templates":[],"taxonomies":{"post":[{"name":"category","label":"Categories"}]},"content":{"post":[],"page":{"11":{"title":"Home","excerpt":"","doc_type":"wp-page","thumbnail":false,"url":"http:\/\/localhost:10003\/","terms":[],"show_on_front":true}},"e-floating-buttons":[]},"wp-content":{"post":{"1":{"id":1,"title":"Hello world!"}},"page":{"2":{"id":2,"title":"Sample Page"},"12":{"id":12,"title":"Test PDF Processor"}},"nav_menu_item":[]}}
+<<<FILE_END: manifest.json
+
+
+################################################################################
+# PLIK [3]: site-settings.json
+# Pełna ścieżka: /Users/user/Downloads/site-version-15-10/site-settings.json
+################################################################################
+
+>>>FILE_START: site-settings.json
+{"content":[],"settings":{"template":"default","system_colors":[{"_id":"primary","title":"Primary","color":"#2563EB"},{"_id":"secondary","title":"Secondary","color":"#10B981"},{"_id":"text","title":"Text","color":"#1F2937"},{"_id":"accent","title":"Accent","color":"#F59E0B"}],"custom_colors":[{"_id":"background","title":"Background","color":"#FFFFFF"},{"_id":"surface","title":"Surface","color":"#F9FAFB"}],"system_typography":[{"_id":"primary","title":"Primary","typography_typography":"custom","typography_font_family":"Inter","typography_font_weight":"600","typography_line_height":{"unit":"em","size":1.2},"typography_font_size":{"unit":"px","size":48},"typography_font_size_tablet":{"unit":"px","size":42},"typography_font_size_mobile":{"unit":"px","size":36}},{"_id":"secondary","title":"Secondary","typography_typography":"custom","typography_font_family":"Inter","typography_font_weight":"600","typography_line_height":{"unit":"em","size":1.25},"typography_font_size":{"unit":"px","size":36},"typography_font_size_tablet":{"unit":"px","size":32},"typography_font_size_mobile":{"unit":"px","size":28}},{"_id":"text","title":"Body","typography_typography":"custom","typography_font_family":"Inter","typography_font_weight":"400","typography_line_height":{"unit":"em","size":1.6000000000000001},"typography_font_size":{"unit":"px","size":16}},{"_id":"accent","title":"Accent","typography_typography":"custom","typography_font_family":"Inter","typography_font_weight":"500","typography_line_height":{"unit":"em","size":1.3999999999999999},"typography_font_size":{"unit":"px","size":16}}]},"metadata":[],"theme":{"name":"PDFMaster Theme","theme_uri":"https:\/\/pdfmaster.example.com","version":"0.1.0","slug":"pdfmaster-theme"},"experiments":{"e_font_icon_svg":{"name":"e_font_icon_svg","title":"Inline Font Icons","state":"default","default":"active","release_status":"stable"},"additional_custom_breakpoints":{"name":"additional_custom_breakpoints","title":"Additional Custom Breakpoints","state":"default","default":"active","release_status":"stable"},"container":{"name":"container","title":"Container","state":"default","default":"active","release_status":"stable"},"e_optimized_markup":{"name":"e_optimized_markup","title":"Optimized Markup","state":"default","default":"active","release_status":"stable"},"theme_builder_v2":{"name":"theme_builder_v2","title":"Default to New Theme Builder","state":"default","default":"active","release_status":"stable"},"e_pro_free_trial_popup":{"name":"e_pro_free_trial_popup","title":"Pro Free Trial Popup","state":"default","default":"active","release_status":"alpha"},"nested-elements":{"name":"nested-elements","title":"Nested Elements","state":"default","default":"active","release_status":"stable"},"pages_panel":{"name":"pages_panel","title":"Pages Panel","state":"default","default":"inactive","release_status":"alpha"},"home_screen":{"name":"home_screen","title":"Elementor Home Screen","state":"default","default":"active","release_status":"stable"},"e_atomic_elements":{"name":"e_atomic_elements","title":"Atomic Widgets","state":"default","default":"inactive","release_status":"alpha"},"e_classes":{"name":"e_classes","title":"Global Classes","state":"default","default":"inactive","release_status":"alpha"},"global_classes_should_enforce_capabilities":{"name":"global_classes_should_enforce_capabilities","title":"Enforce global classes capabilities","state":"default","default":"active","release_status":"dev"},"e_variables":{"name":"e_variables","title":"Variables","state":"default","default":"active","release_status":"alpha"},"cloud-library":{"name":"cloud-library","title":"Cloud Library","state":"active","default":"active","release_status":"stable"},"e_opt_in_v4_page":{"name":"e_opt_in_v4_page","title":"Editor v4 (Opt In Page)","state":"default","default":"active","release_status":"alpha"},"e_opt_in_v4":{"name":"e_opt_in_v4","title":"Editor V4","state":"default","default":"inactive","release_status":"alpha"},"e_components":{"name":"e_components","title":"Components","state":"default","default":"inactive","release_status":"dev"},"import-export-customization":{"name":"import-export-customization","title":"Import\/Export Customization","state":"default","default":"active","release_status":"beta"},"mega-menu":{"name":"mega-menu","title":"Menu","state":"default","default":"active","release_status":"beta"},"e_pro_variables":{"name":"e_pro_variables","title":"Size Variables","state":"default","default":"active","release_status":"alpha"},"editor_events":{"name":"editor_events","title":"Elementor Editor Events","state":"default","default":"active","release_status":"alpha"}}}
+<<<FILE_END: site-settings.json
+
+
+################################################################################
+# PLIK [4]: taxonomies/category.json
+# Pełna ścieżka: /Users/user/Downloads/site-version-15-10/taxonomies/category.json
+################################################################################
+
+>>>FILE_START: taxonomies/category.json
+[{"term_id":1,"name":"Uncategorized","slug":"uncategorized","taxonomy":"category","description":"","parent":0}]
+<<<FILE_END: taxonomies/category.json
+
+
+################################################################################
+# PLIK [5]: wp-content/nav_menu_item/nav_menu_item.xml
+# Pełna ścieżka: /Users/user/Downloads/site-version-15-10/wp-content/nav_menu_item/nav_menu_item.xml
+################################################################################
+
+>>>FILE_START: wp-content/nav_menu_item/nav_menu_item.xml
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- This is a WordPress eXtended RSS file generated by WordPress as an export of your site. -->
+<!-- It contains information about your site's posts, pages, comments, categories, and other content. -->
+<!-- You may use this file to transfer that content from one site to another. -->
+<!-- This file is not intended to serve as a complete backup of your site. -->
+
+<!-- To import this information into a WordPress site follow these steps: -->
+<!-- 1. Log in to that site as an administrator. -->
+<!-- 2. Go to Tools: Import in the WordPress admin panel. -->
+<!-- 3. Install the "WordPress" importer from the list. -->
+<!-- 4. Activate & Run Importer. -->
+<!-- 5. Upload this file using the form provided on that page. -->
+<!-- 6. You will first be asked to map the authors in this export file to users -->
+<!--    on the site. For each author, you may choose to map to an -->
+<!--    existing user on the site or to create a new user. -->
+<!-- 7. WordPress will then import each of the posts, pages, comments, categories, etc. -->
+<!--    contained in this file into your site. -->
+<!-- generator="WordPress/6.8.3" created="2025-10-15 16:19" -->
+<rss version="2.0"
+	xmlns:excerpt="http://wordpress.org/export/1.2/excerpt/"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:wp="http://wordpress.org/export/1.2/"
+>
+	<channel>
+		<title>PDFMaster</title>
+		<link>http://localhost:10003</link>
+		<description></description>
+		<pubDate>Wed, 15 Oct 2025 16:19:16 +0000</pubDate>
+		<language>en-US</language>
+		<wp:wxr_version>1.2</wp:wxr_version>
+		<wp:base_site_url>http://localhost:10003</wp:base_site_url>
+		<wp:base_blog_url>http://localhost:10003</wp:base_blog_url>
+		
+				<wp:author>
+			<wp:author_id>1</wp:author_id>
+			<wp:author_login><![CDATA[Zurych]]></wp:author_login>
+			<wp:author_email><![CDATA[dev-email@wpengine.local]]></wp:author_email>
+			<wp:author_display_name><![CDATA[Zurych]]></wp:author_display_name>
+			<wp:author_first_name><![CDATA[]]></wp:author_first_name>
+			<wp:author_last_name><![CDATA[]]></wp:author_last_name>
+		</wp:author>
+<generator>https://wordpress.org/?v=6.8.3</generator>
+
+	</channel>
+</rss>
+<<<FILE_END: wp-content/nav_menu_item/nav_menu_item.xml
+
+
+################################################################################
+# PLIK [6]: wp-content/page/page.xml
+# Pełna ścieżka: /Users/user/Downloads/site-version-15-10/wp-content/page/page.xml
+################################################################################
+
+>>>FILE_START: wp-content/page/page.xml
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- This is a WordPress eXtended RSS file generated by WordPress as an export of your site. -->
+<!-- It contains information about your site's posts, pages, comments, categories, and other content. -->
+<!-- You may use this file to transfer that content from one site to another. -->
+<!-- This file is not intended to serve as a complete backup of your site. -->
+
+<!-- To import this information into a WordPress site follow these steps: -->
+<!-- 1. Log in to that site as an administrator. -->
+<!-- 2. Go to Tools: Import in the WordPress admin panel. -->
+<!-- 3. Install the "WordPress" importer from the list. -->
+<!-- 4. Activate & Run Importer. -->
+<!-- 5. Upload this file using the form provided on that page. -->
+<!-- 6. You will first be asked to map the authors in this export file to users -->
+<!--    on the site. For each author, you may choose to map to an -->
+<!--    existing user on the site or to create a new user. -->
+<!-- 7. WordPress will then import each of the posts, pages, comments, categories, etc. -->
+<!--    contained in this file into your site. -->
+<!-- generator="WordPress/6.8.3" created="2025-10-15 16:19" -->
+<rss version="2.0"
+	xmlns:excerpt="http://wordpress.org/export/1.2/excerpt/"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:wp="http://wordpress.org/export/1.2/"
+>
+	<channel>
+		<title>PDFMaster</title>
+		<link>http://localhost:10003</link>
+		<description></description>
+		<pubDate>Wed, 15 Oct 2025 16:19:16 +0000</pubDate>
+		<language>en-US</language>
+		<wp:wxr_version>1.2</wp:wxr_version>
+		<wp:base_site_url>http://localhost:10003</wp:base_site_url>
+		<wp:base_blog_url>http://localhost:10003</wp:base_blog_url>
+		
+				<wp:author>
+			<wp:author_id>1</wp:author_id>
+			<wp:author_login><![CDATA[Zurych]]></wp:author_login>
+			<wp:author_email><![CDATA[dev-email@wpengine.local]]></wp:author_email>
+			<wp:author_display_name><![CDATA[Zurych]]></wp:author_display_name>
+			<wp:author_first_name><![CDATA[]]></wp:author_first_name>
+			<wp:author_last_name><![CDATA[]]></wp:author_last_name>
+		</wp:author>
+<generator>https://wordpress.org/?v=6.8.3</generator>
+		<item>
+			<title>Sample Page</title>
+			<link></link>
+			<pubDate></pubDate>
+			<dc:creator><![CDATA[Zurych]]></dc:creator>
+			<guid isPermaLink="false"><![CDATA[Zurych]]></guid>
+			<description></description>
+			<content:encoded><![CDATA[<!-- wp:paragraph -->
+<p>This is an example page. It's different from a blog post because it will stay in one place and will show up in your site navigation (in most themes). Most people start with an About page that introduces them to potential site visitors. It might say something like this:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:quote -->
+<blockquote class="wp-block-quote"><p>Hi there! I'm a bike messenger by day, aspiring actor by night, and this is my website. I live in Los Angeles, have a great dog named Jack, and I like pi&#241;a coladas. (And gettin' caught in the rain.)</p></blockquote>
+<!-- /wp:quote -->
+
+<!-- wp:paragraph -->
+<p>...or something like this:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:quote -->
+<blockquote class="wp-block-quote"><p>The XYZ Doohickey Company was founded in 1971, and has been providing quality doohickeys to the public ever since. Located in Gotham City, XYZ employs over 2,000 people and does all kinds of awesome things for the Gotham community.</p></blockquote>
+<!-- /wp:quote -->
+
+<!-- wp:paragraph -->
+<p>As a new WordPress user, you should go to <a href="http://localhost:10003/wp-admin/">your dashboard</a> to delete this page and create new pages for your content. Have fun!</p>
+<!-- /wp:paragraph -->]]></content:encoded>
+			<excerpt:encoded><![CDATA[]]></excerpt:encoded>
+			<wp:post_id>2</wp:post_id>
+			<wp:post_date><![CDATA[2025-10-02 18:00:49]]></wp:post_date>
+			<wp:post_date_gmt><![CDATA[2025-10-02 18:00:49]]></wp:post_date_gmt>
+			<wp:comment_status><![CDATA[closed]]></wp:comment_status>
+			<wp:ping_status><![CDATA[open]]></wp:ping_status>
+			<wp:post_name><![CDATA[sample-page]]></wp:post_name>
+			<wp:status><![CDATA[publish]]></wp:status>
+			<wp:post_parent><![CDATA[0]]></wp:post_parent>
+			<wp:menu_order>0</wp:menu_order>
+			<wp:post_type><![CDATA[page]]></wp:post_type>
+			<wp:post_password><![CDATA[]]></wp:post_password>
+			<wp:is_sticky>0</wp:is_sticky>
+			<wp:postmeta>
+				<wp:meta_key><![CDATA[_wp_page_template]]></wp:meta_key>
+				<wp:meta_value><![CDATA[default]]></wp:meta_value>
+			</wp:postmeta>
+			<wp:postmeta>
+				<wp:meta_key><![CDATA[_edit_lock]]></wp:meta_key>
+				<wp:meta_value><![CDATA[1760099354:1]]></wp:meta_value>
+			</wp:postmeta>
+		</item>
+		<item>
+			<title>Test PDF Processor</title>
+			<link></link>
+			<pubDate></pubDate>
+			<dc:creator><![CDATA[]]></dc:creator>
+			<guid isPermaLink="false"><![CDATA[]]></guid>
+			<description></description>
+			<content:encoded><![CDATA[<h1>Test PDF Processor</h1>
+[pdfmaster_processor]
+[pdfmaster_payment_modal]]]></content:encoded>
+			<excerpt:encoded><![CDATA[]]></excerpt:encoded>
+			<wp:post_id>12</wp:post_id>
+			<wp:post_date><![CDATA[2025-10-07 16:16:36]]></wp:post_date>
+			<wp:post_date_gmt><![CDATA[2025-10-07 16:16:36]]></wp:post_date_gmt>
+			<wp:comment_status><![CDATA[closed]]></wp:comment_status>
+			<wp:ping_status><![CDATA[closed]]></wp:ping_status>
+			<wp:post_name><![CDATA[test-processor]]></wp:post_name>
+			<wp:status><![CDATA[publish]]></wp:status>
+			<wp:post_parent><![CDATA[0]]></wp:post_parent>
+			<wp:menu_order>0</wp:menu_order>
+			<wp:post_type><![CDATA[page]]></wp:post_type>
+			<wp:post_password><![CDATA[]]></wp:post_password>
+			<wp:is_sticky>0</wp:is_sticky>
+			<wp:postmeta>
+				<wp:meta_key><![CDATA[_edit_lock]]></wp:meta_key>
+				<wp:meta_value><![CDATA[1760099364:1]]></wp:meta_value>
+			</wp:postmeta>
+		</item>
+
+	</channel>
+</rss>
+<<<FILE_END: wp-content/page/page.xml
+
+
+################################################################################
+# PLIK [7]: wp-content/post/post.xml
+# Pełna ścieżka: /Users/user/Downloads/site-version-15-10/wp-content/post/post.xml
+################################################################################
+
+>>>FILE_START: wp-content/post/post.xml
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- This is a WordPress eXtended RSS file generated by WordPress as an export of your site. -->
+<!-- It contains information about your site's posts, pages, comments, categories, and other content. -->
+<!-- You may use this file to transfer that content from one site to another. -->
+<!-- This file is not intended to serve as a complete backup of your site. -->
+
+<!-- To import this information into a WordPress site follow these steps: -->
+<!-- 1. Log in to that site as an administrator. -->
+<!-- 2. Go to Tools: Import in the WordPress admin panel. -->
+<!-- 3. Install the "WordPress" importer from the list. -->
+<!-- 4. Activate & Run Importer. -->
+<!-- 5. Upload this file using the form provided on that page. -->
+<!-- 6. You will first be asked to map the authors in this export file to users -->
+<!--    on the site. For each author, you may choose to map to an -->
+<!--    existing user on the site or to create a new user. -->
+<!-- 7. WordPress will then import each of the posts, pages, comments, categories, etc. -->
+<!--    contained in this file into your site. -->
+<!-- generator="WordPress/6.8.3" created="2025-10-15 16:19" -->
+<rss version="2.0"
+	xmlns:excerpt="http://wordpress.org/export/1.2/excerpt/"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:wp="http://wordpress.org/export/1.2/"
+>
+	<channel>
+		<title>PDFMaster</title>
+		<link>http://localhost:10003</link>
+		<description></description>
+		<pubDate>Wed, 15 Oct 2025 16:19:16 +0000</pubDate>
+		<language>en-US</language>
+		<wp:wxr_version>1.2</wp:wxr_version>
+		<wp:base_site_url>http://localhost:10003</wp:base_site_url>
+		<wp:base_blog_url>http://localhost:10003</wp:base_blog_url>
+		
+				<wp:author>
+			<wp:author_id>1</wp:author_id>
+			<wp:author_login><![CDATA[Zurych]]></wp:author_login>
+			<wp:author_email><![CDATA[dev-email@wpengine.local]]></wp:author_email>
+			<wp:author_display_name><![CDATA[Zurych]]></wp:author_display_name>
+			<wp:author_first_name><![CDATA[]]></wp:author_first_name>
+			<wp:author_last_name><![CDATA[]]></wp:author_last_name>
+		</wp:author>
+<generator>https://wordpress.org/?v=6.8.3</generator>
+		<item>
+			<title>Hello world!</title>
+			<link></link>
+			<pubDate></pubDate>
+			<dc:creator><![CDATA[Zurych]]></dc:creator>
+			<guid isPermaLink="false"><![CDATA[Zurych]]></guid>
+			<description></description>
+			<content:encoded><![CDATA[<!-- wp:paragraph -->
+<p>Welcome to WordPress. This is your first post. Edit or delete it, then start writing!</p>
+<!-- /wp:paragraph -->]]></content:encoded>
+			<excerpt:encoded><![CDATA[]]></excerpt:encoded>
+			<wp:post_id>1</wp:post_id>
+			<wp:post_date><![CDATA[2025-10-02 18:00:49]]></wp:post_date>
+			<wp:post_date_gmt><![CDATA[2025-10-02 18:00:49]]></wp:post_date_gmt>
+			<wp:comment_status><![CDATA[open]]></wp:comment_status>
+			<wp:ping_status><![CDATA[open]]></wp:ping_status>
+			<wp:post_name><![CDATA[hello-world]]></wp:post_name>
+			<wp:status><![CDATA[publish]]></wp:status>
+			<wp:post_parent><![CDATA[0]]></wp:post_parent>
+			<wp:menu_order>0</wp:menu_order>
+			<wp:post_type><![CDATA[post]]></wp:post_type>
+			<wp:post_password><![CDATA[]]></wp:post_password>
+			<wp:is_sticky>0</wp:is_sticky>
+			<category domain="category" nicename="uncategorized"><![CDATA[Uncategorized]]></category>
+			<wp:comment>
+				<wp:comment_id>1</wp:comment_id>
+				<wp:comment_author><![CDATA[A WordPress Commenter]]></wp:comment_author>
+				<wp:comment_author_email><![CDATA[wapuu@wordpress.example]]></wp:comment_author_email>
+				<wp:comment_author_url><![CDATA[https://wordpress.org/]]></wp:comment_author_url>
+				<wp:comment_author_IP><![CDATA[]]></wp:comment_author_IP>
+				<wp:comment_date><![CDATA[2025-10-02 18:00:49]]></wp:comment_date>
+				<wp:comment_date_gmt><![CDATA[2025-10-02 18:00:49]]></wp:comment_date_gmt>
+				<wp:comment_content><![CDATA[Hi, this is a comment.
+To get started with moderating, editing, and deleting comments, please visit the Comments screen in the dashboard.
+Commenter avatars come from <a href="https://gravatar.com/">Gravatar</a>.]]></wp:comment_content>
+				<wp:comment_approved><![CDATA[1]]></wp:comment_approved>
+				<wp:comment_type><![CDATA[comment]]></wp:comment_type>
+				<wp:comment_parent><![CDATA[0]]></wp:comment_parent>
+				<wp:comment_user_id>0</wp:comment_user_id>
+			</wp:comment>
+		</item>
+
+	</channel>
+</rss>
+<<<FILE_END: wp-content/post/post.xml
+
+
+################################################################################
+# KONIEC ARCHIWUM
+################################################################################

@@ -42,3 +42,5 @@ Thumbs.db
 !/wp-content/plugins/pdfmaster-processor/
 !/wp-content/plugins/pdfmaster-payments/
 /wp-content/plugins/pdfmaster-payments/vendor/
+backups/*.sql
+backups/*.sql

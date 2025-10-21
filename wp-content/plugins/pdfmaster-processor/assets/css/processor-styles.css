@@ -1,9 +1,39 @@
 /* Styles for PDFMaster processor interface */
 .pdfm-processor {
-    border: 1px solid #d6d9e2;
-    padding: 1.5rem;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+/* Hero Section */
+.pdfm-hero {
+    text-align: center;
+    padding: 48px 24px;
+    background: linear-gradient(135deg, #EFF6FF 0%, #DBEAFE 100%);
+    border-radius: 16px;
+    margin-bottom: 32px;
+}
+
+.pdfm-hero-title {
+    font-size: 36px;
+    font-weight: 700;
+    color: #1F2937;
+    margin: 0 0 12px 0;
+    line-height: 1.2;
+}
+
+.pdfm-hero-subtitle {
+    font-size: 18px;
+    color: #6B7280;
+    margin: 0;
+    line-height: 1.5;
+}
+
+/* Form Container */
+.pdfm-processor__form {
     background-color: #ffffff;
-    border-radius: 8px;
+    border: 1px solid #E5E7EB;
+    padding: 32px;
+    border-radius: 12px;
 }
 
 .pdfm-processor__form {
@@ -152,47 +182,61 @@
     padding: 6px 12px;
 }
 
-/* Tool Selector */
-.pdfm-tool-selector {
+/* Service Tabs */
+.pdfm-service-tabs {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 0.5rem;
-    margin-bottom: 1.5rem;
+    gap: 12px;
+    margin-bottom: 32px;
 }
 
 @media (max-width: 768px) {
-    .pdfm-tool-selector {
+    .pdfm-service-tabs {
         grid-template-columns: repeat(2, 1fr);
     }
 }
 
-.pdfm-tool-option {
-    flex: 1;
-    padding: 1rem;
-    border: 2px solid #ddd;
-    border-radius: 8px;
+.pdfm-tab {
+    padding: 16px;
+    border: 2px solid #E5E7EB;
+    border-radius: 12px;
     cursor: pointer;
     text-align: center;
     transition: all 0.2s;
-    background: #fff;
+    background: #ffffff;
+    display: block;
 }
 
-.pdfm-tool-option:hover {
-    border-color: #2271b1;
+.pdfm-tab:hover {
+    border-color: #3B82F6;
+    box-shadow: 0 2px 8px rgba(59, 130, 246, 0.1);
 }
 
-.pdfm-tool-option.active {
-    border-color: #2271b1;
-    background: #f0f6fc;
+.pdfm-tab.active {
+    border-color: #3B82F6;
+    background: #EFF6FF;
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
 }
 
-.pdfm-tool-option input[type="radio"] {
+.pdfm-tab input[type="radio"] {
     display: none;
 }
 
-.pdfm-tool-label {
+.pdfm-tab-label {
     font-weight: 600;
-    color: #2c3338;
+    font-size: 16px;
+    color: #1F2937;
+    margin-bottom: 4px;
+}
+
+.pdfm-tab-desc {
+    font-size: 13px;
+    color: #6B7280;
+    line-height: 1.4;
+}
+
+.pdfm-tab.active .pdfm-tab-label {
+    color: #2563EB;
 }
 
 /* Merge Success Message */
@@ -408,4 +452,415 @@
     font-size: 0.9em;
     color: #646970;
     margin: 0.5rem 0;
+}
+
+/* ============================================
+   SUCCESS STATE (New Clean Design)
+   ============================================ */
+
+/* Success Container */
+.pdfm-success-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 48px 24px;
+    text-align: center;
+}
+
+/* Success Icon with Animation */
+.pdfm-success-icon {
+    width: 80px;
+    height: 80px;
+    background: #10B981;
+    border-radius: 50%;
+    margin: 0 auto 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: pdfm-scale-in 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+@keyframes pdfm-scale-in {
+    0% { transform: scale(0); opacity: 0; }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+.pdfm-checkmark {
+    width: 48px;
+    height: 48px;
+    stroke: white;
+    stroke-width: 3;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+/* Typography */
+.pdfm-success-title {
+    font-size: 28px;
+    font-weight: 700;
+    color: #1F2937;
+    margin-bottom: 12px;
+    margin-top: 0;
+}
+
+.pdfm-success-subtitle {
+    font-size: 16px;
+    color: #6B7280;
+    margin-bottom: 32px;
+    margin-top: 0;
+}
+
+/* Stats Card */
+.pdfm-stats-card {
+    background: #F9FAFB;
+    border: 2px solid #E5E7EB;
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 32px;
+}
+
+.pdfm-stat-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.pdfm-stat-row:last-child {
+    margin-bottom: 0;
+}
+
+.pdfm-stat-label {
+    font-size: 14px;
+    color: #6B7280;
+    font-weight: 500;
+}
+
+.pdfm-stat-value {
+    font-size: 18px;
+    font-weight: 700;
+    color: #1F2937;
+}
+
+.pdfm-stat-value.pdfm-stat-green {
+    color: #10B981;
+}
+
+.pdfm-stat-improvement {
+    font-size: 24px;
+    font-weight: 700;
+    color: #10B981;
+}
+
+.pdfm-divider {
+    height: 1px;
+    background: #E5E7EB;
+    margin: 16px 0;
+}
+
+/* Buttons */
+.pdfm-btn {
+    width: 100%;
+    border: none;
+    border-radius: 8px;
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: inherit;
+}
+
+.pdfm-btn-primary {
+    background: #2563EB;
+    color: white;
+    padding: 16px 32px;
+    margin-bottom: 12px;
+}
+
+.pdfm-btn-primary:hover {
+    background: #1E40AF;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+}
+
+.pdfm-btn-secondary {
+    background: white;
+    color: #6B7280;
+    border: 2px solid #E5E7EB;
+    padding: 12px 32px;
+    margin-bottom: 24px;
+}
+
+.pdfm-btn-secondary:hover {
+    border-color: #2563EB;
+    color: #2563EB;
+}
+
+/* Trust Signal */
+.pdfm-trust-signal {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-size: 14px;
+    color: #6B7280;
+}
+
+.pdfm-lock-icon {
+    width: 20px;
+    height: 20px;
+    stroke: #10B981;
+    stroke-width: 2;
+    fill: none;
+}
+
+/* Responsive */
+@media (max-width: 767px) {
+    .pdfm-hero {
+        padding: 32px 20px;
+    }
+
+    .pdfm-hero-title {
+        font-size: 28px;
+    }
+
+    .pdfm-hero-subtitle {
+        font-size: 16px;
+    }
+
+    .pdfm-processor__form {
+        padding: 24px 20px;
+    }
+
+    .pdfm-success-container {
+        padding: 32px 16px;
+    }
+
+    .pdfm-success-title {
+        font-size: 24px;
+    }
+
+    .pdfm-success-icon {
+        width: 64px;
+        height: 64px;
+    }
+
+    .pdfm-checkmark {
+        width: 36px;
+        height: 36px;
+    }
+
+    .pdfm-btn {
+        font-size: 16px;
+    }
+
+    .pdfm-stat-improvement {
+        font-size: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .pdfm-hero-title {
+        font-size: 24px;
+    }
+
+    .pdfm-hero-subtitle {
+        font-size: 14px;
+    }
+
+    .pdfm-tab-label {
+        font-size: 14px;
+    }
+
+    .pdfm-tab-desc {
+        font-size: 12px;
+    }
+}
+
+/* ============================================
+   DOWNLOAD SUCCESS STATE (Post-Payment)
+   ============================================ */
+
+/* Download Success State Container */
+.pdfm-download-success-state {
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 40px 20px;
+}
+
+.pdfm-download-success-state .pdfm-success-container {
+    background: white;
+    border-radius: 16px;
+    padding: 64px 48px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    text-align: center;
+}
+
+/* Success Checkmark Animation */
+.pdfm-success-checkmark {
+    width: 120px;
+    height: 120px;
+    background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+    border-radius: 50%;
+    margin: 0 auto 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: scale(0);
+    opacity: 0;
+    transition: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.pdfm-success-checkmark.pdfm-animate-bounce {
+    transform: scale(1);
+    opacity: 1;
+}
+
+.pdfm-checkmark-icon {
+    width: 64px;
+    height: 64px;
+    stroke: white;
+    stroke-width: 4;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+/* Download Button (Green, Prominent) */
+.pdfm-btn-download-final {
+    width: 100%;
+    background: #10B981;
+    color: white;
+    border: none;
+    border-radius: 12px;
+    padding: 18px 32px;
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    transition: background 0.2s;
+    font-family: inherit;
+}
+
+.pdfm-btn-download-final:hover {
+    background: #059669;
+}
+
+.pdfm-btn-download-final:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.pdfm-download-icon {
+    width: 24px;
+    height: 24px;
+    stroke: white;
+    stroke-width: 2.5;
+    fill: none;
+}
+
+/* Secondary Button */
+.pdfm-btn-secondary-final {
+    width: 100%;
+    background: transparent;
+    color: #6B7280;
+    border: 2px solid #E5E7EB;
+    border-radius: 12px;
+    padding: 14px 32px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    margin-bottom: 32px;
+    transition: all 0.2s;
+    font-family: inherit;
+}
+
+.pdfm-btn-secondary-final:hover {
+    border-color: #2563EB;
+    color: #2563EB;
+    background: #EFF6FF;
+}
+
+/* Auto-Delete Notice */
+.pdfm-auto-delete-notice {
+    background: #FEF3C7;
+    border: 1px solid #FDE68A;
+    border-radius: 8px;
+    padding: 16px;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    text-align: left;
+}
+
+.pdfm-notice-icon {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+    stroke: #D97706;
+    stroke-width: 2;
+    fill: none;
+    margin-top: 2px;
+}
+
+.pdfm-auto-delete-notice span {
+    font-size: 14px;
+    color: #92400E;
+    line-height: 1.5;
+}
+
+/* Download Success State - Responsive */
+@media (max-width: 640px) {
+    .pdfm-download-success-state .pdfm-success-container {
+        padding: 48px 32px;
+    }
+
+    .pdfm-download-success-state .pdfm-success-title {
+        font-size: 28px;
+    }
+
+    .pdfm-success-checkmark {
+        width: 100px;
+        height: 100px;
+    }
+
+    .pdfm-checkmark-icon {
+        width: 52px;
+        height: 52px;
+    }
+
+    .pdfm-btn-download-final {
+        font-size: 16px;
+        padding: 16px 24px;
+    }
+
+    .pdfm-btn-secondary-final {
+        font-size: 14px;
+        padding: 12px 24px;
+    }
+}
+
+@media (max-width: 480px) {
+    .pdfm-download-success-state {
+        padding: 24px 16px;
+    }
+
+    .pdfm-download-success-state .pdfm-success-container {
+        padding: 40px 24px;
+    }
+
+    .pdfm-success-checkmark {
+        width: 90px;
+        height: 90px;
+    }
+
+    .pdfm-checkmark-icon {
+        width: 48px;
+        height: 48px;
+    }
 }

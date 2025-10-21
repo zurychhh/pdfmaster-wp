@@ -67,7 +67,7 @@
             const json2 = await res2.json();
             if (!json2.success) throw new Error(json2.data && json2.data.message || 'Payment confirm failed');
 
-            alert('Payment successful. Your download is unlocked.');
+            // Success - trigger event immediately (no alert popup)
             closeModal();
             $(document).trigger('pdfm:payment:success', { file_token: fileToken });
         } catch (err) {
@@ -86,4 +86,7 @@
             cardElement.mount(mountEl);
         }
     }
+
+    // Export ensureStripe globally for use by other scripts
+    window.pdfmEnsureStripe = ensureStripe;
 })(jQuery);
