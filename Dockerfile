@@ -17,8 +17,7 @@ COPY . /app
 # Set working directory
 WORKDIR /app
 
-# Expose port 80
-EXPOSE 80
+# Port is configured via $PORT env var in Caddyfile
 
 # Start FrankenPHP with Caddyfile
 CMD ["frankenphp", "run", "--config", "/app/Caddyfile"]
