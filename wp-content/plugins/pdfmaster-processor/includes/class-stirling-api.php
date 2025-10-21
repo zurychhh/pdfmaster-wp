@@ -17,6 +17,12 @@ class StirlingApi
 {
     private function get_endpoint(): string
     {
+        // Railway environment - use internal service URL
+        if (getenv('RAILWAY_ENVIRONMENT')) {
+            return 'http://stirling-pdf.railway.internal:8080';
+        }
+
+        // Fallback to WordPress option or localhost
         $endpoint = (string) get_option('pdfm_stirling_endpoint', 'http://localhost:8080');
         return rtrim($endpoint, '/');
     }

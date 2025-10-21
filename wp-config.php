@@ -42,6 +42,9 @@ if (getenv('RAILWAY_ENVIRONMENT')) {
         define('WP_SITEURL', 'https://' . $railway_domain);
     }
 
+    // Stirling PDF API (private Railway internal URL)
+    define('STIRLING_API_URL', 'http://stirling-pdf.railway.internal:8080');
+
     // Production settings
     define('WP_ENVIRONMENT_TYPE', 'production');
     if (!defined('WP_DEBUG')) {
