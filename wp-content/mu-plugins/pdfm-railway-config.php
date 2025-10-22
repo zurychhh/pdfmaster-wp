@@ -24,3 +24,11 @@ add_filter('pdfm_stripe_secret_key', function($value) {
     $env_key = getenv('STRIPE_SECRET_KEY');
     return $env_key !== false && $env_key !== '' ? $env_key : $value;
 }, 20);
+
+// Redirect old /test-processor/ URL to /services/ (301 permanent)
+add_action('template_redirect', function() {
+    if (is_page('test-processor')) {
+        wp_redirect(home_url('/services/'), 301);
+        exit;
+    }
+});
