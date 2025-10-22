@@ -1,0 +1,4 @@
+# Ignore everything - Vercel is only a proxy to Railway
+# Do not serve any local files, only use vercel.json rewrite rules
+*
+!vercel.json
