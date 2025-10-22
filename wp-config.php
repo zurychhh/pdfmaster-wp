@@ -145,5 +145,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 	define( 'ABSPATH', __DIR__ . '/' );
 }
 
+// Redirect old /test-processor/ URL to /services/
+add_action('template_redirect', function() {
+    if (is_page('test-processor')) {
+        wp_redirect(home_url('/services/'), 301);
+        exit;
+    }
+});
+
 /** Sets up WordPress vars and included files. */
 require_once ABSPATH . 'wp-settings.php';
