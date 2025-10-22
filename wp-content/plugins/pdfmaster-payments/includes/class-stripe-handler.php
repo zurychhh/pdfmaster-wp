@@ -51,25 +51,31 @@ class StripeHandler
             return new WP_Error('pdfm_stripe_keys_missing', __('Stripe keys not configured.', 'pdfmaster-payments'));
         }
 
-        \Stripe\Stripe::setApiKey($this->secret_key);
+        try {
+            \Stripe\Stripe::setApiKey($this->secret_key);
 
-        $amount = 99; // $0.99 per action
+            $amount = 99; // $0.99 per action
 
-        $intent = \Stripe\PaymentIntent::create([
-            'amount' => $amount,
-            'currency' => 'usd',
-            'automatic_payment_methods' => ['enabled' => true],
-            'metadata' => [
-                'file_token' => $file_token,
-            ],
-        ]);
+            $intent = \Stripe\PaymentIntent::create([
+                'amount' => $amount,
+                'currency' => 'usd',
+                'automatic_payment_methods' => ['enabled' => true],
+                'metadata' => [
+                    'file_token' => $file_token,
+                ],
+            ]);
 
-        return [
-            'client_secret' => $intent->client_secret,
-            'payment_intent_id' => $intent->id,
-            'amount' => $amount,
-            'currency' => 'usd',
-        ];
+            return [
+                'client_secret' => $intent->client_secret,
+                'payment_intent_id' => $intent->id,
+                'amount' => $amount,
+                'currency' => 'usd',
+            ];
+        } catch (\Stripe\Exception\ApiErrorException $e) {
+            return new WP_Error('stripe_api_error', 'Stripe API Error: ' . $e->getMessage());
+        } catch (\Throwable $e) {
+            return new WP_Error('stripe_exception', 'Exception: ' . $e->getMessage() . ' in ' . $e->getFile() . ':' . $e->getLine());
+        }
     }
 
     public function get_publishable_key(): string
@@ -79,16 +85,36 @@ class StripeHandler
 
     public function ajax_create_payment_intent(): void
     {
-        check_ajax_referer('pdfm_payments_nonce', 'nonce');
-        $file_token = sanitize_text_field((string) ($_POST['file_token'] ?? ''));
-        if ($file_token === '') {
-            wp_send_json_error(['message' => __('Missing file_token', 'pdfmaster-payments')]);
+        try {
+            check_ajax_referer('pdfm_payments_nonce', 'nonce');
+            $file_token = sanitize_text_field((string) ($_POST['file_token'] ?? ''));
+            if ($file_token === '') {
+                wp_send_json_error(['message' => __('Missing file_token', 'pdfmaster-payments')]);
+            }
+
+            // Debug: Check if keys are loaded
+            if ($this->secret_key === '') {
+                wp_send_json_error([
+                    'message' => 'Stripe secret key is empty',
+                    'debug' => [
+                        'pub_key_length' => strlen($this->publishable_key),
+                        'secret_key_length' => strlen($this->secret_key),
+                    ]
+                ]);
+            }
+
+            $result = $this->create_payment_intent($file_token);
+            if ($result instanceof WP_Error) {
+                wp_send_json_error(['message' => $result->get_error_message()]);
+            }
+            wp_send_json_success($result);
+        } catch (\Throwable $e) {
+            wp_send_json_error([
+                'message' => 'Exception: ' . $e->getMessage(),
+                'file' => $e->getFile(),
+                'line' => $e->getLine(),
+            ]);
         }
-        $result = $this->create_payment_intent($file_token);
-        if ($result instanceof WP_Error) {
-            wp_send_json_error(['message' => $result->get_error_message()]);
-        }
-        wp_send_json_success($result);
     }
 
     public function ajax_confirm_payment(): void
