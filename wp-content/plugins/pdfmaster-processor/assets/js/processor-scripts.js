@@ -62,56 +62,67 @@
 
     // Handle file selection
     $(document).on('change', '#pdfm-file-input', function () {
-        const file = this.files[0];
-        if (!file) return;
+        const files = Array.from(this.files);
+        if (files.length === 0) return;
 
-        // Validate file type based on current operation
         const operation = $('input[name="operation"]:checked').val();
         const validImageTypes = ['image/jpeg', 'image/png', 'image/bmp'];
 
-        if (operation === 'convert') {
-            const direction = $('input[name="convert_direction"]:checked').val();
-            if (direction === 'img-to-pdf') {
-                if (!validImageTypes.includes(file.type)) {
-                    alert('Images to PDF: Only JPG, PNG, and BMP files supported.');
-                    this.value = '';
-                    return;
-                }
-            } else {
-                // pdf-to-img requires PDF
-                if (file.type !== 'application/pdf') {
-                    alert('Only PDF files are supported.');
-                    this.value = '';
-                    return;
-                }
-            }
-        } else {
-            // All other operations require PDF
-            if (file.type !== 'application/pdf') {
-                alert('Only PDF files are supported.');
+        // Issue #6: Validate file count for merge
+        if (operation === 'merge') {
+            if (selectedFiles.length + files.length > 20) {
+                alert('Maximum 20 files allowed for merge. You currently have ' + selectedFiles.length + ' files.');
                 this.value = '';
                 return;
             }
         }
 
-        // Check size (100MB)
-        const maxSize = 100 * 1024 * 1024;
-        if (file.size > maxSize) {
-            alert('File too large. Maximum size: 100MB');
-            this.value = '';
-            return;
-        }
+        // Validate each file
+        for (const file of files) {
+            // Validate file type based on current operation
+            if (operation === 'convert') {
+                const direction = $('input[name="convert_direction"]:checked').val();
+                if (direction === 'img-to-pdf') {
+                    if (!validImageTypes.includes(file.type)) {
+                        alert('Images to PDF: Only JPG, PNG, and BMP files supported.');
+                        this.value = '';
+                        return;
+                    }
+                } else {
+                    // pdf-to-img requires PDF
+                    if (file.type !== 'application/pdf') {
+                        alert('Only PDF files are supported.');
+                        this.value = '';
+                        return;
+                    }
+                }
+            } else {
+                // All other operations require PDF
+                if (file.type !== 'application/pdf') {
+                    alert('Only PDF files are supported. Please upload .pdf files only.');
+                    this.value = '';
+                    return;
+                }
+            }
 
-        // Check duplicate
-        const exists = selectedFiles.some(f => f.name === file.name && f.size === file.size);
-        if (exists) {
-            alert('This file is already added.');
-            this.value = '';
-            return;
-        }
+            // Check size (100MB)
+            const maxSize = 100 * 1024 * 1024;
+            if (file.size > maxSize) {
+                alert('File too large. Maximum size: 100MB');
+                this.value = '';
+                return;
+            }
 
-        // Add to array
-        selectedFiles.push(file);
+            // Check duplicate
+            const exists = selectedFiles.some(f => f.name === file.name && f.size === file.size);
+            if (exists) {
+                alert('File "' + file.name + '" is already added.');
+                continue; // Skip this file but continue with others
+            }
+
+            // Add to array
+            selectedFiles.push(file);
+        }
 
         // Update UI
         updateFileList();
@@ -138,6 +149,10 @@
         $('.pdfm-tab').removeClass('active');
         $(this).addClass('active');
 
+        // Issue #2: Clear files when switching tools
+        selectedFiles = [];
+        updateFileList();
+
         // Show/hide conditional fields
         $('.pdfm-level-group').toggle(operation === 'compress');
         $('.pdfm-pages-group').toggle(operation === 'split');
@@ -147,16 +162,23 @@
         $('.pdfm-help[data-for]').hide();
         $('.pdfm-help[data-for="' + operation + '"]').show();
 
-        // Update file input accept attribute
+        // Issue #4: Update button text and file input based on operation
+        const $addButton = $('.pdfm-add-file');
         if (operation === 'convert') {
             const direction = $('input[name="convert_direction"]:checked').val();
             if (direction === 'img-to-pdf') {
-                $('#pdfm-file-input').attr('accept', 'image/jpeg,image/png,image/bmp');
+                $addButton.text('Add Images (JPG, PNG, BMP)');
+                $('#pdfm-file-input').attr('accept', 'image/jpeg,image/png,image/bmp').attr('multiple', 'multiple');
             } else {
-                $('#pdfm-file-input').attr('accept', 'application/pdf');
+                $addButton.text('Add PDF File');
+                $('#pdfm-file-input').attr('accept', 'application/pdf').removeAttr('multiple');
             }
+        } else if (operation === 'merge') {
+            $addButton.text('Add PDF Files (2-20 files)');
+            $('#pdfm-file-input').attr('accept', 'application/pdf').attr('multiple', 'multiple');
         } else {
-            $('#pdfm-file-input').attr('accept', 'application/pdf');
+            $addButton.text('Add PDF File');
+            $('#pdfm-file-input').attr('accept', 'application/pdf').removeAttr('multiple');
         }
     });
 
@@ -168,6 +190,10 @@
         $('.pdfm-tab').removeClass('active');
         $(this).closest('.pdfm-tab').addClass('active');
 
+        // Issue #2: Clear files when switching tools
+        selectedFiles = [];
+        updateFileList();
+
         // Show/hide conditional fields
         $('.pdfm-level-group').toggle(operation === 'compress');
         $('.pdfm-pages-group').toggle(operation === 'split');
@@ -176,6 +202,25 @@
         // Toggle help text
         $('.pdfm-help[data-for]').hide();
         $('.pdfm-help[data-for="' + operation + '"]').show();
+
+        // Issue #4: Update button text and file input
+        const $addButton = $('.pdfm-add-file');
+        if (operation === 'convert') {
+            const direction = $('input[name="convert_direction"]:checked').val();
+            if (direction === 'img-to-pdf') {
+                $addButton.text('Add Images (JPG, PNG, BMP)');
+                $('#pdfm-file-input').attr('accept', 'image/jpeg,image/png,image/bmp').attr('multiple', 'multiple');
+            } else {
+                $addButton.text('Add PDF File');
+                $('#pdfm-file-input').attr('accept', 'application/pdf').removeAttr('multiple');
+            }
+        } else if (operation === 'merge') {
+            $addButton.text('Add PDF Files (2-20 files)');
+            $('#pdfm-file-input').attr('accept', 'application/pdf').attr('multiple', 'multiple');
+        } else {
+            $addButton.text('Add PDF File');
+            $('#pdfm-file-input').attr('accept', 'application/pdf').removeAttr('multiple');
+        }
     });
 
     // Convert direction toggle
@@ -192,12 +237,19 @@
         $('.pdfm-convert-help[data-for]').hide();
         $('.pdfm-convert-help[data-for="' + direction + '"]').show();
 
-        // Update file input accept attribute
+        // Issue #4: Update button text and file input based on direction
+        const $addButton = $('.pdfm-add-file');
         if (direction === 'img-to-pdf') {
-            $('#pdfm-file-input').attr('accept', 'image/jpeg,image/png,image/bmp');
+            $addButton.text('Add Images (JPG, PNG, BMP)');
+            $('#pdfm-file-input').attr('accept', 'image/jpeg,image/png,image/bmp').attr('multiple', 'multiple');
         } else {
-            $('#pdfm-file-input').attr('accept', 'application/pdf');
+            $addButton.text('Add PDF File');
+            $('#pdfm-file-input').attr('accept', 'application/pdf').removeAttr('multiple');
         }
+
+        // Clear selected files when switching direction
+        selectedFiles = [];
+        updateFileList();
     });
 
     $(document).on('submit', '.pdfm-processor__form', function (event) {
@@ -224,10 +276,16 @@
             }
         }
 
-        // Merge validation
-        if (operation === 'merge' && selectedFiles.length < 2) {
-            alert('Merge requires at least 2 PDF files.');
-            return;
+        // Merge validation (Issue #6)
+        if (operation === 'merge') {
+            if (selectedFiles.length < 2) {
+                alert('Merge requires at least 2 PDF files.');
+                return;
+            }
+            if (selectedFiles.length > 20) {
+                alert('Merge allows maximum 20 PDF files.');
+                return;
+            }
         }
 
         // Convert validation
@@ -441,9 +499,10 @@
         window.location.reload();
     });
 
-    // Try again handler
+    // Try again handler - Issue #5
     $(document).on('click', '.pdfm-try-again', function () {
         selectedFiles = [];
+        $('#pdfm-file-input').val(''); // Clear file input
         updateFileList();
         const $container = $(this).closest('.pdfm-processor');
         const $form = $container.find('.pdfm-processor__form');
@@ -473,7 +532,7 @@
         }
     });
 
-    // Reset button handler (compress success state)
+    // Reset button handler (compress success state) - Issue #5
     $(document).on('click', '#pdfm-reset-button', function () {
         // Hide success state
         $('#pdfm-success-state').hide();
@@ -485,6 +544,7 @@
 
         // Reset form state
         selectedFiles = [];
+        $('#pdfm-file-input').val(''); // Clear file input
         updateFileList();
         $form[0].reset();
         $form.find('button, input, select').prop('disabled', false);
@@ -515,7 +575,7 @@
         }
     });
 
-    // Reset button handler (generic success state - merge/split/convert)
+    // Reset button handler (generic success state - merge/split/convert) - Issue #5
     $(document).on('click', '#pdfm-reset-button-generic', function () {
         // Hide generic success state
         $('#pdfm-success-state-generic').hide();
@@ -527,6 +587,7 @@
 
         // Reset form state
         selectedFiles = [];
+        $('#pdfm-file-input').val(''); // Clear file input
         updateFileList();
         $form[0].reset();
         $form.find('button, input, select').prop('disabled', false);
