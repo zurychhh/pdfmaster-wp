@@ -36,16 +36,31 @@ if (getenv('RAILWAY_ENVIRONMENT')) {
     define('DB_CHARSET', 'utf8mb4');
     define('DB_COLLATE', '');
 
-    // Railway Reverse Proxy Fix
-    // Accept requests from both Railway domain and pdfspark.app (via Vercel proxy)
+    /**
+     * Railway Reverse Proxy Configuration
+     * This MUST come BEFORE any other WordPress configuration
+     */
+
+    // Handle Railway's host proxy - FORCE pdfspark.app
     if (isset($_SERVER['HTTP_X_FORWARDED_HOST'])) {
-        $_SERVER['HTTP_HOST'] = $_SERVER['HTTP_X_FORWARDED_HOST'];
+        $_SERVER['HTTP_HOST'] = 'pdfspark.app';
+    } elseif (isset($_SERVER['HTTP_HOST']) && strpos($_SERVER['HTTP_HOST'], 'railway.app') !== false) {
+        $_SERVER['HTTP_HOST'] = 'pdfspark.app';
     }
 
-    // Force pdfspark.app domain (prevents redirect loop with proxy)
+    // Force WordPress to use pdfspark.app ALWAYS
     define('WP_HOME', 'https://pdfspark.app');
     define('WP_SITEURL', 'https://pdfspark.app');
-    define('RELOCATE', false); // Disable automatic redirects for domain mismatch
+
+    // Prevent WordPress from trying to "fix" the domain
+    define('RELOCATE', false);
+    define('WP_ALLOW_REPAIR', false);
+
+    // Trust Railway's proxy headers
+    if (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+        $forwarded_ips = explode(',', $_SERVER['HTTP_X_FORWARDED_FOR']);
+        $_SERVER['REMOTE_ADDR'] = trim($forwarded_ips[0]);
+    }
 
     // Stirling PDF API (private Railway internal URL)
     define('STIRLING_API_URL', 'http://stirling-pdf.railway.internal:8080');
