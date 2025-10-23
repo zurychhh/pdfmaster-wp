@@ -36,14 +36,16 @@ if (getenv('RAILWAY_ENVIRONMENT')) {
     define('DB_CHARSET', 'utf8mb4');
     define('DB_COLLATE', '');
 
+    // Railway Reverse Proxy Fix
     // Accept requests from both Railway domain and pdfspark.app (via Vercel proxy)
-    // Override HTTP_HOST for proper WordPress URL handling
     if (isset($_SERVER['HTTP_X_FORWARDED_HOST'])) {
         $_SERVER['HTTP_HOST'] = $_SERVER['HTTP_X_FORWARDED_HOST'];
     }
 
-    // Let WordPress use database values for WP_HOME and WP_SITEURL
-    // Database is set to https://pdfspark.app
+    // Force pdfspark.app domain (prevents redirect loop with proxy)
+    define('WP_HOME', 'https://pdfspark.app');
+    define('WP_SITEURL', 'https://pdfspark.app');
+    define('RELOCATE', false); // Disable automatic redirects for domain mismatch
 
     // Stirling PDF API (private Railway internal URL)
     define('STIRLING_API_URL', 'http://stirling-pdf.railway.internal:8080');
