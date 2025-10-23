@@ -32,10 +32,10 @@ if (function_exists('wp_body_open')) {
             <span><?php bloginfo('name'); ?></span>
         </a>
         <nav class="site-header__nav">
-            <a href="<?php echo esc_url(home_url('/test-processor/?tool=compress')); ?>" class="nav-link">Compress</a>
-            <a href="<?php echo esc_url(home_url('/test-processor/?tool=merge')); ?>" class="nav-link">Merge</a>
-            <a href="<?php echo esc_url(home_url('/test-processor/?tool=split')); ?>" class="nav-link">Split</a>
-            <a href="<?php echo esc_url(home_url('/test-processor/?tool=convert')); ?>" class="nav-link">Convert</a>
+            <a href="<?php echo esc_url(home_url('/services/?tool=compress')); ?>" class="nav-link">Compress</a>
+            <a href="<?php echo esc_url(home_url('/services/?tool=merge')); ?>" class="nav-link">Merge</a>
+            <a href="<?php echo esc_url(home_url('/services/?tool=split')); ?>" class="nav-link">Split</a>
+            <a href="<?php echo esc_url(home_url('/services/?tool=convert')); ?>" class="nav-link">Convert</a>
             <a href="<?php echo esc_url(home_url('/homepage-p1/#how-it-works')); ?>" class="nav-link">How It Works</a>
         </nav>
     </div>
