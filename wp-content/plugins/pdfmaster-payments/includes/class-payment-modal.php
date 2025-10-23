@@ -59,6 +59,10 @@ class PaymentModal
             true
         );
 
+        // Get current mode (test/live)
+        $options = get_option('pdfm_stripe_settings', []);
+        $mode = $options['mode'] ?? 'test';
+
         wp_localize_script(
             'pdfm-payment-modal',
             'pdfmPayments',
@@ -66,6 +70,7 @@ class PaymentModal
                 'ajaxUrl' => admin_url('admin-ajax.php'),
                 'nonce'   => wp_create_nonce('pdfm_payments_nonce'),
                 'publishableKey' => $this->stripe->get_publishable_key(),
+                'mode' => $mode, // 'test' or 'live'
             ]
         );
     }

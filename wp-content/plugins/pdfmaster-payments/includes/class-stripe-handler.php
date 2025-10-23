@@ -23,7 +23,17 @@ class StripeHandler
     {
         $this->publishable_key = (string) apply_filters('pdfm_stripe_publishable_key', '');
         $this->secret_key = (string) apply_filters('pdfm_stripe_secret_key', '');
-        $this->webhook_secret = (string) (get_option('pdfm_stripe_settings')['webhook_secret'] ?? '');
+
+        // Get webhook secret based on mode (test/live)
+        $options = get_option('pdfm_stripe_settings', []);
+        $mode = $options['mode'] ?? 'test';
+
+        if ($mode === 'live') {
+            $this->webhook_secret = (string) ($options['live_webhook_secret'] ?? '');
+        } else {
+            // Test mode - try new key, fallback to legacy
+            $this->webhook_secret = (string) ($options['test_webhook_secret'] ?? $options['webhook_secret'] ?? '');
+        }
     }
 
     public function register_hooks(): void
