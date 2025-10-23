@@ -37,16 +37,13 @@ if (getenv('RAILWAY_ENVIRONMENT')) {
     define('DB_COLLATE', '');
 
     // Accept requests from both Railway domain and pdfspark.app (via Vercel proxy)
-    // Use HTTP_X_FORWARDED_HOST if coming from Vercel, otherwise use HTTP_HOST
+    // Override HTTP_HOST for proper WordPress URL handling
     if (isset($_SERVER['HTTP_X_FORWARDED_HOST'])) {
-        $host = $_SERVER['HTTP_X_FORWARDED_HOST'];
-        $_SERVER['HTTP_HOST'] = $host; // Override for WordPress
-    } else {
-        $host = $_SERVER['HTTP_HOST'] ?? getenv('RAILWAY_PUBLIC_DOMAIN') ?? 'pdfmaster-wp-production.up.railway.app';
+        $_SERVER['HTTP_HOST'] = $_SERVER['HTTP_X_FORWARDED_HOST'];
     }
 
-    define('WP_HOME', 'https://' . $host);
-    define('WP_SITEURL', 'https://' . $host);
+    // Let WordPress use database values for WP_HOME and WP_SITEURL
+    // Database is set to https://pdfspark.app
 
     // Stirling PDF API (private Railway internal URL)
     define('STIRLING_API_URL', 'http://stirling-pdf.railway.internal:8080');
