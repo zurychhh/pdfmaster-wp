@@ -31,14 +31,14 @@ add_action('template_redirect', function() {
 
     // Redirect any URL containing /test-processor/ to /services/
     if (strpos($request_uri, '/test-processor') !== false) {
-        // For pdfspark.app domain
+        // For pdfspark.app domain (with or without www)
         if (strpos($_SERVER['HTTP_HOST'] ?? '', 'pdfspark.app') !== false) {
-            wp_redirect('https://pdfspark.app/services/', 301);
+            wp_redirect('https://www.pdfspark.app/services/', 301);
             exit;
         }
         // For Railway domain (fallback)
         else {
-            wp_redirect('https://pdfspark.app/services/', 301);
+            wp_redirect('https://www.pdfspark.app/services/', 301);
             exit;
         }
     }

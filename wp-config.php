@@ -41,16 +41,16 @@ if (getenv('RAILWAY_ENVIRONMENT')) {
      * This MUST come BEFORE any other WordPress configuration
      */
 
-    // Handle Railway's host proxy - FORCE pdfspark.app
+    // Handle Railway's host proxy - FORCE www.pdfspark.app
     if (isset($_SERVER['HTTP_X_FORWARDED_HOST'])) {
-        $_SERVER['HTTP_HOST'] = 'pdfspark.app';
+        $_SERVER['HTTP_HOST'] = 'www.pdfspark.app';
     } elseif (isset($_SERVER['HTTP_HOST']) && strpos($_SERVER['HTTP_HOST'], 'railway.app') !== false) {
-        $_SERVER['HTTP_HOST'] = 'pdfspark.app';
+        $_SERVER['HTTP_HOST'] = 'www.pdfspark.app';
     }
 
-    // Force WordPress to use pdfspark.app ALWAYS
-    define('WP_HOME', 'https://pdfspark.app');
-    define('WP_SITEURL', 'https://pdfspark.app');
+    // Force WordPress to use www.pdfspark.app ALWAYS
+    define('WP_HOME', 'https://www.pdfspark.app');
+    define('WP_SITEURL', 'https://www.pdfspark.app');
 
     // Prevent WordPress from trying to "fix" the domain
     define('RELOCATE', false);

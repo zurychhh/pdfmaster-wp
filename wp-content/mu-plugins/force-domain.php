@@ -1,34 +1,34 @@
 <?php
 /**
  * Plugin Name: Force PDFSpark Domain
- * Description: Prevents redirect loops by forcing pdfspark.app domain
- * Version: 1.0
+ * Description: Prevents redirect loops by forcing www.pdfspark.app domain
+ * Version: 1.1
  */
 
 // Force domain on every request
 add_filter('option_siteurl', function($url) {
-    return 'https://pdfspark.app';
+    return 'https://www.pdfspark.app';
 });
 
 add_filter('option_home', function($url) {
-    return 'https://pdfspark.app';
+    return 'https://www.pdfspark.app';
 });
 
 // Fix URLs in content
 add_filter('content_url', function($url) {
-    return str_replace('railway.app', 'pdfspark.app', $url);
+    return str_replace('railway.app', 'www.pdfspark.app', $url);
 });
 
 add_filter('plugins_url', function($url) {
-    return str_replace('railway.app', 'pdfspark.app', $url);
+    return str_replace('railway.app', 'www.pdfspark.app', $url);
 });
 
 add_filter('site_url', function($url) {
-    return str_replace('railway.app', 'pdfspark.app', $url);
+    return str_replace('railway.app', 'www.pdfspark.app', $url);
 }, 999);
 
 add_filter('home_url', function($url) {
-    return str_replace('railway.app', 'pdfspark.app', $url);
+    return str_replace('railway.app', 'www.pdfspark.app', $url);
 }, 999);
 
 // Prevent WordPress from redirecting
