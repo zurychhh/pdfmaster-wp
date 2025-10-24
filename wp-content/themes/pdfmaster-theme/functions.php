@@ -1119,3 +1119,26 @@ if (! function_exists('pdfm_homepage_p1_assets')) {
 }
 add_action('wp_enqueue_scripts', 'pdfm_homepage_p1_assets');
 
+/**
+ * Google Analytics 4 Tracking
+ * Only loads on production environment
+ */
+if (! function_exists('pdfm_add_google_analytics')) {
+    function pdfm_add_google_analytics(): void {
+        // Only on production (Railway environment)
+        if (defined('WP_ENVIRONMENT_TYPE') && WP_ENVIRONMENT_TYPE === 'production') {
+            ?>
+            <!-- Google tag (gtag.js) -->
+            <script async src="https://www.googletagmanager.com/gtag/js?id=G-SG765F3EL7"></script>
+            <script>
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'G-SG765F3EL7');
+            </script>
+            <?php
+        }
+    }
+}
+add_action('wp_head', 'pdfm_add_google_analytics', 1);
+
