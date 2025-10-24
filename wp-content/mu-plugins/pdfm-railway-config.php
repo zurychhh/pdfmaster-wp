@@ -26,20 +26,18 @@ add_filter('pdfm_stripe_secret_key', function($value) {
 }, 20);
 
 // Redirect old /test-processor/ URL to /services/ (301 permanent)
+// Only runs in production environment (Railway)
 add_action('template_redirect', function() {
+    // Only redirect in production environment
+    if (!defined('WP_ENVIRONMENT_TYPE') || WP_ENVIRONMENT_TYPE !== 'production') {
+        return; // Allow /test-processor to work in local/staging
+    }
+
     $request_uri = $_SERVER['REQUEST_URI'] ?? '';
 
     // Redirect any URL containing /test-processor/ to /services/
     if (strpos($request_uri, '/test-processor') !== false) {
-        // For pdfspark.app domain (with or without www)
-        if (strpos($_SERVER['HTTP_HOST'] ?? '', 'pdfspark.app') !== false) {
-            wp_redirect('https://www.pdfspark.app/services/', 301);
-            exit;
-        }
-        // For Railway domain (fallback)
-        else {
-            wp_redirect('https://www.pdfspark.app/services/', 301);
-            exit;
-        }
+        wp_redirect('https://www.pdfspark.app/services/', 301);
+        exit;
     }
 });
