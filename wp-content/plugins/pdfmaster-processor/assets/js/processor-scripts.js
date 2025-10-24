@@ -1,6 +1,29 @@
 (function ($) {
     'use strict';
 
+    /**
+     * Google Analytics 4 Event Tracking Helper
+     * Tracks conversion funnel events for PDFMaster
+     *
+     * Event Map:
+     * 1. tool_selected - User clicks tool tab (compress/merge/split/convert)
+     * 2. file_uploaded - File successfully uploaded and validated
+     * 3. processing_started - User clicks process button (Compress/Merge/etc)
+     * 4. processing_complete - Processing successful, results shown
+     * 5. file_downloaded - User clicks download button
+     *
+     * @param {string} eventName - GA4 event name
+     * @param {object} params - Event parameters (tool_name, file_size_kb, etc)
+     */
+    function trackEvent(eventName, params = {}) {
+        if (typeof gtag === 'function') {
+            gtag('event', eventName, params);
+            console.log('GA4 Event:', eventName, params); // Debug logging
+        } else {
+            console.log('GA4 not loaded - Event skipped:', eventName, params);
+        }
+    }
+
     // File management
     let selectedFiles = [];
 
@@ -124,6 +147,16 @@
             selectedFiles.push(file);
         }
 
+        // GA4 Event: file_uploaded (after all files validated and added)
+        if (selectedFiles.length > 0) {
+            const totalSizeKB = selectedFiles.reduce((sum, f) => sum + (f.size / 1024), 0);
+            trackEvent('file_uploaded', {
+                tool_name: operation,
+                file_size_kb: Math.round(totalSizeKB),
+                file_count: selectedFiles.length
+            });
+        }
+
         // Update UI
         updateFileList();
 
@@ -144,6 +177,11 @@
         $radio.prop('checked', true);
 
         const operation = $radio.val();
+
+        // GA4 Event: tool_selected
+        trackEvent('tool_selected', {
+            tool_name: operation
+        });
 
         // Toggle active state
         $('.pdfm-tab').removeClass('active');
@@ -371,6 +409,14 @@
                     spinnerText = 'Extracting images from PDF... (usually 5-10 seconds)';
                 }
 
+                // GA4 Event: processing_started
+                const totalSizeKB = selectedFiles.reduce((sum, f) => sum + (f.size / 1024), 0);
+                trackEvent('processing_started', {
+                    tool_name: operation,
+                    file_size_kb: Math.round(totalSizeKB),
+                    file_count: selectedFiles.length
+                });
+
                 const processingHtml = [
                     '<div class="pdfm-processing">',
                     '  <div class="pdfm-spinner" aria-hidden="true"></div>',
@@ -386,6 +432,34 @@
                 if (response && response.success && response.data) {
                     const data = response.data;
                     const operation = formData.get('operation');
+
+                    // GA4 Event: processing_complete
+                    const eventParams = {
+                        tool_name: operation
+                    };
+
+                    // Add compression stats if available
+                    if (operation === 'compress' && data.original_size && data.compressed_size) {
+                        // Parse sizes (format: "2.5 MB" or "500 KB")
+                        const parseSize = (str) => {
+                            const match = str.match(/([0-9.]+)\s*(KB|MB)/i);
+                            if (!match) return 0;
+                            const value = parseFloat(match[1]);
+                            const unit = match[2].toUpperCase();
+                            return unit === 'MB' ? value * 1024 : value;
+                        };
+
+                        const originalKB = parseSize(data.original_size);
+                        const compressedKB = parseSize(data.compressed_size);
+
+                        if (originalKB && compressedKB) {
+                            eventParams.original_size_kb = Math.round(originalKB);
+                            eventParams.processed_size_kb = Math.round(compressedKB);
+                            eventParams.compression_ratio = Math.round((compressedKB / originalKB) * 100);
+                        }
+                    }
+
+                    trackEvent('processing_complete', eventParams);
 
                     // Hide form and result container
                     $form.hide();
@@ -608,6 +682,12 @@
             alert('Download URL missing. Please try again.');
             return;
         }
+
+        // GA4 Event: file_downloaded
+        const operation = $('input[name="operation"]:checked').val() || 'unknown';
+        trackEvent('file_downloaded', {
+            tool_name: operation
+        });
 
         // Trigger download
         window.location.href = downloadUrl;
