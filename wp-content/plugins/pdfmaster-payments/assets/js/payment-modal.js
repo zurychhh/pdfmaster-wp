@@ -1,10 +1,44 @@
 (function ($) {
     'use strict';
 
+    /**
+     * Google Analytics 4 E-commerce Tracking Helper
+     * Tracks payment funnel events for PDFMaster
+     *
+     * Event Map:
+     * 1. begin_checkout - User clicks "Pay $0.99" button (modal opens)
+     * 2. purchase - Payment successful (transaction complete)
+     *
+     * @param {string} eventName - GA4 event name
+     * @param {object} params - Event parameters (value, currency, transaction_id, etc)
+     */
+    function trackEvent(eventName, params = {}) {
+        if (typeof gtag === 'function') {
+            gtag('event', eventName, params);
+            console.log('GA4 E-commerce Event:', eventName, params); // Debug logging
+        } else {
+            console.log('GA4 not loaded - E-commerce event skipped:', eventName, params);
+        }
+    }
+
     const modalSelector = '.pdfm-payment-modal';
     let stripe, elements, cardElement;
 
     function openModal() {
+        // GA4 Event: begin_checkout (e-commerce event)
+        const toolName = $('input[name="operation"]:checked').val() || 'unknown';
+        trackEvent('begin_checkout', {
+            value: 0.99,
+            currency: 'USD',
+            tool_name: toolName,
+            items: [{
+                item_id: 'pdf_processing',
+                item_name: 'PDF Processing (' + toolName + ')',
+                price: 0.99,
+                quantity: 1
+            }]
+        });
+
         $(modalSelector).fadeIn(200);
         ensureStripe();
     }
@@ -66,6 +100,21 @@
             });
             const json2 = await res2.json();
             if (!json2.success) throw new Error(json2.data && json2.data.message || 'Payment confirm failed');
+
+            // GA4 Event: purchase (e-commerce event)
+            const toolName = $('input[name="operation"]:checked').val() || 'unknown';
+            trackEvent('purchase', {
+                transaction_id: fileToken,
+                value: 0.99,
+                currency: 'USD',
+                tool_name: toolName,
+                items: [{
+                    item_id: 'pdf_processing',
+                    item_name: 'PDF Processing (' + toolName + ')',
+                    price: 0.99,
+                    quantity: 1
+                }]
+            });
 
             // Success - trigger event immediately (no alert popup)
             closeModal();
