@@ -2,8 +2,14 @@
 /**
  * Plugin Name: Force PDFSpark Domain
  * Description: Prevents redirect loops by forcing www.pdfspark.app domain
- * Version: 1.1
+ * Version: 1.2
+ * Note: Only runs in production environment (Railway)
  */
+
+// Only run in production environment
+if (!defined('WP_ENVIRONMENT_TYPE') || WP_ENVIRONMENT_TYPE !== 'production') {
+    return; // Exit early for local/staging environments
+}
 
 // Force domain on every request
 add_filter('option_siteurl', function($url) {
