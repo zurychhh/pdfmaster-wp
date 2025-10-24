@@ -1125,8 +1125,8 @@ add_action('wp_enqueue_scripts', 'pdfm_homepage_p1_assets');
  */
 if (! function_exists('pdfm_add_google_analytics')) {
     function pdfm_add_google_analytics(): void {
-        // Only on production
-        if (defined('WP_ENV') && WP_ENV === 'production') {
+        // Only on production (Railway environment)
+        if (defined('WP_ENVIRONMENT_TYPE') && WP_ENVIRONMENT_TYPE === 'production') {
             ?>
             <!-- Google tag (gtag.js) -->
             <script async src="https://www.googletagmanager.com/gtag/js?id=G-SG765F3EL7"></script>
