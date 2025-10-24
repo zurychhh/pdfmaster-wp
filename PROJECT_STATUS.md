@@ -1,19 +1,29 @@
 # PDFMaster - Project Status & Handoff Documentation
 
-Last updated: 2025-10-21
+**Last updated:** 2025-10-24
+**Status:** ✅ **PRODUCTION READY** - Live at https://www.pdfspark.app
 
 ---
 
 ## 🎯 Project Overview
 
-What: PDFMaster - WordPress pay-per-action PDF processing app
-Business Model: $0.99 per file processed (no subscriptions, no credits)
-Tech Stack: WordPress + Custom PHP Templates + Stirling PDF + Stripe
-Goal: MVP with compress tool, working payment flow
+**What:** PDFMaster - WordPress pay-per-action PDF processing app
+**Business Model:** $0.99 per file processed (no subscriptions, no credits)
+**Tech Stack:** WordPress + FrankenPHP + Stirling PDF + Stripe Live
+**Current State:** ✅ Production deployment complete, accepting real payments
 
-Repository: https://github.com/zurychhh/pdfmaster-wp
-Branch: main (active feature branch: feature/homepage-p1-custom-template)
-Last PR: #26 — Homepage P1 Custom Template (OPEN)
+**Live Site:** https://www.pdfspark.app
+**Repository:** https://github.com/zurychhh/pdfmaster-wp
+**Branch:** main (production)
+**Deployment:** Railway (backend) + Vercel (frontend proxy)
+
+**Key Achievements:**
+- ✅ All 4 tools working in production (compress, merge, split, convert)
+- ✅ Stripe Live mode activated ($0.99 real payments)
+- ✅ Custom domain with SSL (www.pdfspark.app)
+- ✅ Professional UX with animated success states
+- ✅ Terms & Conditions page live
+- ✅ Production-ready infrastructure (Railway + Vercel)
 
 ## 📚 Documentation Structure
 
@@ -48,24 +58,32 @@ Maintenance:
 
 ---
 
-## 📈 Status Update — 2025-10-21
+## 📈 Status Update — 2025-10-24
 
-Completed recently
-- Homepage P1 Custom Template — 3 files created (page-homepage-p1.php, homepage-p1.css, homepage-p1.js)
-- All 7 visual enhancements implemented (sticky bar, hero typography, tool hovers, pricing grid, FAQ accordion, pulsing CTA, spacing)
-- CSS/JS loading fix — moved asset enqueuing from template to functions.php
-- Complete UX redesign for all 4 tools (compress, merge, split, convert)
-- Tool page redesign with service tabs + hero section
-- Homepage structure analysis (5 docs, 71KB)
+**🚀 PRODUCTION LAUNCH COMPLETE**
 
-Current approach
-- Custom PHP templates for performance-critical pages (Homepage P1)
-- Hardcoded HTML/CSS/JS for maximum control
-- Elementor for content pages where self-service editing needed
-- User explicitly accepted zero Elementor editability for Homepage P1 in exchange for speed
+Completed in this session (2025-10-24)
+- ✅ **Production deployment** — Site live at https://www.pdfspark.app
+- ✅ **Stripe Live mode** — Real payments working ($0.99 per operation)
+- ✅ **Domain configuration** — Fixed redirect loop, CORS errors resolved
+- ✅ **Terms & Conditions page** — Professional template with 16 legal sections
+- ✅ **Railway env vars** — Updated with live Stripe keys
+- ✅ **Infrastructure hardening** — Must-use plugins for config overrides
+- ✅ **Complete testing** — All 4 tools functional in production
 
-Open PRs
-- #26 — Homepage P1 Custom Template (OPEN)
+Technical fixes
+- Fixed ERR_TOO_MANY_REDIRECTS (WP_HOME/WP_SITEURL forcing)
+- Resolved CORS errors (www.pdfspark.app domain consistency)
+- Diagnosed and fixed Stripe Live mode (Railway env vars)
+- Created diagnostic reports for troubleshooting
+- Updated all internal URLs (test-processor → services)
+
+Current infrastructure
+- Frontend: Vercel proxy (CDN + SSL)
+- Backend: Railway (FrankenPHP + Stirling PDF)
+- Database: MySQL on Railway
+- Payments: Stripe Live mode (production keys)
+- Domain: www.pdfspark.app (forced in wp-config.php)
 
 Working style (process)
 - Claude Code (AI assistant) executes end‑to‑end with minimal back‑and‑forth
