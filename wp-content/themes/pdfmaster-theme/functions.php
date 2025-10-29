@@ -14,6 +14,10 @@ if (! defined('ABSPATH')) {
 // Load Elementor migration class
 require_once get_template_directory() . '/includes/class-elementor-migration.php';
 
+// Load SEO Foundation (P0)
+require_once get_template_directory() . '/inc/seo-metadata.php';
+require_once get_template_directory() . '/inc/schema-markup.php';
+
 if (! function_exists('pdfm_setup')) {
     /**
      * Register theme defaults and support for WordPress features.

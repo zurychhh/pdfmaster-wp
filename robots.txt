@@ -1,0 +1,19 @@
+# PDFSpark Robots.txt
+# Generated: SEO Foundation P0 Implementation
+
+User-agent: *
+Allow: /
+
+# Disallow sensitive areas
+Disallow: /wp-admin/
+Disallow: /wp-includes/
+Disallow: /wp-content/plugins/
+Disallow: /wp-content/themes/
+Disallow: /wp-json/
+
+# Allow specific public assets
+Allow: /wp-content/uploads/
+
+# Sitemap location (update after installing SEO plugin)
+Sitemap: https://pdfspark.app/sitemap.xml
+Sitemap: https://www.pdfspark.app/sitemap.xml

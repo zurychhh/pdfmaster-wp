@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 180">
+  <!-- PDFSpark Logo - Simple PDF icon with spark -->
+  <rect width="180" height="180" fill="#2563EB" rx="20"/>
+  <g transform="translate(35, 35)">
+    <!-- PDF Document -->
+    <path fill="#FFFFFF" d="M20 0h50l20 20v70a10 10 0 01-10 10H20a10 10 0 01-10-10V10A10 10 0 0120 0z"/>
+    <path fill="#2563EB" d="M70 0l20 20H75a5 5 0 01-5-5V0z"/>
+
+    <!-- PDF Text -->
+    <text x="30" y="55" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="#2563EB">PDF</text>
+
+    <!-- Spark/Lightning bolt -->
+    <path fill="#F59E0B" d="M85 50l-10 15h7l-5 15 12-18h-7l3-12z"/>
+  </g>
+</svg>
