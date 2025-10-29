@@ -348,12 +348,14 @@ body.admin-bar .pdfm-trust-bar {
     border: 2px solid #e5e7eb;
     transition: all 0.3s ease;
     cursor: pointer;
+    text-decoration: none;
 }
 
 .tool-card:hover {
     transform: translateY(-8px); /* Enhanced lift */
     box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); /* shadow-2xl */
     border-color: #2563eb;
+    text-decoration: none;
 }
 
 .tool-icon {
@@ -396,12 +398,14 @@ body.admin-bar .pdfm-trust-bar {
     font-weight: 600;
     color: #1f2937;
     margin-bottom: 0.75rem;
+    text-decoration: none;
 }
 
 .tool-card p {
     color: #6b7280;
     line-height: 1.6;
     margin-bottom: 1rem;
+    text-decoration: none;
 }
 
 .tool-price {
@@ -409,11 +413,13 @@ body.admin-bar .pdfm-trust-bar {
     font-weight: 700;
     color: #2563eb;
     margin-bottom: 0.5rem;
+    text-decoration: none;
 }
 
 .tool-time {
     font-size: 0.875rem;
     color: #9ca3af;
+    text-decoration: none;
 }
 
 /* ===== 7) PRICING COMPARISON ===== */
