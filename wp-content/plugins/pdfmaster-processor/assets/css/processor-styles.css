@@ -205,20 +205,17 @@
     transition: all 0.2s;
     background: #ffffff;
     display: block;
-    text-decoration: none;
 }
 
 .pdfm-tab:hover {
     border-color: #3B82F6;
     box-shadow: 0 2px 8px rgba(59, 130, 246, 0.1);
-    text-decoration: none;
 }
 
 .pdfm-tab.active {
     border-color: #3B82F6;
     background: #EFF6FF;
     box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
-    text-decoration: none;
 }
 
 .pdfm-tab input[type="radio"] {
@@ -230,7 +227,6 @@
     font-size: 16px;
     color: #1F2937;
     margin-bottom: 4px;
-    text-decoration: none;
 }
 
 .pdfm-tab-desc {
@@ -241,7 +237,6 @@
 
 .pdfm-tab.active .pdfm-tab-label {
     color: #2563EB;
-    text-decoration: none;
 }
 
 /* Merge Success Message */
