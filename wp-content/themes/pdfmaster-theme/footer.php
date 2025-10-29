@@ -16,10 +16,10 @@ if (! defined('ABSPATH')) {
 <footer class="site-footer">
     <div class="site-footer__inner">
         <div class="footer-links">
-            <a href="<?php echo esc_url(home_url('/services/?tool=compress')); ?>" class="footer-link">Compress PDF</a>
-            <a href="<?php echo esc_url(home_url('/services/?tool=merge')); ?>" class="footer-link">Merge PDFs</a>
-            <a href="<?php echo esc_url(home_url('/services/?tool=split')); ?>" class="footer-link">Split PDF</a>
-            <a href="<?php echo esc_url(home_url('/services/?tool=convert')); ?>" class="footer-link">Convert to PDF</a>
+            <a href="<?php echo esc_url(home_url('/services/?tool=compress')); ?>" class="footer-link">Compress Spark</a>
+            <a href="<?php echo esc_url(home_url('/services/?tool=merge')); ?>" class="footer-link">Merge Spark</a>
+            <a href="<?php echo esc_url(home_url('/services/?tool=split')); ?>" class="footer-link">Split Spark</a>
+            <a href="<?php echo esc_url(home_url('/services/?tool=convert')); ?>" class="footer-link">Convert Spark</a>
         </div>
         <div class="footer-contact">
             <a href="mailto:contact@oleksiakconsulting.com" class="footer-email">contact@oleksiakconsulting.com</a>

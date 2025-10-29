@@ -44,6 +44,9 @@ get_header();
             <div class="hero-content">
                 <h1>Professional PDF Tools in 30 Seconds</h1>
                 <p class="hero-subtitle">Compress, merge, split and convert PDF files without installing software. Just $0.99 per action. No subscriptions, no hidden fees.</p>
+                <p class="text-lg text-blue-700 font-medium mb-4">
+                    AI-enhanced compression delivers professional quality at unbeatable value
+                </p>
 
                 <div class="hero-ctas">
                     <a href="<?php echo esc_url(home_url('/test-processor/')); ?>" class="btn btn-primary">Try Any Tool — $0.99</a>
@@ -116,7 +119,7 @@ get_header();
                     <div class="tool-icon bg-blue">
                         <svg width="32" height="32" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z" clip-rule="evenodd"/></svg>
                     </div>
-                    <h3>Compress PDF</h3>
+                    <h3>Compress Spark</h3>
                     <p>Reduce file size by up to 90% without quality loss. Perfect for email attachments.</p>
                     <div class="tool-price">$0.99</div>
                     <p class="tool-time">~8 seconds processing</p>
@@ -126,7 +129,7 @@ get_header();
                     <div class="tool-icon bg-green">
                         <svg width="32" height="32" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z" clip-rule="evenodd"/></svg>
                     </div>
-                    <h3>Merge PDFs</h3>
+                    <h3>Merge Spark</h3>
                     <p>Combine multiple PDF files into one organized document. Up to 20 files at once.</p>
                     <div class="tool-price">$0.99</div>
                     <p class="tool-time">~8 seconds processing</p>
@@ -136,7 +139,7 @@ get_header();
                     <div class="tool-icon bg-purple">
                         <svg width="32" height="32" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z" clip-rule="evenodd"/></svg>
                     </div>
-                    <h3>Split PDF</h3>
+                    <h3>Split Spark</h3>
                     <p>Extract specific pages or split into separate files. Simple page range selection.</p>
                     <div class="tool-price">$0.99</div>
                     <p class="tool-time">~8 seconds processing</p>
@@ -146,7 +149,7 @@ get_header();
                     <div class="tool-icon bg-orange">
                         <svg width="32" height="32" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z" clip-rule="evenodd"/></svg>
                     </div>
-                    <h3>Convert to PDF</h3>
+                    <h3>Convert Spark</h3>
                     <p>Convert Word, Excel, PowerPoint and images to PDF. Quality options available.</p>
                     <div class="tool-price">$0.99</div>
                     <p class="tool-time">~8 seconds processing</p>
@@ -191,7 +194,7 @@ get_header();
                 </div>
 
                 <div class="pricing-card pdfmaster">
-                    <div class="badge badge-green">PDFMaster ⭐ Best Value</div>
+                    <div class="badge badge-green">PDFSpark ⭐ Best Value</div>
                     <div class="pricing-icon">
                         <svg width="48" height="48" fill="#10b981" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
                     </div>
