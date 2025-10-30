@@ -18,7 +18,6 @@ wp-config.php.backup_*
 # Exclude bundled plugins/themes we don't manage in git
 /wp-content/plugins/elementor/
 /wp-content/plugins/elementor-pro/
-/wp-content/plugins/seo-by-rank-math/
 
 # Uploads (duże pliki)
 /wp-content/uploads/
