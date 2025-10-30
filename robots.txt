@@ -14,6 +14,6 @@ Disallow: /wp-json/
 # Allow specific public assets
 Allow: /wp-content/uploads/
 
-# Sitemap location (update after installing SEO plugin)
-Sitemap: https://pdfspark.app/sitemap.xml
-Sitemap: https://www.pdfspark.app/sitemap.xml
+# Sitemap location (RankMath SEO Plugin)
+Sitemap: https://pdfspark.app/sitemap_index.xml
+Sitemap: https://www.pdfspark.app/sitemap_index.xml
