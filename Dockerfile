@@ -26,6 +26,17 @@ RUN if [ -f wp-content/plugins/pdfmaster-payments/composer.json ]; then \
         composer install --no-dev --optimize-autoloader --no-interaction; \
     fi
 
+# Install WP-CLI
+RUN curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar && \
+    chmod +x wp-cli.phar && \
+    mv wp-cli.phar /usr/local/bin/wp
+
+# Install & configure RankMath SEO plugin
+RUN wp plugin install seo-by-rank-math --activate --allow-root && \
+    wp option update rank_math_wizard_completed 1 --allow-root && \
+    wp option update rank_math_modules '["sitemap","seo-analysis","rich-snippet"]' --format=json --allow-root && \
+    wp rewrite flush --allow-root
+
 # Port is configured via $PORT env var in Caddyfile
 
 # Start FrankenPHP with Caddyfile
