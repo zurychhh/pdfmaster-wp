@@ -1,0 +1,14 @@
+{
+    "name": "pdfmaster/processor",
+    "description": "PDFMaster Processor Plugin",
+    "type": "wordpress-plugin",
+    "require": {
+        "php": ">=8.1",
+        "sentry/sentry": "^4.0"
+    },
+    "authors": [
+        {
+            "name": "PDFMaster"
+        }
+    ]
+}

@@ -17,6 +17,28 @@ namespace PDFMaster\Processor;
 
 require_once __DIR__ . '/autoload.php';
 
+// Initialize Sentry for error tracking in production
+if (file_exists(__DIR__ . '/vendor/autoload.php')) {
+    require_once __DIR__ . '/vendor/autoload.php';
+
+    $sentry_dsn = getenv('SENTRY_DSN');
+    if ($sentry_dsn && $sentry_dsn !== '') {
+        \Sentry\init([
+            'dsn' => $sentry_dsn,
+            'environment' => getenv('RAILWAY_ENVIRONMENT') ?: 'production',
+            'traces_sample_rate' => 0.2, // 20% performance monitoring
+            'error_types' => E_ALL & ~E_DEPRECATED & ~E_USER_DEPRECATED,
+            'before_send' => function (\Sentry\Event $event): ?\Sentry\Event {
+                // Don't send low-priority notices
+                if ($event->getLevel() === \Sentry\Severity::info()) {
+                    return null;
+                }
+                return $event;
+            },
+        ]);
+    }
+}
+
 if (! defined('ABSPATH')) {
     exit;
 }

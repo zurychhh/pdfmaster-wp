@@ -39,6 +39,26 @@ class StirlingApi
      * @param string $pages Page ranges for split (e.g., "1-5" or "1,3,5-7")
      * @return string|WP_Error Absolute path to processed file
      */
+    /**
+     * Health check for Stirling PDF API
+     */
+    public function health_check(): bool
+    {
+        $url = $this->get_endpoint() . '/api/v1/general/health';
+
+        $response = wp_remote_get($url, [
+            'timeout' => 5,
+            'sslverify' => false, // Railway internal network
+        ]);
+
+        if (is_wp_error($response)) {
+            return false;
+        }
+
+        $code = (int) wp_remote_retrieve_response_code($response);
+        return $code === 200;
+    }
+
     public function process(array $files, string $operation = 'compress', int $level = 5, string $pages = '', string $format = 'jpg'): string|WP_Error
     {
         if ($files === []) {
@@ -199,12 +219,27 @@ class StirlingApi
     private function handle_response($response, string $suffix): string|WP_Error
     {
         if (is_wp_error($response)) {
-            return new WP_Error('api_error', 'Stirling PDF API error: ' . $response->get_error_message());
+            $error_message = 'Stirling PDF API error: ' . $response->get_error_message();
+
+            // Capture error in Sentry
+            if (function_exists('\\Sentry\\captureMessage')) {
+                \Sentry\captureMessage($error_message, \Sentry\Severity::error());
+            }
+
+            return new WP_Error('api_error', $error_message);
         }
 
         $code = (int) wp_remote_retrieve_response_code($response);
         if ($code !== 200) {
-            return new WP_Error('api_error', 'API returned HTTP ' . $code . ': ' . wp_remote_retrieve_body($response));
+            $body = wp_remote_retrieve_body($response);
+            $error_message = 'API returned HTTP ' . $code . ': ' . $body;
+
+            // Capture API failures in Sentry
+            if (function_exists('\\Sentry\\captureMessage')) {
+                \Sentry\captureMessage($error_message, \Sentry\Severity::error());
+            }
+
+            return new WP_Error('api_error', $error_message);
         }
 
         $content = (string) wp_remote_retrieve_body($response);

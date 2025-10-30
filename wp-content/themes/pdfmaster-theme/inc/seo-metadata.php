@@ -74,7 +74,7 @@ function pdfm_add_meta_tags() {
     $description = '';
     $keywords = '';
     $og_type = 'website';
-    $og_image = get_template_directory_uri() . '/assets/images/pdfspark-og-image.jpg'; // TODO: Create OG image
+    $og_image = get_template_directory_uri() . '/assets/images/og-image.jpg';
     $canonical_url = '';
 
     // Homepage (static front page OR blog index)

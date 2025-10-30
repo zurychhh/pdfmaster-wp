@@ -82,8 +82,18 @@ class StripeHandler
                 'currency' => 'usd',
             ];
         } catch (\Stripe\Exception\ApiErrorException $e) {
+            // Capture Stripe API errors in Sentry
+            if (function_exists('\\Sentry\\captureException')) {
+                \Sentry\captureException($e);
+            }
+
             return new WP_Error('stripe_api_error', 'Stripe API Error: ' . $e->getMessage());
         } catch (\Throwable $e) {
+            // Capture unexpected exceptions in Sentry
+            if (function_exists('\\Sentry\\captureException')) {
+                \Sentry\captureException($e);
+            }
+
             return new WP_Error('stripe_exception', 'Exception: ' . $e->getMessage() . ' in ' . $e->getFile() . ':' . $e->getLine());
         }
     }
@@ -119,6 +129,11 @@ class StripeHandler
             }
             wp_send_json_success($result);
         } catch (\Throwable $e) {
+            // Capture AJAX exceptions in Sentry
+            if (function_exists('\\Sentry\\captureException')) {
+                \Sentry\captureException($e);
+            }
+
             wp_send_json_error([
                 'message' => 'Exception: ' . $e->getMessage(),
                 'file' => $e->getFile(),

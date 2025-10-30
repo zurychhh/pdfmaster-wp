@@ -31,6 +31,53 @@ class Processor
         add_action('wp_ajax_nopriv_pdfm_download', [$this, 'download_file']);
         add_shortcode('pdfmaster_processor', [$this, 'render_shortcode']);
         add_action('pdfm_processor_cleanup_cron', [$this, 'run_cleanup']);
+        add_action('rest_api_init', [$this, 'register_health_check_endpoint']);
+    }
+
+    /**
+     * Register health check REST API endpoint
+     */
+    public function register_health_check_endpoint(): void
+    {
+        register_rest_route('pdfmaster/v1', '/health', [
+            'methods' => 'GET',
+            'callback' => [$this, 'health_check_endpoint'],
+            'permission_callback' => '__return_true', // Public endpoint
+        ]);
+    }
+
+    /**
+     * Health check endpoint callback
+     */
+    public function health_check_endpoint(): \WP_REST_Response
+    {
+        // Check WordPress
+        $wp_healthy = true; // If we got here, WordPress is loaded
+
+        // Check database
+        global $wpdb;
+        $db_healthy = $wpdb->query("SELECT 1") !== false;
+
+        // Check Stirling PDF API
+        $stirling_healthy = $this->stirling_api->health_check();
+
+        // Determine overall status
+        $all_healthy = $wp_healthy && $db_healthy && $stirling_healthy;
+        $status_code = $all_healthy ? 200 : 503;
+
+        // Build response
+        $response_data = [
+            'status' => $all_healthy ? 'healthy' : 'unhealthy',
+            'timestamp' => current_time('mysql'),
+            'checks' => [
+                'wordpress' => $wp_healthy,
+                'database' => $db_healthy,
+                'stirling_pdf' => $stirling_healthy,
+            ],
+            'version' => PDFM_PROCESSOR_VERSION,
+        ];
+
+        return new \WP_REST_Response($response_data, $status_code);
     }
 
     public function enqueue_assets(): void
