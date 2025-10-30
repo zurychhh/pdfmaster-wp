@@ -31,13 +31,11 @@ RUN curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli
     chmod +x wp-cli.phar && \
     mv wp-cli.phar /usr/local/bin/wp
 
-# Install & configure RankMath SEO plugin
-RUN wp plugin install seo-by-rank-math --activate --allow-root && \
-    wp option update rank_math_wizard_completed 1 --allow-root && \
-    wp option update rank_math_modules '["sitemap","seo-analysis","rich-snippet"]' --format=json --allow-root && \
-    wp rewrite flush --allow-root
+# Copy and set up entrypoint script (installs RankMath at runtime)
+COPY docker-entrypoint.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 
 # Port is configured via $PORT env var in Caddyfile
 
-# Start FrankenPHP with Caddyfile
-CMD ["frankenphp", "run", "--config", "/app/Caddyfile"]
+# Use entrypoint to install RankMath on startup
+ENTRYPOINT ["docker-entrypoint.sh"]
