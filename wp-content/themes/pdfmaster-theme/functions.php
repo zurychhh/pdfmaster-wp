@@ -250,7 +250,7 @@ add_action('wp_enqueue_scripts', static function (): void {
  * - Navbar: logo text to PDFMaster + sticky class
  * - Hero: add trust badges Icon List, remove extra Compress widget
  * - Tools: add header section, expand to 4 tools with price/time
- * - Pricing: remove legacy sections and add new $0.99 pricing + comparison
+ * - Pricing: remove legacy sections and add new $1.99 pricing + comparison
  *
  * Uses Elementor API (Document save) to persist _elementor_data reliably.
  */
@@ -471,7 +471,7 @@ function pdfm_run_landing_migration_p0(): void {
             'elements' => [
                 [ 'id' => 'col_' . wp_generate_password(8, false, false), 'elType' => 'column', 'isInner' => false, 'settings' => [ '_column_size' => 100 ], 'elements' => [
                     [ 'id' => 'w_' . wp_generate_password(8, false, false), 'elType' => 'widget', 'isInner' => false, 'widgetType' => 'heading', 'settings' => [ 'title' => 'All Tools, One Simple Price', 'header_size' => 'h2', 'align' => 'center' ], 'elements' => [] ],
-                    [ 'id' => 'w_' . wp_generate_password(8, false, false), 'elType' => 'widget', 'isInner' => false, 'widgetType' => 'text-editor', 'settings' => [ 'editor' => '$0.99 per action. No subscriptions, no packages, no complexity.', 'align' => 'center' ], 'elements' => [] ],
+                    [ 'id' => 'w_' . wp_generate_password(8, false, false), 'elType' => 'widget', 'isInner' => false, 'widgetType' => 'text-editor', 'settings' => [ 'editor' => '$1.99 per action. No subscriptions, no packages, no complexity.', 'align' => 'center' ], 'elements' => [] ],
                 ]],
             ],
         ];
@@ -512,16 +512,16 @@ function pdfm_run_landing_migration_p0(): void {
             // Add price/time widgets to first two columns
             for ($i=0; $i<min(2, count($data[$tools_index]['elements'])); $i++) {
                 if (isset($data[$tools_index]['elements'][$i]['elements']) && is_array($data[$tools_index]['elements'][$i]['elements'])) {
-                    $data[$tools_index]['elements'][$i]['elements'][] = $make_price_block('$0.99', $i===0 ? '~8 seconds processing' : '~5 seconds processing');
+                    $data[$tools_index]['elements'][$i]['elements'][] = $make_price_block('$1.99', $i===0 ? '~8 seconds processing' : '~5 seconds processing');
                 }
             }
             // Count columns and append missing tool cards
             $colCount = count($data[$tools_index]['elements']);
             if ($colCount < 4) {
                 $split = $make_tool_card('fas fa-cut', 'Split PDF', 'Extract specific pages or split into separate files. Simple page range selection.', 'purple-bg');
-                $split['elements'][] = $make_price_block('$0.99', '~6 seconds processing');
+                $split['elements'][] = $make_price_block('$1.99', '~6 seconds processing');
                 $convert = $make_tool_card('fas fa-file-import', 'Convert to PDF', 'Convert Word, Excel, PowerPoint and images to PDF. Quality options available.', 'orange-bg');
-                $convert['elements'][] = $make_price_block('$0.99', '~10 seconds processing');
+                $convert['elements'][] = $make_price_block('$1.99', '~10 seconds processing');
                 $data[$tools_index]['elements'][] = $split;
                 $data[$tools_index]['elements'][] = $convert;
             }
@@ -532,7 +532,7 @@ function pdfm_run_landing_migration_p0(): void {
     // 5) Add new Pricing section and comparison after tools
     $make_pricing_section = function (): array {
         $card_col_id = 'pdfm_price_col_' . wp_generate_password(6, false, false);
-        $price_html = '<div style="text-align:center;">\n  <div style="font-size:72px;font-weight:700;color:#1F2937;">$0.99</div>\n  <div style="font-size:20px;color:#6B7280;margin-top:8px;">per action</div>\n</div>';
+        $price_html = '<div style="text-align:center;">\n  <div style="font-size:72px;font-weight:700;color:#1F2937;">$1.99</div>\n  <div style="font-size:20px;color:#6B7280;margin-top:8px;">per action</div>\n</div>';
         $icon_items = [
             [ '_id' => wp_generate_password(6, false, false), 'text' => 'Any tool: Compress, Merge, Split, Convert', 'selected_icon' => [ 'value' => 'fas fa-check', 'library' => 'fa-solid' ] ],
             [ '_id' => wp_generate_password(6, false, false), 'text' => 'Files up to 100MB', 'selected_icon' => [ 'value' => 'fas fa-check', 'library' => 'fa-solid' ] ],
@@ -570,13 +570,13 @@ function pdfm_run_landing_migration_p0(): void {
                     [ 'id' => 'pdfm_comp_h_' . wp_generate_password(6, false, false), 'elType' => 'widget', 'isInner' => false, 'widgetType' => 'heading', 'settings' => [ 'title' => 'The Subscription Trap vs. The Smart Choice', 'header_size' => 'h3', 'align' => 'center' ], 'elements' => [] ],
                     [ 'id' => 'pdfm_comp_inner_' . wp_generate_password(6, false, false), 'elType' => 'section', 'isInner' => true, 'settings' => [ 'layout' => 'columns' ], 'elements' => [
                         [ 'id' => 'pdfm_comp_c1_' . wp_generate_password(6, false, false), 'elType' => 'column', 'isInner' => true, 'settings' => [ '_column_size' => 50, 'padding' => [ 'unit' => 'px', 'top' => 24, 'right' => 24, 'bottom' => 24, 'left' => 24 ] ], 'elements' => [
-                            [ 'id' => 'pdfm_comp_bad_' . wp_generate_password(6, false, false), 'elType' => 'widget', 'isInner' => true, 'widgetType' => 'icon-box', 'settings' => [ 'selected_icon' => [ 'value' => 'fas fa-times-circle', 'library' => 'fa-solid' ], 'title_text' => 'Typical Competitor (Smallpdf Pro)', 'description_text' => "$108/year subscription\nMost users need only 9 actions/year\n= $99.09 wasted annually" ], 'elements' => [] ],
+                            [ 'id' => 'pdfm_comp_bad_' . wp_generate_password(6, false, false), 'elType' => 'widget', 'isInner' => true, 'widgetType' => 'icon-box', 'settings' => [ 'selected_icon' => [ 'value' => 'fas fa-times-circle', 'library' => 'fa-solid' ], 'title_text' => 'Typical Competitor (Smallpdf Pro)', 'description_text' => "$108/year subscription\nMost users need only 9 actions/year\n= $90.09 wasted annually" ], 'elements' => [] ],
                         ]],
                         [ 'id' => 'pdfm_comp_c2_' . wp_generate_password(6, false, false), 'elType' => 'column', 'isInner' => true, 'settings' => [ '_column_size' => 50, 'padding' => [ 'unit' => 'px', 'top' => 24, 'right' => 24, 'bottom' => 24, 'left' => 24 ], 'css_classes' => 'good' ], 'elements' => [
-                            [ 'id' => 'pdfm_comp_good_' . wp_generate_password(6, false, false), 'elType' => 'widget', 'isInner' => true, 'widgetType' => 'icon-box', 'settings' => [ 'selected_icon' => [ 'value' => 'fas fa-check-circle', 'library' => 'fa-solid' ], 'title_text' => 'PDFMaster', 'description_text' => "Pay only when you use it\n9 actions × $0.99 each\n= $8.91 total per year" ], 'elements' => [] ],
+                            [ 'id' => 'pdfm_comp_good_' . wp_generate_password(6, false, false), 'elType' => 'widget', 'isInner' => true, 'widgetType' => 'icon-box', 'settings' => [ 'selected_icon' => [ 'value' => 'fas fa-check-circle', 'library' => 'fa-solid' ], 'title_text' => 'PDFMaster', 'description_text' => "Pay only when you use it\n9 actions × $1.99 each\n= $17.91 total per year" ], 'elements' => [] ],
                         ]],
                     ]],
-                    [ 'id' => 'pdfm_comp_note_' . wp_generate_password(6, false, false), 'elType' => 'widget', 'isInner' => false, 'widgetType' => 'text-editor', 'settings' => [ 'editor' => '<div style="text-align:center;font-size:20px;font-weight:700;color:#1E3A8A;">Save $99.09 annually by paying only for what you actually use.</div>' ], 'elements' => [] ],
+                    [ 'id' => 'pdfm_comp_note_' . wp_generate_password(6, false, false), 'elType' => 'widget', 'isInner' => false, 'widgetType' => 'text-editor', 'settings' => [ 'editor' => '<div style="text-align:center;font-size:20px;font-weight:700;color:#1E3A8A;">Save $90.09 annually by paying only for what you actually use.</div>' ], 'elements' => [] ],
                 ]],
             ],
         ];
@@ -879,12 +879,12 @@ add_shortcode('pdfm_pricing_table', static function (): string {
     <tbody>
       <tr>
         <td>PDF to Word</td>
-        <td class="price">$0.99</td>
+        <td class="price">$1.99</td>
         <td>~8 seconds</td>
       </tr>
       <tr>
         <td>Merge PDFs (up to 10 files)</td>
-        <td class="price">$0.99</td>
+        <td class="price">$1.99</td>
         <td>~5 seconds</td>
       </tr>
       <tr>
@@ -916,10 +916,10 @@ add_shortcode('pdfm_pricing_table', static function (): string {
       <div class="comparison-good">
         <span class="icon">✅</span>
         <p class="provider">Our Tool</p>
-        <p class="cost">$8.91/year (9 uses at $0.99 each)</p>
+        <p class="cost">$17.91/year (9 uses at $1.99 each)</p>
       </div>
     </div>
-    <p class="savings-text">You save $99.09 annually.</p>
+    <p class="savings-text">You save $90.09 annually.</p>
   </div>
 </div>
 HTML;
@@ -1050,11 +1050,11 @@ function pdfm_rebuild_hero_by_content(): void {
                     $n['settings']['align'] = 'center';
                     $heading_done = true; $changed = true;
                 } elseif (!$subtitle_done && ($wt === 'text-editor' || $wt === 'heading')) {
-                    $n['settings']['editor'] = 'Compress, merge, split and convert PDF files without installing software. Just $0.99 per action. No subscriptions, no hidden fees.';
+                    $n['settings']['editor'] = 'Compress, merge, split and convert PDF files without installing software. Just $1.99 per action. No subscriptions, no hidden fees.';
                     $n['settings']['align'] = 'center';
                     $subtitle_done = true; $changed = true;
                 } elseif ($wt === 'button' && $buttons_done < 2) {
-                    $n['settings']['text'] = ($buttons_done === 0) ? 'Try Any Tool – $0.99' : 'See How It Works';
+                    $n['settings']['text'] = ($buttons_done === 0) ? 'Try Any Tool – $1.99' : 'See How It Works';
                     $buttons_done++; $changed = true;
                 }
             }

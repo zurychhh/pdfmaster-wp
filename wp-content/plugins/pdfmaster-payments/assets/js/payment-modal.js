@@ -6,7 +6,7 @@
      * Tracks payment funnel events for PDFMaster
      *
      * Event Map:
-     * 1. begin_checkout - User clicks "Pay $0.99" button (modal opens)
+     * 1. begin_checkout - User clicks "Pay $1.99" button (modal opens)
      * 2. purchase - Payment successful (transaction complete)
      *
      * @param {string} eventName - GA4 event name
@@ -28,13 +28,13 @@
         // GA4 Event: begin_checkout (e-commerce event)
         const toolName = $('input[name="operation"]:checked').val() || 'unknown';
         trackEvent('begin_checkout', {
-            value: 0.99,
+            value: 1.99,
             currency: 'USD',
             tool_name: toolName,
             items: [{
                 item_id: 'pdf_processing',
                 item_name: 'PDF Processing (' + toolName + ')',
-                price: 0.99,
+                price: 1.99,
                 quantity: 1
             }]
         });
@@ -105,13 +105,13 @@
             const toolName = $('input[name="operation"]:checked').val() || 'unknown';
             trackEvent('purchase', {
                 transaction_id: fileToken,
-                value: 0.99,
+                value: 1.99,
                 currency: 'USD',
                 tool_name: toolName,
                 items: [{
                     item_id: 'pdf_processing',
                     item_name: 'PDF Processing (' + toolName + ')',
-                    price: 0.99,
+                    price: 1.99,
                     quantity: 1
                 }]
             });

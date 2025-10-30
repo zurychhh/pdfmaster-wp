@@ -53,7 +53,7 @@ class StripeHandler
     }
 
     /**
-     * Create a Stripe payment intent for $0.99 pay-per-action.
+     * Create a Stripe payment intent for $1.99 pay-per-action.
      */
     public function create_payment_intent(string $file_token): array|WP_Error
     {
@@ -64,7 +64,7 @@ class StripeHandler
         try {
             \Stripe\Stripe::setApiKey($this->secret_key);
 
-            $amount = 99; // $0.99 per action
+            $amount = 199; // $1.99 per action
 
             $intent = \Stripe\PaymentIntent::create([
                 'amount' => $amount,
@@ -209,7 +209,7 @@ class StripeHandler
         $subject = __('Your PDF is ready - receipt', 'pdfmaster-payments');
         $message = sprintf("%s\n\n%s\n%s: %s\n",
             __('Thanks for your purchase!', 'pdfmaster-payments'),
-            __('Your file has been processed and is ready to download. Amount paid: $0.99', 'pdfmaster-payments'),
+            __('Your file has been processed and is ready to download. Amount paid: $1.99', 'pdfmaster-payments'),
             __('Download link (valid for a limited time)', 'pdfmaster-payments'),
             $download_url
         );

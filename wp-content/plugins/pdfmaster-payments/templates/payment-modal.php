@@ -12,7 +12,7 @@
         </div>
 
         <div class="pdfm-price-display">
-            <div class="pdfm-price-amount">$0.99</div>
+            <div class="pdfm-price-amount">$1.99</div>
             <div class="pdfm-price-label"><?php esc_html_e('One-time payment', 'pdfmaster-payments'); ?></div>
         </div>
 

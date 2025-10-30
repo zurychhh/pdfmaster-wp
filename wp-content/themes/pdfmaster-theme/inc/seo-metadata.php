@@ -23,7 +23,7 @@ function pdfm_custom_document_title($title_parts) {
     // Homepage (static front page OR blog index)
     if (is_front_page() || is_home()) {
         $title_parts['title'] = 'Professional PDF Tools in 30 Seconds';
-        $title_parts['tagline'] = 'PDFSpark - $0.99 Per Action';
+        $title_parts['tagline'] = 'PDFSpark - $1.99 Per Action';
         return $title_parts;
     }
 
@@ -79,7 +79,7 @@ function pdfm_add_meta_tags() {
 
     // Homepage (static front page OR blog index)
     if (is_front_page() || is_home()) {
-        $description = 'Compress, merge, split & convert PDF files without software. Only $0.99 per action, no subscription. Bank-level encryption, files deleted after 1 hour. Try now!';
+        $description = 'Compress, merge, split & convert PDF files without software. Only $1.99 per action, no subscription. Bank-level encryption, files deleted after 1 hour. Try now!';
         $keywords = 'pdf compressor, merge pdf, split pdf, convert to pdf, pdf tools, compress pdf online';
         $canonical_url = home_url('/');
     }
@@ -89,10 +89,10 @@ function pdfm_add_meta_tags() {
         $tool = isset($_GET['tool']) ? sanitize_text_field($_GET['tool']) : '';
 
         $tool_descriptions = array(
-            'compress' => 'Compress PDF files by up to 90% without quality loss. Fast, secure, only $0.99. No subscription, no software install. Files auto-deleted after 1 hour.',
-            'merge' => 'Merge multiple PDF files into one document in seconds. Secure processing, only $0.99. No subscription required. Files auto-deleted after 1 hour.',
-            'split' => 'Split PDF files into separate pages or extract specific pages. Fast & secure, only $0.99. No subscription. Files deleted after 1 hour.',
-            'convert' => 'Convert images (JPG, PNG) to PDF instantly. Professional quality, only $0.99. No subscription. Secure processing, files auto-deleted after 1 hour.'
+            'compress' => 'Compress PDF files by up to 90% without quality loss. Fast, secure, only $1.99. No subscription, no software install. Files auto-deleted after 1 hour.',
+            'merge' => 'Merge multiple PDF files into one document in seconds. Secure processing, only $1.99. No subscription required. Files auto-deleted after 1 hour.',
+            'split' => 'Split PDF files into separate pages or extract specific pages. Fast & secure, only $1.99. No subscription. Files deleted after 1 hour.',
+            'convert' => 'Convert images (JPG, PNG) to PDF instantly. Professional quality, only $1.99. No subscription. Secure processing, files auto-deleted after 1 hour.'
         );
 
         $tool_keywords = array(
@@ -106,7 +106,7 @@ function pdfm_add_meta_tags() {
             $description = $tool_descriptions[$tool];
             $keywords = $tool_keywords[$tool];
         } else {
-            $description = 'Professional PDF tools: compress, merge, split, and convert PDF files. Only $0.99 per action. No subscription. Bank-level encryption.';
+            $description = 'Professional PDF tools: compress, merge, split, and convert PDF files. Only $1.99 per action. No subscription. Bank-level encryption.';
             $keywords = 'pdf tools, pdf processing, compress pdf, merge pdf, split pdf, convert pdf';
         }
 

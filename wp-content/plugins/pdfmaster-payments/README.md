@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Handles Stripe pay-per-action payments and the purchase flow for the PDFMaster application ($0.99 per action).
+Handles Stripe pay-per-action payments and the purchase flow for the PDFMaster application ($1.99 per action).
 
 ## Features
 
@@ -35,7 +35,7 @@ pdfmaster-payments/
 
 ## Payment Model
 
-- Pricing: $0.99 per operation (pay‑per‑action)
+- Pricing: $1.99 per operation (pay‑per‑action)
 - No accounts or credit balances; payment success unlocks a single download via a server-verified token.
 
 ## Development

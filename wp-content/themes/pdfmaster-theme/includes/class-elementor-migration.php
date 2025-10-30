@@ -197,7 +197,7 @@ class PDFMaster_Elementor_Migration {
                             'elType' => 'widget',
                             'widgetType' => 'text-editor',
                             'settings' => [
-                                'editor' => '$0.99 per action. No subscriptions, no packages, no complexity.',
+                                'editor' => '$1.99 per action. No subscriptions, no packages, no complexity.',
                                 'align' => 'center'
                             ]
                         ]
@@ -213,7 +213,7 @@ class PDFMaster_Elementor_Migration {
 
                         // Add pricing widget after icon-box
                         $tool_title = $column['elements'][0]['settings']['title_text'] ?? '';
-                        $price_html = '<div style="margin-top:16px;text-align:center;"><div style="font-size:32px;font-weight:700;color:#2563EB;">$0.99</div><div style="font-size:14px;color:#6B7280;margin-top:4px;">~8 seconds processing</div></div>';
+                        $price_html = '<div style="margin-top:16px;text-align:center;"><div style="font-size:32px;font-weight:700;color:#2563EB;">$1.99</div><div style="font-size:14px;color:#6B7280;margin-top:4px;">~8 seconds processing</div></div>';
 
                         // Adjust timing based on tool
                         if ( strpos( $tool_title, 'Merge' ) !== false ) {
@@ -258,7 +258,7 @@ class PDFMaster_Elementor_Migration {
                             'elType' => 'widget',
                             'widgetType' => 'html',
                             'settings' => [
-                                'html' => '<div style="margin-top:16px;text-align:center;"><div style="font-size:32px;font-weight:700;color:#2563EB;">$0.99</div><div style="font-size:14px;color:#6B7280;margin-top:4px;">~6 seconds processing</div></div>'
+                                'html' => '<div style="margin-top:16px;text-align:center;"><div style="font-size:32px;font-weight:700;color:#2563EB;">$1.99</div><div style="font-size:14px;color:#6B7280;margin-top:4px;">~6 seconds processing</div></div>'
                             ]
                         ]
                     ]
@@ -291,7 +291,7 @@ class PDFMaster_Elementor_Migration {
                             'elType' => 'widget',
                             'widgetType' => 'html',
                             'settings' => [
-                                'html' => '<div style="margin-top:16px;text-align:center;"><div style="font-size:32px;font-weight:700;color:#2563EB;">$0.99</div><div style="font-size:14px;color:#6B7280;margin-top:4px;">~10 seconds processing</div></div>'
+                                'html' => '<div style="margin-top:16px;text-align:center;"><div style="font-size:32px;font-weight:700;color:#2563EB;">$1.99</div><div style="font-size:14px;color:#6B7280;margin-top:4px;">~10 seconds processing</div></div>'
                             ]
                         ]
                     ]
@@ -315,7 +315,7 @@ class PDFMaster_Elementor_Migration {
         $elements = array_values( $elements ); // Reindex
 
         // Create new pricing section
-        // (Structure based on mockup - single card $0.99 + comparison table)
+        // (Structure based on mockup - single card $1.99 + comparison table)
 
         // Shorter version – pattern same as above
         $new_pricing = [

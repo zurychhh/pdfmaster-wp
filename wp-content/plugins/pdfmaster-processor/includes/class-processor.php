@@ -70,7 +70,7 @@ class Processor
         // Hero Section
         $output .= '<div class="pdfm-hero">';
         $output .= '  <h1 class="pdfm-hero-title">' . esc_html__('PDF Tools', 'pdfmaster-processor') . '</h1>';
-        $output .= '  <p class="pdfm-hero-subtitle">' . esc_html__('Professional PDF processing in seconds. $0.99 per action, no subscription required.', 'pdfmaster-processor') . '</p>';
+        $output .= '  <p class="pdfm-hero-subtitle">' . esc_html__('Professional PDF processing in seconds. $1.99 per action, no subscription required.', 'pdfmaster-processor') . '</p>';
         $output .= '</div>';
 
         $output .= '<form class="pdfm-processor__form" method="post" enctype="multipart/form-data">';
@@ -184,7 +184,7 @@ class Processor
         $output .= '    </div>';
         $output .= '  </div>';
         $output .= '  <button class="pdfm-btn pdfm-btn-primary" id="pdfm-pay-button" type="button">';
-        $output .= esc_html__('Pay $0.99 to Download', 'pdfmaster-processor');
+        $output .= esc_html__('Pay $1.99 to Download', 'pdfmaster-processor');
         $output .= '  </button>';
         $output .= '  <button class="pdfm-btn pdfm-btn-secondary" id="pdfm-reset-button" type="button">';
         $output .= esc_html__('Process Another File', 'pdfmaster-processor');
@@ -208,7 +208,7 @@ class Processor
         $output .= '  <h2 class="pdfm-success-title" id="pdfm-generic-title"></h2>';
         $output .= '  <p class="pdfm-success-subtitle" id="pdfm-generic-subtitle"></p>';
         $output .= '  <button class="pdfm-btn pdfm-btn-primary" id="pdfm-pay-button-generic" type="button">';
-        $output .= esc_html__('Pay $0.99 to Download', 'pdfmaster-processor');
+        $output .= esc_html__('Pay $1.99 to Download', 'pdfmaster-processor');
         $output .= '  </button>';
         $output .= '  <button class="pdfm-btn pdfm-btn-secondary" id="pdfm-reset-button-generic" type="button">';
         $output .= esc_html__('Process Another File', 'pdfmaster-processor');

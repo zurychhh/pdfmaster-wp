@@ -23,7 +23,7 @@ function pdfm_organization_schema() {
         'name' => 'PDFSpark',
         'url' => home_url('/'),
         'logo' => get_template_directory_uri() . '/assets/images/apple-touch-icon.png',
-        'description' => 'Professional PDF tools for compression, merging, splitting, and conversion. Pay per use at $0.99 per action with no subscription required.',
+        'description' => 'Professional PDF tools for compression, merging, splitting, and conversion. Pay per use at $1.99 per action with no subscription required.',
         'contactPoint' => array(
             '@type' => 'ContactPoint',
             'contactType' => 'customer service',
@@ -128,8 +128,8 @@ function pdfm_faq_schema() {
 
     $faq_items = array(
         array(
-            'question' => 'Why $0.99 per use instead of a subscription?',
-            'answer' => 'Because most people process PDFs only 2-5 times per month—not 50. Why pay $10-20/month for something you barely use? With us, you pay $0.99 only when you need it. If you use it 10 times a year, that\'s $9.90 total instead of $120-240 for annual subscriptions.'
+            'question' => 'Why $1.99 per use instead of a subscription?',
+            'answer' => 'Because most people process PDFs only 2-5 times per month—not 50. Why pay $10-20/month for something you barely use? With us, you pay $1.99 only when you need it. If you use it 10 times a year, that\'s $19.90 total instead of $120-240 for annual subscriptions.'
         ),
         array(
             'question' => 'Do I need to create an account?',
@@ -225,7 +225,7 @@ function pdfm_service_schema() {
             ),
             'offers' => array(
                 '@type' => 'Offer',
-                'price' => '0.99',
+                'price' => '1.99',
                 'priceCurrency' => 'USD',
                 'availability' => 'https://schema.org/InStock',
                 'description' => 'Pay per use - no subscription required'
@@ -260,7 +260,7 @@ function pdfm_software_application_schema() {
         'operatingSystem' => 'Any (Web-based)',
         'offers' => array(
             '@type' => 'Offer',
-            'price' => '0.99',
+            'price' => '1.99',
             'priceCurrency' => 'USD',
             'description' => 'Pay per use - no subscription required'
         ),
@@ -271,7 +271,7 @@ function pdfm_software_application_schema() {
             'bestRating' => '5',
             'worstRating' => '1'
         ),
-        'description' => 'Professional PDF tools for compression, merging, splitting, and conversion. Pay per use at $0.99 per action.',
+        'description' => 'Professional PDF tools for compression, merging, splitting, and conversion. Pay per use at $1.99 per action.',
         'url' => home_url('/')
     );
 

@@ -43,13 +43,13 @@ get_header();
         <div class="container">
             <div class="hero-content">
                 <h1>Professional PDF Tools in 30 Seconds</h1>
-                <p class="hero-subtitle">Compress, merge, split and convert PDF files without installing software. Just $0.99 per action. No subscriptions, no hidden fees.</p>
+                <p class="hero-subtitle">Compress, merge, split and convert PDF files without installing software. Just $1.99 per action. No subscriptions, no hidden fees.</p>
                 <p class="text-lg text-blue-700 font-medium mb-4">
                     AI-enhanced compression delivers professional quality at unbeatable value
                 </p>
 
                 <div class="hero-ctas">
-                    <a href="<?php echo esc_url(home_url('/test-processor/')); ?>" class="btn btn-primary">Try Any Tool — $0.99</a>
+                    <a href="<?php echo esc_url(home_url('/test-processor/')); ?>" class="btn btn-primary">Try Any Tool — $1.99</a>
                     <a href="#how-it-works" class="btn btn-secondary">See How It Works</a>
                 </div>
 
@@ -111,7 +111,7 @@ get_header();
         <div class="container">
             <div class="section-header">
                 <h2>All Tools, One Simple Price</h2>
-                <p>$0.99 per action. No subscriptions, no packages, no complexity.</p>
+                <p>$1.99 per action. No subscriptions, no packages, no complexity.</p>
             </div>
 
             <div class="tools-grid">
@@ -121,7 +121,7 @@ get_header();
                     </div>
                     <h3>Compress Spark</h3>
                     <p>Reduce file size by up to 90% without quality loss. Perfect for email attachments.</p>
-                    <div class="tool-price">$0.99</div>
+                    <div class="tool-price">$1.99</div>
                     <p class="tool-time">~8 seconds processing</p>
                 </a>
 
@@ -131,7 +131,7 @@ get_header();
                     </div>
                     <h3>Merge Spark</h3>
                     <p>Combine multiple PDF files into one organized document. Up to 20 files at once.</p>
-                    <div class="tool-price">$0.99</div>
+                    <div class="tool-price">$1.99</div>
                     <p class="tool-time">~8 seconds processing</p>
                 </a>
 
@@ -141,7 +141,7 @@ get_header();
                     </div>
                     <h3>Split Spark</h3>
                     <p>Extract specific pages or split into separate files. Simple page range selection.</p>
-                    <div class="tool-price">$0.99</div>
+                    <div class="tool-price">$1.99</div>
                     <p class="tool-time">~8 seconds processing</p>
                 </a>
 
@@ -151,7 +151,7 @@ get_header();
                     </div>
                     <h3>Convert Spark</h3>
                     <p>Convert Word, Excel, PowerPoint and images to PDF. Quality options available.</p>
-                    <div class="tool-price">$0.99</div>
+                    <div class="tool-price">$1.99</div>
                     <p class="tool-time">~8 seconds processing</p>
                 </a>
             </div>
@@ -198,7 +198,7 @@ get_header();
                     <div class="pricing-icon">
                         <svg width="48" height="48" fill="#10b981" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
                     </div>
-                    <div class="price">$0.99</div>
+                    <div class="price">$1.99</div>
                     <div class="price-period">per action</div>
 
                     <ul class="features-list">
@@ -221,8 +221,8 @@ get_header();
                     </ul>
 
                     <div class="calculation-box">
-                        <div class="calc-small">9 actions × $0.99 each</div>
-                        <div class="calc-big">= $8.91 total per year</div>
+                        <div class="calc-small">9 actions × $1.99 each</div>
+                        <div class="calc-big">= $17.91 total per year</div>
                     </div>
 
                     <a href="<?php echo esc_url(home_url('/test-processor/')); ?>" class="btn btn-primary btn-full">Try Any Tool Now</a>
@@ -249,7 +249,7 @@ get_header();
                         <svg width="32" height="32" fill="currentColor" viewBox="0 0 20 20"><path d="M8.433 7.418c.155-.103.346-.196.567-.267v1.698a2.305 2.305 0 01-.567-.267C8.07 8.34 8 8.114 8 8c0-.114.07-.34.433-.582zM11 12.849v-1.698c.22.071.412.164.567.267.364.243.433.468.433.582 0 .114-.07.34-.433.582a2.305 2.305 0 01-.567.267z"/><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-13a1 1 0 10-2 0v.092a4.535 4.535 0 00-1.676.662C6.602 6.234 6 7.009 6 8c0 .99.602 1.765 1.324 2.246.48.32 1.054.545 1.676.662v1.941c-.391-.127-.68-.317-.843-.504a1 1 0 10-1.51 1.31c.562.649 1.413 1.076 2.353 1.253V15a1 1 0 102 0v-.092a4.535 4.535 0 001.676-.662C13.398 13.766 14 12.991 14 12c0-.99-.602-1.765-1.324-2.246A4.535 4.535 0 0011 9.092V7.151c.391.127.68.317.843.504a1 1 0 101.511-1.31c-.563-.649-1.413-1.076-2.354-1.253V5z" clip-rule="evenodd"/></svg>
                     </div>
                     <h3>Pay Only for What You Need</h3>
-                    <p>Unlike $10+/month subscriptions, you pay $0.99 only when you convert, merge, or compress a file.</p>
+                    <p>Unlike $10+/month subscriptions, you pay $1.99 only when you convert, merge, or compress a file.</p>
                 </div>
 
                 <div class="why-card">
@@ -289,11 +289,11 @@ get_header();
             <div class="faq-list">
                 <div class="faq-item active">
                     <button class="faq-question">
-                        <span>Why $0.99 per use instead of a subscription?</span>
+                        <span>Why $1.99 per use instead of a subscription?</span>
                         <svg class="chevron" width="20" height="20" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
                     </button>
                     <div class="faq-answer">
-                        <p>Because most people process PDFs only 2-5 times per month—not 50. Why pay $10-20/month for something you barely use? With us, you pay $0.99 only when you need it. If you use it 10 times a year, that's $9.90 total instead of $120-240 for annual subscriptions.</p>
+                        <p>Because most people process PDFs only 2-5 times per month—not 50. Why pay $10-20/month for something you barely use? With us, you pay $1.99 only when you need it. If you use it 10 times a year, that's $19.90 total instead of $120-240 for annual subscriptions.</p>
                     </div>
                 </div>
 
@@ -357,7 +357,7 @@ get_header();
                 <h2>Ready to Stop Wasting Money on Subscriptions?</h2>
                 <p>Join 2M+ smart users who pay only for what they use. Process your first PDF in under 60 seconds.</p>
 
-                <a href="<?php echo esc_url(home_url('/test-processor/')); ?>" class="btn btn-cta">Try Any Tool — $0.99</a>
+                <a href="<?php echo esc_url(home_url('/test-processor/')); ?>" class="btn btn-cta">Try Any Tool — $1.99</a>
 
                 <div class="cta-trust">
                     <div class="trust-item">
