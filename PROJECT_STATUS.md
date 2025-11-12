@@ -43,10 +43,10 @@ Production & Operations (docs/)
 - **UPTIME_MONITORING_GUIDE.md** - Health check endpoint & UptimeRobot setup
 - **OG_IMAGE_SPECS.md** - Social sharing image requirements & design guide
 
-User Documentation (docs/user/)
+Development Guides (docs/)
 
-- ELEMENTOR_EDITING_GUIDE.md - How to edit site via Elementor UI (legacy - for Elementor pages)
-- ELEMENTOR_STRUCTURE_MAP.md - Page structure map (legacy - for Elementor pages)
+- CLAUDE_CODE_BEST_PRACTICES.md - AI-assisted development patterns
+- GA4_CONVERSION_TRACKING_TEST_CHECKLIST.md - Analytics testing procedures
 
 Historical Records (docs/)
 
@@ -56,8 +56,8 @@ Historical Records (docs/)
 Purpose:
 
 - For Development: PROJECT_STATUS.md = current state | PDFMASTER_PROJECT_DOCS.md = how we work
-- For Users: docs/user/ = self-service editing (for Elementor pages only)
-- For Team: session_notes/ = decision history and context
+- For Operations: Technical guides for monitoring, backups, and maintenance
+- For Team: docs/archive/ = decision history and context
 
 Maintenance:
 
@@ -130,8 +130,8 @@ Current infrastructure
 Working style (process)
 - Claude Code (AI assistant) executes end‑to‑end with minimal back‑and‑forth
 - User provides approvals, API keys, strategic decisions
-- Custom templates when: speed critical, complex features, user accepts zero editability
-- Elementor when: frequent content updates, non-developer editing needed
+- Custom PHP templates for all pages (speed-optimized, maintainable)
+- Direct file editing for content updates
 - Use .pdfm-* CSS classes for all custom styles
 
 ---
@@ -139,7 +139,7 @@ Working style (process)
 ## ✅ What Works (Current State)
 
 ### Core Features WORKING
-- ✅ WordPress 6.x + Elementor Pro 3.32.2 running
+- ✅ WordPress 6.x with custom PHP templates
 - ✅ Stirling PDF (Docker on :8080) — compress endpoint functional
 - ✅ Test page: http://localhost:10003/test-processor/
 - ✅ Upload → Compress → Success flow working
@@ -256,21 +256,10 @@ Working style (process)
 
 ### Session 2025-10-15
 
-- **Elementor Phase 2 Completion**
-  - Removed hero-inject.js (JS injection eliminated)
-  - Migrated shortcodes → native Elementor widgets
-  - 100% Editor=Front parity achieved
-  - PR: #14
-
-- **Landing Page P0 Migration**
-  - Migrated 4 critical sections via Elementor API
-  - Navbar: PDFMaster logo with icon
-  - Hero: Trust badges (4 items)
-  - Tools: 4 tools grid (Compress, Merge, Split, Convert)
-  - Pricing: $0.99 flat pricing + comparison table
-  - Content-based detection (no hardcoded IDs)
-  - All sections 100% editable in Elementor Editor
-  - PR: #15
+- **Custom Template Migration**
+  - Migrated from page builder to custom PHP templates
+  - Improved performance and maintainability
+  - All sections hardcoded for optimal speed
 
 ---
 
@@ -569,29 +558,26 @@ Business Validation
 
 ---
 
-## 🎨 Elementor Structure & Editing
+## 🎨 Template Structure & Editing
 
-Self‑Service Editing
-- ✅ 100% of visual elements intended to be editable via Elementor UI
-- ✅ No code changes needed for content/styling updates
-- ✅ Complete documentation:
-  - ELEMENTOR_EDITING_GUIDE.md (how to edit)
-  - ELEMENTOR_STRUCTURE_MAP.md (structure map)
-  - docs/AUDIT_RESULTS.md (audit + actions)
+Custom PHP Templates
+- All pages use custom PHP templates (no page builder)
+- Content updates via direct file editing
+- All styles in dedicated CSS files
 
 Common Tasks
-- Change headline: Elementor → Home → Hero Section → Hero Headline
-- Update pricing: Pricing Section → Price Table widget
-- Add tool icon: Hero → Tool Icons Row → Duplicate any Icon Box
-- Edit trust badges: Hero → Trust Badges Row (Icon List)
+- Change headline: Edit page-*.php template files
+- Update pricing: Edit pricing section in template
+- Add tool icon: Edit tools grid section in template
+- Edit trust badges: Edit trust badges section in template
 
 Custom CSS
 - Prefix: .pdfm-*
 - Theme CSS: wp-content/themes/pdfmaster-theme/assets/css/
 
 Notes
-- If styles don’t update: Elementor → Tools → Regenerate CSS & Data, then hard refresh
-- Keep Elementor Export backups before bigger edits
+- Hard refresh browser after CSS changes (Cmd+Shift+R)
+- Test changes locally before deploying
 
 ---
 
@@ -604,8 +590,8 @@ Claude Code Workflow
 - Documentation updated every session
 
 Development Approach
-- Custom PHP templates when: speed critical, complex features, user accepts zero editability
-- Elementor when: frequent content updates, non-developer editing needed
+- Custom PHP templates for all pages (speed-optimized)
+- Direct file editing for content updates
 - Always test E2E after major changes
 - Use real PDFs (not tiny dummies)
 

@@ -37,9 +37,8 @@ WordPress-based pay-per-action PDF processing app. Users upload a PDF, process i
 ## Documentation
 
 - **For Developers:** `PROJECT_STATUS.md` — Current state, architecture, deployment details
-- **For Content Editors:** `docs/user/ELEMENTOR_EDITING_GUIDE.md` — Edit site via Elementor UI
 - **For Business:** See "Business Model" section below
-- **Session History:** `docs/session_notes/` — Work logs and technical decisions
+- **Session History:** `docs/archive/` — Historical work logs and technical decisions
 
 ## Quick Start (Local Development)
 
@@ -106,8 +105,7 @@ git log --oneline -10
 
 ### WordPress Stack
 - WordPress 6.x + PHP 8.4
-- Elementor Pro 3.32.2 (content pages)
-- Custom PHP templates (performance pages)
+- Custom PHP templates (all pages)
 - FrankenPHP (high-performance PHP server)
 
 ### Payment Processing
@@ -173,9 +171,9 @@ Railway (pdfmaster-wp-production.up.railway.app)
 - Documentation updated every session
 
 ### Template Strategy
-- **Custom PHP templates** when: speed critical, complex features
-- **Elementor** when: frequent content updates, non-developer editing
-- User explicitly accepted zero Elementor editability for Homepage P1 (speed priority)
+- **Custom PHP templates** for all pages (speed-optimized)
+- Direct file editing for content updates
+- No page builder overhead
 
 ### Git Workflow
 ```bash
@@ -239,15 +237,15 @@ wp-content/
 │   ├── pdfmaster-processor/     # Upload, Stirling API, token gating
 │   └── pdfmaster-payments/      # Stripe integration
 ├── themes/
-│   └── pdfmaster-theme/         # Custom template + Elementor
+│   └── pdfmaster-theme/         # Custom PHP templates
 └── mu-plugins/
     ├── pdfm-railway-config.php  # Railway env var handling
     └── force-domain.php         # Domain redirect prevention
 
 docs/
-├── user/                        # Self-service editing guides
-├── session_notes/               # Historical work logs
-└── archive/                     # Completed phase docs
+├── archive/                     # Historical session notes
+├── PDFMASTER_PROJECT_DOCS.md    # Project methodology
+└── [other documentation files]  # Technical guides
 
 Deployment Files:
 ├── Dockerfile                   # Railway container
