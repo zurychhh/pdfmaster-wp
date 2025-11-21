@@ -1231,3 +1231,136 @@ if (! function_exists('pdfm_customize_robots_txt')) {
 }
 add_filter('robots_txt', 'pdfm_customize_robots_txt', 10, 2);
 
+/**
+ * Custom REST API endpoints for Rank Math SEO management
+ * Enables Claude/automation tools to manage Rank Math settings programmatically
+ *
+ * Since Rank Math doesn't provide official API for settings management,
+ * we expose WordPress options through custom REST endpoints.
+ *
+ * @since 2025-11-21
+ */
+add_action('rest_api_init', function () {
+    // GET endpoint - Retrieve Rank Math sitemap settings
+    register_rest_route('pdfmaster/v1', '/rank-math/sitemap-settings', [
+        'methods' => 'GET',
+        'callback' => 'pdfm_get_rank_math_settings',
+        'permission_callback' => function () {
+            return current_user_can('manage_options');
+        }
+    ]);
+
+    // POST endpoint - Update Rank Math sitemap settings
+    register_rest_route('pdfmaster/v1', '/rank-math/sitemap-settings', [
+        'methods' => 'POST',
+        'callback' => 'pdfm_update_rank_math_settings',
+        'permission_callback' => function () {
+            return current_user_can('manage_options');
+        },
+        'args' => [
+            'sitemap_attachments' => [
+                'type' => 'string',
+                'enum' => ['on', 'off'],
+                'sanitize_callback' => 'sanitize_text_field',
+            ],
+            'sitemap_author' => [
+                'type' => 'string',
+                'enum' => ['on', 'off'],
+                'sanitize_callback' => 'sanitize_text_field',
+            ],
+        ]
+    ]);
+
+    // POST endpoint - Regenerate sitemap
+    register_rest_route('pdfmaster/v1', '/rank-math/regenerate-sitemap', [
+        'methods' => 'POST',
+        'callback' => 'pdfm_regenerate_rank_math_sitemap',
+        'permission_callback' => function () {
+            return current_user_can('manage_options');
+        }
+    ]);
+});
+
+/**
+ * Get Rank Math sitemap settings
+ */
+function pdfm_get_rank_math_settings() {
+    $settings = get_option('rank-math-options-sitemap', []);
+
+    return [
+        'success' => true,
+        'settings' => [
+            'sitemap_attachments' => $settings['pt_attachment_sitemap'] ?? 'off',
+            'sitemap_author' => $settings['authors_sitemap'] ?? 'off',
+            'sitemap_posts' => $settings['pt_post_sitemap'] ?? 'on',
+            'sitemap_pages' => $settings['pt_page_sitemap'] ?? 'on',
+        ],
+        'note' => 'Rank Math stores sitemap settings in rank-math-options-sitemap option'
+    ];
+}
+
+/**
+ * Update Rank Math sitemap settings
+ */
+function pdfm_update_rank_math_settings($request) {
+    $params = $request->get_json_params();
+    $settings = get_option('rank-math-options-sitemap', []);
+    $updated = false;
+
+    // Update attachment sitemap setting
+    if (isset($params['sitemap_attachments'])) {
+        $settings['pt_attachment_sitemap'] = $params['sitemap_attachments'];
+        $updated = true;
+    }
+
+    // Update author sitemap setting
+    if (isset($params['sitemap_author'])) {
+        $settings['authors_sitemap'] = $params['sitemap_author'];
+        $updated = true;
+    }
+
+    if ($updated) {
+        update_option('rank-math-options-sitemap', $settings);
+
+        // Clear Rank Math cache
+        if (function_exists('rank_math_clear_cache')) {
+            rank_math_clear_cache();
+        }
+
+        // Delete sitemap transients
+        delete_transient('rank_math_sitemap_index');
+        delete_transient('rank_math_sitemap_post');
+        delete_transient('rank_math_sitemap_page');
+    }
+
+    return [
+        'success' => true,
+        'message' => $updated ? 'Rank Math settings updated successfully' : 'No changes made',
+        'updated' => $updated,
+        'settings' => pdfm_get_rank_math_settings()['settings']
+    ];
+}
+
+/**
+ * Regenerate Rank Math sitemap
+ */
+function pdfm_regenerate_rank_math_sitemap($request) {
+    // Clear all Rank Math sitemap caches
+    if (function_exists('rank_math_clear_cache')) {
+        rank_math_clear_cache();
+    }
+
+    // Delete sitemap transients
+    global $wpdb;
+    $wpdb->query("DELETE FROM {$wpdb->options} WHERE option_name LIKE '%rank_math_sitemap%'");
+
+    // Clear object cache
+    wp_cache_flush();
+
+    return [
+        'success' => true,
+        'message' => 'Rank Math sitemap cache cleared and will regenerate on next access',
+        'sitemap_url' => home_url('/sitemap_index.xml')
+    ];
+}
+
