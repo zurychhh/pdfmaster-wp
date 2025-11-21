@@ -1146,3 +1146,54 @@ if (! function_exists('pdfm_add_google_analytics')) {
 }
 add_action('wp_head', 'pdfm_add_google_analytics', 1);
 
+/**
+ * Fix Google Search Console 404 errors from attachment pages
+ *
+ * WordPress creates dedicated pages for uploaded files (PDFs, images).
+ * These pages are useless for SEO and cause 404 errors in Google Search Console.
+ *
+ * This code safely redirects attachment pages to prevent indexing issues.
+ *
+ * @since 2025-11-21
+ */
+if (! function_exists('pdfm_redirect_attachment_pages')) {
+    /**
+     * Redirect attachment pages to parent post or return 404
+     * This prevents Google from indexing useless attachment pages
+     */
+    function pdfm_redirect_attachment_pages(): void {
+        if (is_attachment()) {
+            global $post;
+
+            // If attachment has a parent post, redirect to it (301 permanent)
+            if ($post && $post->post_parent) {
+                wp_redirect(get_permalink($post->post_parent), 301);
+                exit;
+            }
+
+            // If no parent, return 404 to prevent indexing
+            // This is safe - these pages aren't used by the PDF processor
+            global $wp_query;
+            $wp_query->set_404();
+            status_header(404);
+            nocache_headers();
+        }
+    }
+}
+add_action('template_redirect', 'pdfm_redirect_attachment_pages', 1);
+
+/**
+ * Disable attachment page URLs completely
+ * Returns direct file URL instead of attachment page URL
+ *
+ * This prevents WordPress from generating attachment page links
+ */
+if (! function_exists('pdfm_disable_attachment_pages')) {
+    function pdfm_disable_attachment_pages($link, $id) {
+        // Return direct file URL instead of attachment page
+        $attachment_url = wp_get_attachment_url($id);
+        return $attachment_url ? $attachment_url : $link;
+    }
+}
+add_filter('attachment_link', 'pdfm_disable_attachment_pages', 10, 2);
+

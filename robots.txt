@@ -1,5 +1,6 @@
 # PDFSpark Robots.txt
 # Generated: SEO Foundation P0 Implementation
+# Updated: 2025-11-21 - Added attachment page blocking
 
 User-agent: *
 Allow: /
@@ -11,8 +12,23 @@ Disallow: /wp-content/plugins/
 Disallow: /wp-content/themes/
 Disallow: /wp-json/
 
-# Allow specific public assets
-Allow: /wp-content/uploads/
+# CRITICAL FIX: Block WordPress attachment pages from indexing
+# These pages cause 404 errors in Google Search Console
+Disallow: /attachment/
+Disallow: /*?attachment_id=
+
+# Block direct PDF indexing (except via download URLs)
+# PDFs in uploads are for processing only, not for search indexing
+Disallow: /wp-content/uploads/*.pdf$
+Disallow: /wp-content/uploads/*.PDF$
+
+# Allow specific public assets (images, icons)
+Allow: /wp-content/uploads/*.jpg$
+Allow: /wp-content/uploads/*.jpeg$
+Allow: /wp-content/uploads/*.png$
+Allow: /wp-content/uploads/*.webp$
+Allow: /wp-content/uploads/*.svg$
+Allow: /wp-content/uploads/*.gif$
 
 # Sitemap location (RankMath SEO Plugin)
 Sitemap: https://pdfspark.app/sitemap_index.xml

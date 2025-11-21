@@ -71,6 +71,13 @@ add_filter('document_title_parts', 'pdfm_custom_document_title');
  * Add meta descriptions and other meta tags
  */
 function pdfm_add_meta_tags() {
+    // CRITICAL FIX: Block attachment pages from being indexed by search engines
+    // This prevents Google Search Console 404 errors from WordPress attachment pages
+    if (is_attachment()) {
+        echo '<meta name="robots" content="noindex, nofollow">' . "\n";
+        return; // Exit early, don't output other meta tags
+    }
+
     $description = '';
     $keywords = '';
     $og_type = 'website';
