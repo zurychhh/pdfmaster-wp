@@ -1197,3 +1197,37 @@ if (! function_exists('pdfm_disable_attachment_pages')) {
 }
 add_filter('attachment_link', 'pdfm_disable_attachment_pages', 10, 2);
 
+/**
+ * Customize WordPress dynamic robots.txt
+ * WordPress/Rank Math generates robots.txt dynamically, ignoring the physical file
+ *
+ * This filter adds critical disallow rules to prevent attachment page indexing
+ */
+if (! function_exists('pdfm_customize_robots_txt')) {
+    function pdfm_customize_robots_txt($output, $public) {
+        if ($public != '1') {
+            return $output;
+        }
+
+        // Add custom rules to block attachment pages and PDF indexing
+        $custom_rules = "\n# CRITICAL FIX: Block WordPress attachment pages from indexing\n";
+        $custom_rules .= "# These pages cause 404 errors in Google Search Console\n";
+        $custom_rules .= "Disallow: /attachment/\n";
+        $custom_rules .= "Disallow: /*?attachment_id=\n";
+        $custom_rules .= "\n# Block direct PDF indexing (except via download URLs)\n";
+        $custom_rules .= "# PDFs in uploads are for processing only, not for search indexing\n";
+        $custom_rules .= "Disallow: /wp-content/uploads/*.pdf$\n";
+        $custom_rules .= "Disallow: /wp-content/uploads/*.PDF$\n";
+        $custom_rules .= "\n# Allow specific public assets (images, icons)\n";
+        $custom_rules .= "Allow: /wp-content/uploads/*.jpg$\n";
+        $custom_rules .= "Allow: /wp-content/uploads/*.jpeg$\n";
+        $custom_rules .= "Allow: /wp-content/uploads/*.png$\n";
+        $custom_rules .= "Allow: /wp-content/uploads/*.webp$\n";
+        $custom_rules .= "Allow: /wp-content/uploads/*.svg$\n";
+        $custom_rules .= "Allow: /wp-content/uploads/*.gif$\n";
+
+        return $output . $custom_rules;
+    }
+}
+add_filter('robots_txt', 'pdfm_customize_robots_txt', 10, 2);
+
